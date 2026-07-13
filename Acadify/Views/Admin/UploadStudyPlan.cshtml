@@ -1,0 +1,55 @@
+﻿@model Acadify.Models.AdminPages.UploadStudyPlanModel
+
+@{
+    ViewData["Title"] = "Upload Study Plan";
+}
+
+@{
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+}
+
+<link rel="stylesheet" href="~/css/Site2.css" />
+
+<div class="upload-page">
+    <div class="upload-card">
+        <h2 class="upload-title">Upload <span class="accent">Study Plan</span></h2>
+
+        <form asp-controller="StudyPlan" asp-action="UploadStudyPlan" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+
+            <div class="drop-zone">
+                <div class="drop-icon">☁</div>
+
+                <p class="drop-text">
+                    drag and drop file or
+                    <label class="browse" for="StudyPlanFile">browse</label>
+                </p>
+
+                <input asp-for="StudyPlanFile" id="StudyPlanFile" type="file" accept=".xlsx" hidden />
+            </div>
+            <span class="hint">Supported format: Excel (.xlsx)</span>
+
+            <div class="actions">
+                <button type="submit" class="btn-upload">Upload</button>
+            </div>
+
+            <div class="validation">
+                <span asp-validation-for="StudyPlanFile"></span>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Message))
+            {
+                <div class="success-msg">@Model.Message</div>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(Model.SavedFileName))
+            {
+                <div class="file-info">Saved as: <b>@Model.SavedFileName</b></div>
+            }
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

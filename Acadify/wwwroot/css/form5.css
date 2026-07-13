@@ -1,0 +1,750 @@
+﻿.form5-container {
+    max-width: 950px;
+    margin: 30px auto;
+    background: #ffffff;
+    padding: 28px;
+    border-radius: 18px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.form-alert-success {
+    background: #eafaf1;
+    color: #1f7a4d;
+    border: 1px solid #b9e7cc;
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.form5-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+}
+
+.form5-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+    .form5-title i {
+        font-size: 24px;
+        color: #1f6fa7;
+    }
+
+    .form5-title h2 {
+        margin: 0;
+        font-size: 24px;
+        color: #1f2937;
+    }
+
+.form5-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.form5-info {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 22px;
+}
+
+    .form5-info p {
+        margin: 6px 0;
+        color: #374151;
+        font-size: 15px;
+    }
+
+.form5-section {
+    margin-bottom: 24px;
+    background: #fcfcfc;
+    border: 1px solid #eeeeee;
+    border-radius: 14px;
+    padding: 20px;
+}
+
+    .form5-section h4 {
+        margin-top: 0;
+        margin-bottom: 16px;
+        font-size: 18px;
+        color: #1f2937;
+    }
+
+.course-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.course-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #ececec;
+    gap: 14px;
+}
+
+    .course-item:last-child {
+        border-bottom: none;
+    }
+
+    .course-item span {
+        color: #374151;
+        font-size: 15px;
+    }
+
+.completed {
+    color: #198754;
+    font-size: 18px;
+}
+
+.not-completed {
+    color: #dc3545;
+    font-size: 18px;
+}
+
+.eligibility-status {
+    margin-top: 24px;
+    margin-bottom: 24px;
+    padding: 16px;
+    border-radius: 14px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+    .eligibility-status.eligible {
+        background: #eafaf1;
+        color: #1f7a4d;
+        border: 1px solid #b9e7cc;
+    }
+
+    .eligibility-status.not-eligible {
+        background: #fdecec;
+        color: #b42318;
+        border: 1px solid #f5c2c7;
+    }
+
+.form5-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.inline-form {
+    display: inline-block;
+}
+
+.btn-history,
+.print-btn,
+.btn-update,
+.btn-accept,
+.btn-reject,
+.btn-send-committee {
+    border: none;
+    outline: none;
+    padding: 11px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-history {
+    background: #eef4ff;
+    color: #1f4f99;
+}
+
+    .btn-history:hover {
+        background: #dce9ff;
+    }
+
+.print-btn {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+    .print-btn:hover {
+        background: #e5e7eb;
+    }
+
+.btn-update {
+    background: #0d6efd;
+    color: #ffffff;
+}
+
+    .btn-update:hover {
+        background: #0b5ed7;
+    }
+
+.btn-accept {
+    background: #198754;
+    color: #ffffff;
+}
+
+    .btn-accept:hover {
+        background: #157347;
+    }
+
+.btn-reject {
+    background: #dc3545;
+    color: #ffffff;
+}
+
+    .btn-reject:hover {
+        background: #bb2d3b;
+    }
+
+.btn-send-committee {
+    background: #6f42c1;
+    color: #ffffff;
+}
+
+    .btn-send-committee:hover {
+        background: #5e35b1;
+    }
+
+@media print {
+    .form5-header-actions,
+    .form5-actions,
+    .form-alert-success {
+        display: none !important;
+    }
+
+    .form5-container {
+        box-shadow: none;
+        margin: 0;
+        max-width: 100%;
+    }
+}body {
+}
+/* =========================================================
+   Form 5 unified style
+   ========================================================= */
+
+.form5-container {
+    background: #f7f7f7;
+    border-radius: 34px;
+    padding: 58px 70px;
+    margin: 38px auto;
+    width: 86%;
+    min-height: 780px;
+}
+
+/* Header مثل Form 3 */
+.form5-header {
+    background: #fff;
+    border-radius: 22px;
+    padding: 26px 36px;
+    margin-bottom: 30px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.form5-title {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+    .form5-title i {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: #eaf5ff;
+        color: #1f75bc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+    }
+
+    .form5-title h2 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 700;
+        color: #071b33;
+    }
+
+.form5-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.btn-history,
+.print-btn {
+    min-width: 128px;
+    height: 52px;
+    border-radius: 18px;
+    border: 1px solid #b9d7ff;
+    background: #fff;
+    color: #1f75bc;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+/* اسم الطالبة والرقم بدون بوكس رمادي */
+.form5-info {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 8px 0 28px;
+}
+
+    .form5-info p {
+        margin: 8px 0;
+        font-size: 17px;
+        color: #071b33;
+    }
+
+    .form5-info strong {
+        font-weight: 700;
+    }
+
+/* Sections */
+.form5-section {
+    background: #fff;
+    border: 1px solid #e1e7ef;
+    border-radius: 20px;
+    padding: 26px 32px;
+    margin-bottom: 28px;
+}
+
+    .form5-section h4 {
+        margin: 0 0 20px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #071b33;
+    }
+
+.course-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.course-item {
+    padding: 14px 0;
+    border-bottom: 1px solid #edf1f5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+    color: #1c2b3a;
+}
+
+    .course-item:last-child {
+        border-bottom: none;
+    }
+
+.completed {
+    color: #168a55;
+    font-size: 20px;
+}
+
+.not-completed {
+    color: #d43f3a;
+    font-size: 20px;
+}
+
+/* Eligibility */
+.eligibility-status {
+    background: #fff;
+    border-radius: 18px;
+    padding: 18px 24px;
+    margin: 24px 0;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+}
+
+    .eligibility-status.eligible {
+        color: #168a55;
+        border: 1px solid #bfe8d4;
+    }
+
+    .eligibility-status.not-eligible {
+        color: #d43f3a;
+        border: 1px solid #f2c5c2;
+    }
+
+/* Bottom buttons */
+.form5-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-top: 34px;
+}
+
+.inline-form {
+    display: inline-block;
+    margin: 0;
+}
+
+.btn-accept,
+.btn-send-committee {
+    height: 52px;
+    border: none;
+    border-radius: 14px;
+    padding: 0 28px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* Accept أخضر */
+.btn-accept {
+    background: #168a55;
+}
+
+/* Send أزرق مثل ستايل Form 3 */
+.btn-send-committee {
+    background: #1677f2;
+}
+
+    .btn-accept:hover,
+    .btn-send-committee:hover,
+    .btn-history:hover,
+    .print-btn:hover {
+        transform: translateY(-1px);
+    }
+/* =========================================================
+   Form 5 final layout fix
+   ========================================================= */
+
+.form5-container {
+    width: 84% !important;
+    min-height: auto !important;
+    margin: 35px auto !important;
+    padding: 34px 42px !important;
+    border-radius: 28px !important;
+    box-sizing: border-box !important;
+}
+
+.form5-header {
+    width: 100% !important;
+    padding: 22px 32px !important;
+    margin-bottom: 24px !important;
+    border-radius: 22px !important;
+    background: #fff !important;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06) !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 20px !important;
+    box-sizing: border-box !important;
+}
+
+.form5-title {
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+}
+
+    .form5-title i {
+        width: 46px !important;
+        height: 46px !important;
+        min-width: 46px !important;
+        border-radius: 50% !important;
+        background: #eaf5ff !important;
+        color: #1f75bc !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 20px !important;
+    }
+
+    .form5-title h2 {
+        margin: 0 !important;
+        font-size: 26px !important;
+        font-weight: 700 !important;
+        color: #071b33 !important;
+    }
+
+.form5-header-actions {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 12px !important;
+    flex-shrink: 0 !important;
+}
+
+.btn-history,
+.print-btn {
+    min-width: 112px !important;
+    height: 46px !important;
+    padding: 0 18px !important;
+    border-radius: 16px !important;
+    border: 1px solid #b9d7ff !important;
+    background: #fff !important;
+    color: #1f75bc !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 9px !important;
+    cursor: pointer !important;
+    box-sizing: border-box !important;
+}
+
+.form5-section {
+    background: #ffffff !important;
+    border: 1px solid #e1e7ef !important;
+    border-radius: 20px !important;
+    padding: 24px 28px !important;
+    margin-bottom: 24px !important;
+    box-sizing: border-box !important;
+}
+
+.form5-info {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 0 18px 0 !important;
+    margin: 0 0 20px 0 !important;
+    border-bottom: 1px solid #edf1f5 !important;
+}
+
+    .form5-info p {
+        margin: 7px 0 !important;
+        font-size: 16px !important;
+        color: #071b33 !important;
+    }
+
+.form5-section h4 {
+    margin: 0 0 18px !important;
+    font-size: 20px !important;
+    font-weight: 700 !important;
+    color: #071b33 !important;
+}
+
+.course-list {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.course-item {
+    min-height: 48px !important;
+    padding: 12px 16px !important;
+    margin-bottom: 10px !important;
+    border: 1px solid #e1e1e1 !important;
+    border-radius: 8px !important;
+    background: #fff !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    font-size: 15px !important;
+    color: #071b33 !important;
+    box-sizing: border-box !important;
+}
+
+.completed {
+    color: #168a55 !important;
+    font-size: 19px !important;
+}
+
+.not-completed {
+    color: #d43f3a !important;
+    font-size: 19px !important;
+}
+
+.eligibility-status {
+    background: #fff !important;
+    border-radius: 18px !important;
+    padding: 16px 22px !important;
+    margin: 22px 0 !important;
+    font-size: 17px !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+}
+
+    .eligibility-status.eligible {
+        color: #168a55 !important;
+        border: 1px solid #bfe8d4 !important;
+    }
+
+    .eligibility-status.not-eligible {
+        color: #d43f3a !important;
+        border: 1px solid #f2c5c2 !important;
+    }
+
+.form5-actions {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 14px !important;
+    margin-top: 26px !important;
+}
+
+.inline-form {
+    display: inline-block !important;
+    margin: 0 !important;
+}
+
+.btn-accept,
+.btn-send-committee {
+    height: 48px !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 0 26px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    color: #fff !important;
+    cursor: pointer !important;
+}
+
+.btn-accept {
+    background: #168a55 !important;
+}
+
+.btn-send-committee {
+    background: #1677f2 !important;
+}
+
+/* Print fix */
+@media print {
+    body {
+        background: #fff !important;
+    }
+
+    aside,
+    .sidebar,
+    .advisor-sidebar,
+    .form5-header-actions,
+    .form5-actions,
+    .btn-history,
+    .print-btn {
+        display: none !important;
+    }
+
+    .form5-container {
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 20px !important;
+        box-shadow: none !important;
+    }
+
+    .form5-header,
+    .form5-section,
+    .eligibility-status {
+        box-shadow: none !important;
+        page-break-inside: avoid !important;
+    }
+}
+.form5-section input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    accent-color: #168a55;
+    cursor: pointer;
+}
+
+    .form5-section input[type="checkbox"]:hover {
+        transform: scale(1.08);
+    }
+/* Form 5 buttons colors */
+.btn-send-committee {
+    background: #12889c !important;
+    color: #fff !important;
+}
+
+.btn-accept {
+    background: #66aca7 !important;
+    color: #fff !important;
+}
+
+    .btn-send-committee:hover,
+    .btn-accept:hover {
+        opacity: 0.92;
+        transform: translateY(-1px);
+    }
+/* =========================================================
+   Print Form 5 only
+   ========================================================= */
+@media print {
+    body * {
+        visibility: hidden !important;
+    }
+
+    .form5-container,
+    .form5-container * {
+        visibility: visible !important;
+    }
+
+    .form5-container {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 20px !important;
+        background: #fff !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+    }
+
+    .form5-header-actions,
+    .form5-actions,
+    .btn-history,
+    .print-btn {
+        display: none !important;
+    }
+
+    .form5-header,
+    .form5-section,
+    .eligibility-status {
+        box-shadow: none !important;
+        page-break-inside: avoid !important;
+    }
+
+    aside,
+    .sidebar,
+    .advisor-sidebar,
+    .student-sidebar,
+    .navbar,
+    .topbar {
+        display: none !important;
+    }
+}
+/* Make the inner Form 5 boxes white */
+.form5-section {
+    background: #ffffff !important;
+}
+
+/* Keep the outer page box light gray */
+.form5-container {
+    background: #ffffff !important;
+}

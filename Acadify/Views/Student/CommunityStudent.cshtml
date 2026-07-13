@@ -1,0 +1,209 @@
+﻿@model Acadify.Models.CommunityStudentVM
+
+@functions {
+    private string GetInitials(string? name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            return "U";
+
+        var cleanName = name
+            .Replace("(me)", "", StringComparison.OrdinalIgnoreCase)
+            .Trim();
+
+        var parts = cleanName
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .ToList();
+
+        if (parts.Count == 0)
+            return "U";
+
+        if (parts.Count == 1)
+            return parts[0].Substring(0, 1).ToUpper();
+
+        return (parts.First().Substring(0, 1) + parts.Last().Substring(0, 1)).ToUpper();
+    }
+}
+
+@{
+    Layout = "_StudentLayout";
+    ViewData["Title"] = "Community Student";
+    var index = 0;
+
+    var currentUserName = ViewBag.CurrentUserName as string ?? "Student";
+    var currentUserInitials = GetInitials(currentUserName);
+}
+
+<div class="community-student-page">
+
+    <div class="community-student-left">
+        <h2 class="community-student-title">Community</h2>
+        <div class="community-student-subtitle">Today</div>
+
+        <div class="community-student-messages-area">
+            @foreach (var msg in Model.Messages)
+            {
+                index++;
+
+                var rowClass = msg.IsCurrentUserMessage ? "right" : "left";
+
+                var circleClass = "circle-blue";
+                var nameClass = "name-blue";
+                var bubbleClass = msg.BubbleColorClass;
+
+                if (msg.BubbleColorClass == "msg-pink")
+                {
+                    circleClass = "circle-pink";
+                    nameClass = "name-pink";
+                }
+                else if (msg.BubbleColorClass == "msg-purple")
+                {
+                    circleClass = "circle-purple";
+                    nameClass = "name-purple";
+                }
+                else if (msg.BubbleColorClass == "msg-indigo")
+                {
+                    circleClass = "circle-indigo";
+                    nameClass = "name-indigo";
+                }
+
+                if (index == 2)
+                {
+                    bubbleClass += " msg-wide";
+                }
+
+                <div class="community-student-message-row @rowClass row-@index">
+                    @if (!msg.IsCurrentUserMessage)
+                    {
+                        <div class="community-student-initial-circle @circleClass">@GetInitials(msg.SenderName)</div>
+                    }
+
+                    <div class="community-student-message-box @bubbleClass">
+                        <div class="community-student-sender-name @nameClass">@msg.SenderName</div>
+                        <div class="community-student-message-text">@msg.MessageText</div>
+                    </div>
+
+                    @if (msg.IsCurrentUserMessage)
+                    {
+                        <div class="community-student-initial-circle @circleClass">@GetInitials(msg.SenderName)</div>
+                    }
+                </div>
+            }
+        </div>
+
+        <div id="communityStudentLiveMessages" class="community-student-live-messages"></div>
+
+        <div class="community-student-chat-section">
+            <div class="community-student-typing-indicator">
+                <div class="community-student-typing-user">@currentUserInitials</div>
+
+                <div class="community-student-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <div class="community-student-chat-input-box">
+                <input type="text" id="communityStudentMessageInput" class="community-student-chat-text-input" placeholder="Type here..." />
+            </div>
+        </div>
+    </div>
+
+    <div class="community-student-right">
+        <h3 class="community-student-members-title">Members</h3>
+
+        <div class="community-student-members-list">
+            @foreach (var member in Model.Members)
+            {
+                <div class="community-student-member-card">
+                    <img src="@Url.Content(member.ImagePath)" alt="member" class="community-student-member-avatar" />
+                    <p class="community-student-member-name">@member.Name</p>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const studentInput = document.getElementById("communityStudentMessageInput");
+    const studentLiveMessages = document.getElementById("communityStudentLiveMessages");
+    
+
+    function getInitials(name) {
+        if (!name) return "U";
+
+        const cleanName = name.replace("(me)", "").trim();
+        const parts = cleanName.split(/\s+/).filter(Boolean);
+
+        if (parts.length === 0) return "U";
+        if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
+
+        return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+    }
+
+    function escapeHtml(value) {
+        if (!value) return "";
+
+        return value
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
+
+    async function sendStudentMessage() {
+        const text = studentInput.value.trim();
+        if (text === "") return;
+
+        try {
+            const response = await fetch('/Student/SendStudentMessage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: text })
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to send message.");
+            }
+
+            const data = await response.json();
+
+            if (!data.success) {
+                return;
+            }
+
+            const senderName = data.senderName || "Student";
+            const senderInitials = getInitials(senderName);
+
+            const row = document.createElement("div");
+            row.className = "community-student-message-row right live-row";
+
+            row.innerHTML = `
+                <div class="community-student-message-box msg-indigo live-bubble">
+                    <div class="community-student-sender-name name-indigo">${escapeHtml(senderName)} (me)</div>
+                    <div class="community-student-message-text">${escapeHtml(data.text)}</div>
+                </div>
+                <div class="community-student-initial-circle circle-indigo">${senderInitials}</div>
+            `;
+
+            studentLiveMessages.prepend(row);
+            studentInput.value = "";
+            studentInput.focus();
+        } catch (error) {
+            console.error(error);
+            alert("Something went wrong while sending the message.");
+        }
+    }
+
+    studentInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+            e.preventDefault();
+            sendStudentMessage();
+        }
+    });
+
+    
+</script>

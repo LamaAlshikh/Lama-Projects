@@ -1,0 +1,75 @@
+@model Acadify.Models.StudentChatViewModel
+
+@{
+    Layout = "_StudentLayout";
+    ViewData["Title"] = "Chat";
+
+    var messages = Model?.Messages ?? new List<Acadify.Models.ChatMessageVM>();
+    string recordingMessage = ViewBag.RecordingMessage as string ?? "";
+
+    if (string.IsNullOrWhiteSpace(recordingMessage) && Model != null && Model.IsRecordingStarted)
+    {
+        recordingMessage = "The chat recording is started";
+    }
+}
+
+<main class="chat-page">
+
+    <!-- Header -->
+    <section class="chat-header">
+        <div class="chat-header-left">
+            <div class="chat-avatar"></div>
+            <h2>@Model.AdvisorName</h2>
+        </div>
+    </section>
+
+    <!-- Messages -->
+    <section class="chat-body">
+
+        @if (!string.IsNullOrWhiteSpace(recordingMessage))
+        {
+            <div class="chat-recording-line">
+                @recordingMessage
+            </div>
+        }
+
+        @foreach (var msg in messages)
+        {
+            var senderName = (msg.SenderName ?? "").Replace("(me)", "", StringComparison.OrdinalIgnoreCase).Trim();
+
+            if (msg.IsFromStudent)
+            {
+                <div class="msg-row msg-right">
+                    <div class="msg-bubble">
+                        <div class="msg-name">@senderName</div>
+                        <div class="msg-text">@msg.Text</div>
+                    </div>
+
+                    <div class="msg-circle blue">LA</div>
+                </div>
+            }
+            else
+            {
+                <div class="msg-row msg-left">
+                    <div class="msg-circle purple">AG</div>
+
+                    <div class="msg-bubble">
+                        <div class="msg-name">@senderName</div>
+                        <div class="msg-text">@msg.Text</div>
+                    </div>
+                </div>
+            }
+        }
+
+    </section>
+
+    <!-- Input -->
+    <section class="chat-footer">
+        <form method="post" asp-action="SendMessage" asp-controller="Student" class="chat-form">
+            @Html.AntiForgeryToken()
+            <input type="text" name="message" placeholder="Type here..." class="chat-input" required />
+            <button type="submit" class="chat-send">Send</button>
+        </form>
+    </section>
+
+</main>

@@ -1,0 +1,8 @@
+Repository name:
+Acadify
+
+GitHub About description:
+Smart academic advising system for students, academic advisors, and administrators, built with ASP.NET Core MVC and SQL Server.
+
+Suggested topics:
+aspnet-core, mvc, csharp, sql-server, entity-framework-core, academic-advising, student-system, graduation-project

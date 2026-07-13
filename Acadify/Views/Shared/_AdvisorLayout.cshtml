@@ -1,0 +1,168 @@
+@using Microsoft.AspNetCore.Http
+@using Microsoft.EntityFrameworkCore
+@inject Acadify.Models.Db.AcadifyDbContext AcadifyDb
+
+@{
+    int? advisorId = Context.Session.GetInt32("AdvisorId");
+
+    var advisor = advisorId.HasValue
+        ? AcadifyDb.Advisors
+            .Include(a => a.User)
+            .FirstOrDefault(a => a.AdvisorId == advisorId.Value)
+        : null;
+
+    string advisorName = advisor?.User?.Name
+        ?? Context.Session.GetString("UserName")
+        ?? "";
+
+    string advisorEmail = advisor?.User?.Email
+        ?? Context.Session.GetString("UserEmail")
+        ?? "";
+
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@(ViewData["Title"] ?? "Advisor") - Acadify</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/RahafZh.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/advisor-layout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/AdvisorLayout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/AdvisorForm3.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/AdvisorForm4.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/AdvisorChat.css" asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+          rel="stylesheet" />
+</head>
+
+<body>
+
+    <div class="advisor-layout">
+
+        <!-- Sidebar -->
+        <aside class="advisor-sidebar">
+
+            <div class="advisor-profile">
+
+                <div class="profile-top">
+                    <img src="~/images/user.png" class="advisor-avatar" alt="Advisor" />
+
+                    <button type="button"
+                            class="topbar-notif-btn"
+                            onclick="toggleNotifications()"
+                            aria-label="Notifications">
+                        <i class="fa-regular fa-bell"></i>
+                    </button>
+                </div>
+
+                <h4>@advisorName</h4>
+                <p>@advisorEmail</p>
+
+            </div>
+
+            <ul class="advisor-menu">
+
+                <li class="@(currentAction == "AdvisorHome" ? "active" : "")">
+                    <a asp-controller="Advisor" asp-action="AdvisorHome">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Homepage</span>
+                    </a>
+                </li>
+
+                <li class="@(currentAction == "CommunityAdvisor" ? "active" : "")">
+                    <a asp-controller="Advisor" asp-action="CommunityAdvisor">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Community</span>
+                    </a>
+                </li>
+
+                <li class="@(currentAction == "Chat" || currentAction == "RequestMeeting" ? "active" : "")">
+                    <a asp-controller="Advisor" asp-action="Chat">
+                        <i class="fa-solid fa-calendar-check"></i>
+                        <span>Meetings</span>
+                    </a>
+                </li>
+
+            </ul>
+
+            <div class="advisor-logout">
+                <form asp-controller="Account" asp-action="Logout" method="post" style="margin:0;">
+                    @Html.AntiForgeryToken()
+
+                    <button type="submit"
+                            class="logout-link"
+                            style="background: none; border: none; color: #ffffff !important; display: flex; align-items: center; gap: 10px; padding: 0; font-size: 14px; font-weight: 500; cursor: pointer;">
+                        <i class="fa-solid fa-right-from-bracket" style="color: #ffffff !important;"></i>
+                        <span style="color: #ffffff !important;">Logout</span>
+                    </button>
+                </form>
+            </div>
+
+        </aside>
+
+        <!-- Main Content -->
+        <main class="advisor-content">
+            @RenderBody()
+        </main>
+
+    </div>
+
+    @await Component.InvokeAsync("Notifications")
+
+
+  
+
+
+    <script>
+            function toggleNotifications() {
+                const overlay = document.getElementById('notifOverlay');
+                if (!overlay) return;
+
+                overlay.classList.toggle('show');
+            }
+
+            function closeNotifications(e) {
+                if (e) e.preventDefault();
+
+                const overlay = document.getElementById('notifOverlay');
+                if (!overlay) return;
+
+                overlay.classList.remove('show');
+            }
+    </script>
+
+    
+            window.addEventListener("load", function () {
+                const params = new URLSearchParams(window.location.search);
+                const shouldPrint = params.get("print") === "true";
+
+                if (!shouldPrint) {
+                    return;
+                }
+
+                setTimeout(function () {
+                    window.print();
+
+                    const url = new URL(window.location.href);
+                    url.searchParams.delete("print");
+                    window.history.replaceState({}, document.title, url.pathname + url.search + url.hash);
+                }, 700);
+            });
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

@@ -1,0 +1,128 @@
+﻿@model List<Acadify.Models.AdvisorHomeStudentVM>
+@using System.Collections.Generic
+
+@{
+    Layout = "_AdvisorLayout";
+    ViewData["Title"] = "Advisor Home";
+
+    var selectedCohort = Context.Request.Query["cohort"].ToString();
+    var cohorts = Model.Select(s => s.CohortYear).Distinct().OrderByDescending(x => x).ToList();
+    var chatAlerts = ViewBag.ChatAlerts as Dictionary<int, bool> ?? new Dictionary<int, bool>();
+}
+
+<style>
+    .student-chat-alert {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 10px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        background-color: #e7f8f5;
+        color: #0f8f7f;
+        border: 1px solid #a9e6dc;
+        font-size: 12px;
+        font-weight: 500;
+        vertical-align: middle;
+    }
+
+        .student-chat-alert::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background-color: #20bfa9;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+</style>
+
+<div class="advisor-home-page">
+
+    <div class="page-head">
+        <h2 class="page-title">my student</h2>
+
+        <form method="get" asp-controller="Advisor" asp-action="AdvisorHome" class="cohort-form">
+            <select name="cohort" class="cohort-select" onchange="this.form.submit()">
+                <option value="">Cohort</option>
+                @foreach (var year in cohorts)
+                {
+                    if (selectedCohort == year.ToString())
+                    {
+                        <option value="@year" selected>@year</option>
+                    }
+                    else
+                    {
+                        <option value="@year">@year</option>
+                    }
+                }
+            </select>
+        </form>
+    </div>
+
+    @foreach (var group in Model.GroupBy(s => s.CohortYear).OrderByDescending(g => g.Key))
+    {
+        <div class="year-title">@group.Key</div>
+
+        <div class="student-list">
+            @foreach (var student in group)
+            {
+                var hasNewChatMessage = chatAlerts.ContainsKey(student.StudentId) && chatAlerts[student.StudentId];
+
+                <div class="student-card">
+                    <div class="student-left">
+                        <img src="@Url.Content(student.ImagePath)" alt="student" class="student-avatar" />
+
+                        <div class="student-info">
+                            <p class="student-name">
+                                @student.StudentName
+
+                                @if (hasNewChatMessage)
+                                {
+                                    <span class="student-chat-alert">New message</span>
+                                }
+                            </p>
+
+                            <div class="student-status-line">
+                                <span class="status-label">status:</span>
+
+                                @if (student.AcademicStatus.ToLower().Contains("near"))
+                                {
+                                    <span class="status-near">@student.AcademicStatus</span>
+                                }
+                                else
+                                {
+                                    <span class="status-remaining">@student.AcademicStatus</span>
+                                }
+
+                                @if (student.MatchStatus.ToLower() == "matched")
+                                {
+                                    <span class="status-matched">@student.MatchStatus</span>
+                                }
+                                else
+                                {
+                                    <span class="status-notmatched">@student.MatchStatus</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="student-actions">
+                        <a asp-controller="Advisor"
+                               asp-action="StudentFormsByStudent"
+                               asp-route-studentId="@student.StudentId"
+                               class="btn-forms">
+                            Forms
+                        </a>
+
+                        <a asp-controller="Advisor"
+                               asp-action="RequestMeeting"
+                               asp-route-studentId="@student.StudentId"
+                               class="btn-meeting">
+                            Meeting
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

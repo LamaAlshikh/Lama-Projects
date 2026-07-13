@@ -1,0 +1,18 @@
+﻿@model Acadify.Models.Form3AutoFillViewModel
+@{
+    Layout = "_AdvisorLayout";
+}
+
+<div style="padding:20px;">
+    <h2>Form 3 Auto Fill Preview</h2>
+
+    <div style="margin-top:20px;">
+        <p><strong>Meeting ID:</strong> @Model.MeetingId</p>
+        <p><strong>Meeting Date:</strong> @Model.MeetingDateText</p>
+
+        <p><strong>Proposed Solutions / Advise / Brief notes:</strong></p>
+        <div style="background:#fff; border:1px solid #ddd; padding:15px; border-radius:10px; white-space:pre-wrap;">
+            @Model.AutoBriefNotes
+        </div>
+    </div>
+</div>

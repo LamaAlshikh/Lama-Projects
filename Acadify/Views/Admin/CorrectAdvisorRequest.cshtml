@@ -1,0 +1,39 @@
+﻿@model Acadify.Models.Db.AdvisorRequest
+@using Acadify.Models.Db
+@{
+    ViewData["Title"] = "Update Advisor Request";
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+    var advisors = ViewBag.Advisors as List<Advisor>;
+}
+
+<link rel="stylesheet" href="~/css/Site2.css" />
+
+<div class="page">
+    <div class="card" style="max-width:700px;">
+        <h2>Update Advisor Request</h2>
+        <p><strong>Student:</strong> @ViewBag.StudentName</p>
+
+        <form asp-action="CorrectAdvisorRequest" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="requestId" value="@ViewBag.RequestId" />
+
+            <div style="margin-bottom:20px;">
+                <label>Select the correct advisor</label>
+                <select name="advisorId" class="form-control" style="width:100%; padding:10px; margin-top:8px;">
+                    @if (advisors != null)
+                    {
+                        @foreach (var advisor in advisors)
+                        {
+                            <option value="@advisor.AdvisorId">
+                                @advisor.User.Name - @advisor.User.Email
+                            </option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-approve">Save and Approve</button>
+            <a asp-action="ManageAdvisorRequests" class="btn btn-reject">Cancel</a>
+        </form>
+    </div>
+</div>

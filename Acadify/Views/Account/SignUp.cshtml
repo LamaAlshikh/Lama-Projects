@@ -1,0 +1,114 @@
+@model Acadify.Models.SignUpVM
+
+@{
+    Layout = null;
+    ViewData["Title"] = "Sign Up";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"]</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/RahafZh.css" />
+</head>
+
+<body class="signup-page">
+
+    <div class="container">
+
+        <div class="logo">
+            <img src="~/images/acadify-logo2.png" alt="Logo" />
+        </div>
+
+        <h1>Create <span>your account</span></h1>
+
+        <form class="form" method="post" asp-action="SignUp" asp-controller="Account">
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input class="input" asp-for="FullName" type="text" placeholder="Full name" />
+            <span asp-validation-for="FullName" class="text-danger"></span>
+
+            <input class="input" asp-for="Email" type="email" placeholder="University email" id="emailInput" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+
+            <div id="studentIdContainer">
+                <input class="input" asp-for="ID" type="text" placeholder="ID" id="studentIdInput" />
+                <span asp-validation-for="ID" class="text-danger"></span>
+            </div>
+
+            <input class="input" asp-for="Password" type="password" placeholder="Password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+
+            <input class="input" asp-for="ConfirmPassword" type="password" placeholder="Confirm Password" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
+            <button class="btn" type="submit">Sign up</button>
+
+            <div class="section">
+                Already have an account?
+                <div>
+                    <a class="btn btn-secondary" href="/Account/Login">Login</a>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+    <script>
+            const emailInput = document.getElementById("emailInput");
+            const studentIdContainer = document.getElementById("studentIdContainer");
+            const studentIdInput = document.getElementById("studentIdInput");
+
+            function handleEmailType() {
+                const email = (emailInput.value || "").toLowerCase().trim();
+
+                const isStudentEmail = email.endsWith("@@stu.kau.edu.sa");
+                const isStaffEmail = email.endsWith("@@kau.edu.sa") && !isStudentEmail;
+
+                if (isStudentEmail) {
+                    studentIdContainer.style.display = "block";
+
+                    if (studentIdInput.value === "0") {
+                        studentIdInput.value = "";
+                    }
+
+                    studentIdInput.placeholder = "ID";
+                }
+                else if (isStaffEmail) {
+                    studentIdContainer.style.display = "none";
+
+                    if (!studentIdInput.value || studentIdInput.value.trim() === "") {
+                        studentIdInput.value = "0";
+                    }
+                }
+                else {
+                    studentIdContainer.style.display = "block";
+
+                    if (studentIdInput.value === "0") {
+                        studentIdInput.value = "";
+                    }
+
+                    studentIdInput.placeholder = "ID";
+                }
+            }
+
+            emailInput.addEventListener("input", handleEmailType);
+            emailInput.addEventListener("change", handleEmailType);
+
+            window.addEventListener("load", function () {
+                handleEmailType();
+                setTimeout(handleEmailType, 300);
+            });
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+</body>
+</html>

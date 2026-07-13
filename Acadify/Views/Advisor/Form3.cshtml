@@ -1,0 +1,165 @@
+@model Acadify.Models.Form3ViewModel
+
+@{
+    Layout = "_AdvisorLayout";
+    ViewData["Title"] = "Meeting Record";
+}
+
+<div class="form3-container">
+
+    <!-- Top Header -->
+    <section class="form3-top">
+        <div class="form3-title">
+            <div class="form3-icon">
+                <i class="fa-solid fa-file-lines"></i>
+            </div>
+            <div>
+                <h2>Meeting Record (Form 3)</h2>
+            </div>
+        </div>
+
+        <div class="form3-top-actions">
+            
+            <a asp-controller="FormHistory"
+                   asp-action="FormHistory"
+                   asp-route-studentId="@Model.StudentId"
+                   asp-route-formType="Form 3"
+                   class="btn-history">
+                <i class="fa-solid fa-clock-rotate-left"></i> History
+            </a>
+
+
+            <button class="print-btn" type="button" onclick="window.print()">
+                Print <i class="fa-solid fa-print"></i>
+            </button>
+        </div>
+    </section>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="form3-msg">@TempData["Success"]</div>
+    }
+
+    <form method="post" asp-controller="Advisor">
+        @Html.AntiForgeryToken()
+
+        <section class="form3-card">
+            <div class="form3-paper">
+
+                <div class="form3-header">
+                    <div class="form3-title-center">
+                        <h3>FORM-3 (Meeting Record)</h3>
+                    </div>
+                </div>
+
+                <div class="form3-student-line">
+                    <div>
+                        <label>Student Name:</label>
+                        <input asp-for="StudentName" type="text" class="line-input" readonly />
+                    </div>
+
+                    <div>
+                        <label>Student ID:</label>
+                        <input asp-for="StudentId" type="text" class="line-input" readonly />
+                    </div>
+                </div>
+
+                <input asp-for="MeetingId" type="hidden" />
+                <input asp-for="Status" type="hidden" />
+                <input asp-for="AdvisorNotes" type="hidden" />
+
+                <table class="form3-table">
+                    <thead>
+                        <tr>
+                            <th>Meeting #</th>
+                            <th>Meeting date</th>
+                            <th>Meeting Purpose</th>
+                            <th>Referring Student to someone else</th>
+                            <th>Proposed Solutions / Advise / Brief notes</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model?.Meetings != null && Model.Meetings.Any())
+                        {
+                            @for (int i = 0; i < Model.Meetings.Count; i++)
+                            {
+                                <tr>
+                                    <td class="center">
+                                        @Model.Meetings[i].MeetingNo
+                                        <input asp-for="Meetings[i].MeetingNo" type="hidden" />
+                                    </td>
+
+                                    <td>
+                                        <input asp-for="Meetings[i].MeetingDate" class="cell-input" />
+                                    </td>
+
+                                    <td>
+                                        <label class="check-row">
+                                            <input asp-for="Meetings[i].PurposeAcademic" type="checkbox" />
+                                            Academic
+                                        </label>
+
+                                        <label class="check-row">
+                                            <input asp-for="Meetings[i].PurposeCareer" type="checkbox" />
+                                            Career
+                                        </label>
+
+                                        <label class="check-row">
+                                            <input asp-for="Meetings[i].PurposeOther" type="checkbox" />
+                                            Other
+                                        </label>
+                                    </td>
+
+                                    <td>
+                                        <div class="mini-field">
+                                            <span>Name:</span>
+                                            <input asp-for="Meetings[i].ReferralName" class="cell-input" />
+                                        </div>
+
+                                        <div class="mini-field">
+                                            <span>Reason:</span>
+                                            <input asp-for="Meetings[i].ReferralReason" class="cell-input" />
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <textarea asp-for="Meetings[i].ProposedSolutions" class="cell-textarea" rows="4"></textarea>
+                                        <div class="initials">
+                                            <span>(Student Initial)</span>
+                                            <span>(Advisor Initial)</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" class="center">No meeting records found.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </section>
+
+        <section class="form3-actions">
+            <button type="submit"
+                    formaction="@Url.Action("SendForm3", "Advisor")"
+                    class="btn-primary-wide">
+                Send To The Advising Committee
+            </button>
+
+            <button type="submit"
+                    formaction="@Url.Action("SaveForm3", "Advisor")"
+                    class="btn-save">
+                Save
+            </button>
+
+            
+        </section>
+    </form>
+
+</div>

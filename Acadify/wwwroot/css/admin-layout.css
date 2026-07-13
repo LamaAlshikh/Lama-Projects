@@ -1,0 +1,222 @@
+﻿/* =========================
+   Admin Layout Root
+========================= */
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: #ffffff;
+}
+
+/* =========================
+   Main Layout
+========================= */
+.admin-layout {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+/* =========================
+   Sidebar
+========================= */
+.admin-sidebar {
+    width: 240px;
+    min-width: 240px;
+    height: 100vh;
+    background: linear-gradient(180deg, #94C7B6 0%, #2272AD 50%, #76BAA5 100%, #12889C 100%);
+    padding: 18px 14px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* =========================
+   Profile
+========================= */
+.admin-profile {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.profile-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+
+.admin-profile-top {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #ffffff;
+    padding: 12px;
+    object-fit: cover;
+}
+
+.admin-profile h4 {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 10px 0 4px;
+}
+
+.admin-profile p {
+    color: #E0E0E0;
+    font-size: 12px;
+    margin: 0;
+}
+
+/* =========================
+   Notification Button
+========================= */
+.admin-notif-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 50%;
+    background-color: #ffffff;
+    color: #4b4b4b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transition: 0.2s ease;
+}
+
+    .admin-notif-btn:hover {
+        transform: translateY(-1px);
+        background-color: #f4f4f4;
+    }
+
+    .admin-notif-btn i {
+        font-size: 16px;
+    }
+
+/* =========================
+   Menu
+========================= */
+.admin-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex: 1;
+}
+
+    .admin-menu li {
+        margin-top: 18px;
+    }
+
+        .admin-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #ffffff;
+            text-decoration: none;
+            transition: background 0.15s ease, transform 0.15s ease;
+        }
+
+            .admin-menu li a i {
+                font-size: 16px;
+            }
+
+            .admin-menu li a:hover {
+                background: rgba(255,255,255,0.14);
+                transform: translateY(-1px);
+            }
+
+        .admin-menu li.active a {
+            background: rgba(255,255,255,0.18);
+        }
+
+/* =========================
+   Logout
+========================= */
+.admin-logout {
+    margin-top: auto;
+    padding: 0;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.10);
+    transition: background 0.15s ease;
+}
+
+    .admin-logout:hover {
+        background: rgba(255,255,255,0.16);
+    }
+
+    .admin-logout form {
+        width: 100%;
+        margin: 0;
+    }
+
+.admin-logout-link {
+    width: 100%;
+    min-height: 58px;
+    padding: 20px;
+    border: none;
+    background: transparent;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+}
+
+    .admin-logout-link i,
+    .admin-logout-link span {
+        color: #ffffff;
+    }
+
+    .admin-logout-link:hover {
+        opacity: 0.8;
+    }
+
+.logout-button-reset {
+    background: transparent;
+    border: none;
+}
+
+/* =========================
+   Main Content
+========================= */
+.admin-content {
+    flex: 1;
+    width: calc(100vw - 240px);
+    height: 100vh;
+    padding: 22px 24px;
+    overflow: hidden;
+    box-sizing: border-box;
+    background: #ffffff;
+}

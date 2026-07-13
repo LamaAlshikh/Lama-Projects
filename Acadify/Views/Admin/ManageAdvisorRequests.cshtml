@@ -1,0 +1,230 @@
+@model Acadify.Models.AdminPages.ManageRequestsVM
+@using Db = Acadify.Models.Db
+
+@{
+    ViewData["Title"] = "Manage Advisor Requests";
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+
+    var advisors = ViewBag.Advisors as List<Db.Advisor>;
+
+    var successMessage = TempData["RequestSuccess"]?.ToString();
+    var errorMessage = TempData["RequestError"]?.ToString();
+
+    var hasPopupMessage = !string.IsNullOrWhiteSpace(successMessage) || !string.IsNullOrWhiteSpace(errorMessage);
+    var popupMessage = !string.IsNullOrWhiteSpace(successMessage) ? successMessage : errorMessage;
+    var popupTitle = !string.IsNullOrWhiteSpace(successMessage) ? "Request Completed" : "Request Error";
+    var popupIcon = !string.IsNullOrWhiteSpace(successMessage) ? "✓" : "!";
+}
+
+<link rel="stylesheet" href="~/css/Site2.css" />
+
+<div class="page">
+    <div class="card">
+
+        <div class="requests-table-wrapper">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>University ID</th>
+                        <th>Requested Advisor</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th class="actions-col">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model.PendingRequests != null && Model.PendingRequests.Any())
+                    {
+                        @foreach (var r in Model.PendingRequests)
+                        {
+                            <tr>
+                                <td>@r.StudentName</td>
+                                <td>@r.UniversityId</td>
+                                <td>@r.RequestedAdvisorName</td>
+                                <td>@r.RequestedAdvisorEmail</td>
+                                <td>
+                                    <span class="badge">@r.Status</span>
+                                </td>
+                                <td>@r.CreatedAt.ToString("yyyy-MM-dd")</td>
+                                <td class="actions-col">
+
+                                    @if (r.Status != "Approved")
+                                    {
+                                        <form asp-action="ApproveAdvisorRequest" method="post" class="inline">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="requestId" value="@r.RequestId" />
+                                            <button class="btn btn-approve" type="submit">Approve</button>
+                                        </form>
+                                    }
+
+                                    <button type="button"
+                                            class="btn btn-correct"
+                                            onclick="toggleUpdateRow(@r.RequestId)">
+                                        Update
+                                    </button>
+
+                                </td>
+                            </tr>
+
+                            <tr id="updateRow-@r.RequestId" class="update-row" style="display:none;">
+                                <td colspan="7">
+                                    <div class="update-box">
+                                        <form asp-action="UpdateAdvisorRequestInline" method="post" class="update-form">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="requestId" value="@r.RequestId" />
+
+                                            <div class="update-form-group">
+                                                <label>Select advisor</label>
+
+                                                <select name="advisorId"
+                                                        id="advisorSelect-@r.RequestId"
+                                                        class="advisor-dropdown"
+                                                        onchange="handleAdvisorOption(this, @r.RequestId)">
+                                                    <option value="">-- Select advisor --</option>
+
+                                                    @if (advisors != null)
+                                                    {
+                                                        @foreach (var advisor in advisors)
+                                                        {
+                                                            <option value="@advisor.AdvisorId"
+                                                                    selected="@(advisor.AdvisorId == r.RequestedAdvisorId ? "selected" : null)">
+                                                                @advisor.User.Name - @advisor.User.Email
+                                                            </option>
+                                                        }
+                                                    }
+
+                                                    <option value="manual">Advisor not found</option>
+                                                </select>
+                                            </div>
+
+                                            <div id="manualEmailBox-@r.RequestId" style="display:none;">
+                                                <input type="hidden"
+                                                       id="manualEmailHidden-@r.RequestId"
+                                                       name="manualAdvisorEmail" />
+                                            </div>
+
+                                            <div class="update-buttons">
+                                                <button type="submit" class="btn btn-approve">Save</button>
+
+                                                <button type="button"
+                                                        class="btn btn-reject"
+                                                        onclick="toggleUpdateRow(@r.RequestId)">
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" style="text-align:center;">
+                                No requests found.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+@if (hasPopupMessage)
+{
+    <div id="requestStatusPopup" class="popup-overlay request-status-popup">
+        <div class="popup-card request-status-card">
+            <button type="button" class="popup-close" onclick="closeRequestStatusPopup()">×</button>
+
+            <div class="request-status-icon">
+                @popupIcon
+            </div>
+
+            <h3>@popupTitle</h3>
+            <p>@popupMessage</p>
+
+            <button type="button" class="btn btn-approve" onclick="closeRequestStatusPopup()">
+                OK
+            </button>
+        </div>
+    </div>
+}
+
+<div id="manualAdvisorPopup" class="popup-overlay" style="display:none;">
+    <div class="popup-card">
+        <button type="button" class="popup-close" onclick="closeManualAdvisorPopup()">×</button>
+
+        <h3>Enter advisor email</h3>
+
+        <input type="email"
+               id="manualAdvisorEmailInput"
+               class="popup-input"
+               placeholder="advisor@kau.edu.sa" />
+
+        <div class="popup-actions">
+            <button type="button" class="btn btn-approve" onclick="saveManualAdvisorEmail()">Save</button>
+            <button type="button" class="btn btn-reject" onclick="closeManualAdvisorPopup()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentRequestId = null;
+
+    function toggleUpdateRow(requestId) {
+        const row = document.getElementById("updateRow-" + requestId);
+
+        if (!row) return;
+
+        if (row.style.display === "none" || row.style.display === "") {
+            row.style.display = "table-row";
+        } else {
+            row.style.display = "none";
+        }
+    }
+
+    function handleAdvisorOption(selectElement, requestId) {
+        if (selectElement.value === "manual") {
+            currentRequestId = requestId;
+            document.getElementById("manualAdvisorPopup").style.display = "flex";
+        }
+    }
+
+    function closeManualAdvisorPopup() {
+        document.getElementById("manualAdvisorPopup").style.display = "none";
+        document.getElementById("manualAdvisorEmailInput").value = "";
+    }
+
+    function saveManualAdvisorEmail() {
+        const email = document.getElementById("manualAdvisorEmailInput").value.trim();
+
+        if (email === "") {
+            alert("Please enter advisor email.");
+            return;
+        }
+
+        if (currentRequestId !== null) {
+            const hiddenInput = document.getElementById("manualEmailHidden-" + currentRequestId);
+
+            if (hiddenInput) {
+                hiddenInput.value = email;
+            }
+        }
+
+        closeManualAdvisorPopup();
+    }
+
+    function closeRequestStatusPopup() {
+        const popup = document.getElementById("requestStatusPopup");
+
+        if (popup) {
+            popup.style.display = "none";
+        }
+    }
+</script>

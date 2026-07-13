@@ -1,0 +1,129 @@
+@using Microsoft.AspNetCore.Http
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - Acadify</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="~/css/admin-layout.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+
+<body>
+
+    <div class="admin-layout">
+
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+
+            <div class="admin-profile">
+
+                <div class="profile-top admin-profile-top">
+                    <img src="~/images/user.png" class="admin-avatar" alt="Admin" />
+
+                    <!-- Notifications button -->
+                    <button type="button"
+                            class="admin-notif-btn"
+                            onclick="toggleNotifications()"
+                            title="Notifications">
+                        <i class="fa-regular fa-bell"></i>
+                    </button>
+                </div>
+
+                <h4>@(Context.Session.GetString("UserName") ?? "Admin Panel")</h4>
+                <p>@(Context.Session.GetString("UserEmail") ?? "admin@kau.edu.sa")</p>
+            </div>
+
+            <ul class="admin-menu">
+
+                <li class="@(ViewData["Title"]?.ToString() == "Upload Study Plan" ? "active" : "")">
+                    <a asp-controller="StudyPlan" asp-action="UploadStudyPlan">
+                        <i class="fa-solid fa-file-arrow-up"></i>
+                        <span>Study Plan</span>
+                    </a>
+                </li>
+
+                <li class="@(ViewData["Title"]?.ToString() == "Upload Academic Calendar" ? "active" : "")">
+                    <a asp-controller="Admin" asp-action="UploadAcademicCalendar">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span>Academic Calendar</span>
+                    </a>
+                </li>
+
+                <li class="@(ViewData["Title"]?.ToString() == "Manage Advisor Requests" ? "active" : "")">
+                    <a asp-controller="Admin" asp-action="ManageAdvisorRequests">
+                        <i class="fa-solid fa-link"></i>
+                        <span>Requests</span>
+                    </a>
+                </li>
+
+                <li class="@(ViewData["Title"]?.ToString() == "Sent Forms" ? "active" : "")">
+                    <a asp-controller="Admin" asp-action="SentForms">
+                        <i class="fa-solid fa-file-circle-check"></i>
+                        <span>Forms</span>
+                    </a>
+                </li>
+
+            </ul>
+
+            <!-- Logout -->
+            <div class="admin-logout">
+                <form asp-controller="Account" asp-action="Logout" method="post" style="margin:0;">
+                    @Html.AntiForgeryToken()
+
+                    <button type="submit" class="admin-logout-link logout-button-reset">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
+            </div>
+
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+            @RenderBody()
+        </main>
+
+    </div>
+
+    <!-- Notifications panel -->
+    @await Component.InvokeAsync("Notifications")
+
+    <script>
+            function toggleNotifications() {
+                const overlay = document.getElementById('notifOverlay');
+
+                if (!overlay) {
+                    console.log("Notification overlay was not found.");
+                    return;
+                }
+
+                overlay.classList.toggle('show');
+            }
+
+            function closeNotifications(e) {
+                if (e) {
+                    e.preventDefault();
+                }
+
+                const overlay = document.getElementById('notifOverlay');
+
+                if (!overlay) {
+                    return;
+                }
+
+                overlay.classList.remove('show');
+            }
+    </script>
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

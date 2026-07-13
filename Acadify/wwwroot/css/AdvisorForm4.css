@@ -1,0 +1,572 @@
+/* =====================================================
+   Advisor Form 4 - Study Plan Matching
+   Clean version
+===================================================== */
+
+.form4-container,
+.advisor-form4-page {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 34px 36px 48px;
+    box-sizing: border-box;
+    font-family: "Poppins", Arial, sans-serif;
+}
+
+/* Header */
+.form4-header,
+.form4-top {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 20px 26px;
+    margin-bottom: 24px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.form4-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.form4-icon,
+.form4-title-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #eaf6ff;
+    color: #1f6fa7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.form4-title h2 {
+    margin: 0;
+    color: #20232a;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.form4-title p {
+    margin: 4px 0 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* Header buttons */
+.form4-header-actions,
+.form4-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-history,
+.print-btn {
+    min-height: 42px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 1px solid #b9d8f7;
+    background: #ffffff;
+    color: #1f6fa7;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+    .btn-history:hover,
+    .print-btn:hover {
+        background: #eef7ff;
+    }
+
+.status-badge {
+    background: #eef7ff;
+    color: #1f6fa7;
+    padding: 9px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Success message */
+.form4-msg {
+    background: #e8f5ee;
+    color: #2e8b57;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    margin-bottom: 18px;
+}
+
+/* Main card */
+.form4-card {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 26px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+}
+
+/* Arabic paper */
+.form4-paper {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto 24px;
+    background: #ffffff;
+    border: 1px solid #d9e3ea;
+    border-radius: 18px;
+    padding: 36px 46px;
+    box-sizing: border-box;
+    overflow: visible;
+    font-family: "Poppins", Arial, sans-serif;
+    color: #20232a;
+}
+
+/* Arabic title */
+.f4-title {
+    text-align: center;
+    margin: 0 0 28px;
+    font-size: 26px;
+    font-weight: 700;
+    color: #20232a;
+    line-height: 1.6;
+}
+
+/* Arabic text */
+.f4-paragraph {
+    direction: rtl;
+    text-align: right;
+    font-size: 16px;
+    line-height: 2.3;
+    margin: 16px 0;
+}
+
+.f4-list {
+    direction: rtl;
+    text-align: right;
+    margin: 18px 0 24px;
+    font-size: 16px;
+    line-height: 2.2;
+}
+
+/* Underline fields */
+.f4-line {
+    display: inline-block;
+    min-width: 160px;
+    border-bottom: 1.5px solid #20232a;
+    padding: 0 8px 3px;
+    text-align: center;
+}
+
+.f4-num {
+    display: inline-block;
+    min-width: 55px;
+    border-bottom: 1.5px solid #20232a;
+    text-align: center;
+    padding: 0 8px 3px;
+}
+
+/* Notes */
+.f4-notes-section {
+    margin-top: 28px;
+    margin-bottom: 28px;
+}
+
+.f4-notes-title {
+    display: block;
+    direction: rtl;
+    text-align: right;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #20232a;
+}
+
+.f4-notes,
+.f4-notes-box {
+    border: 1px solid #d7e2ea;
+    border-radius: 14px;
+    background: #fafcfd;
+    padding: 14px;
+    box-sizing: border-box;
+}
+
+.f4-note-input,
+.f4-notes-textarea {
+    width: 100%;
+    min-height: 120px;
+    resize: vertical;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 15px;
+    line-height: 1.9;
+    font-family: "Poppins", Arial, sans-serif;
+    color: #20232a;
+    box-sizing: border-box;
+    padding: 6px 8px;
+}
+
+/* Signature */
+.f4-sign {
+    margin-top: 34px;
+    font-size: 15px;
+}
+
+.f4-sign-label {
+    direction: rtl;
+    text-align: right;
+    margin-bottom: 14px;
+    font-weight: 600;
+}
+
+.f4-sign-row {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin-top: 14px;
+}
+
+.f4-sign-input {
+    flex: 1;
+    border: none;
+    border-bottom: 1.5px solid #20232a;
+    outline: none;
+    padding: 8px 6px;
+    font-size: 15px;
+    background: transparent;
+}
+
+/* Courses requiring advisor decision */
+.form4-equivalency-box {
+    width: 100%;
+    max-width: 720px;
+    margin: 34px auto 0;
+    padding: 22px;
+    background: #f9fbfd;
+    border: 1px solid #d9e3ea;
+    border-radius: 18px;
+    box-sizing: border-box;
+}
+
+.form4-equivalency-title {
+    margin: 0 0 18px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: #20232a;
+}
+
+.form4-equivalency-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.course-decision-card {
+    background: #ffffff;
+    border: 1px solid #e4e9ee;
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.course-decision-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.course-title,
+.course-code {
+    font-size: 18px;
+    font-weight: 700;
+    color: #20232a;
+}
+
+.course-name {
+    font-size: 16px;
+    color: #374151;
+}
+
+.course-hours {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.course-decision-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.decision-type-select,
+.equivalent-course-select {
+    min-width: 190px;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #cfd8df;
+    border-radius: 10px;
+    background: #ffffff;
+    font-size: 14px;
+    color: #20232a;
+    outline: none;
+}
+
+    .decision-type-select:focus,
+    .equivalent-course-select:focus {
+        border-color: #4d8fb3;
+        box-shadow: 0 0 0 2px rgba(77, 143, 179, 0.12);
+    }
+
+.form4-equivalency-actions {
+    margin-top: 16px;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-approve-free {
+    border: none;
+    background: #2f84b0;
+    color: #ffffff;
+    border-radius: 999px;
+    padding: 11px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+    .btn-approve-free:hover {
+        background: #246b90;
+    }
+
+/* Bottom actions */
+.form4-actions {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    align-items: center;
+    flex-wrap: wrap;
+    position: static !important;
+    bottom: auto !important;
+    z-index: auto !important;
+}
+
+.btn-send,
+.btn-save,
+.btn-primary-wide,
+.btn-secondary,
+.btn-light {
+    min-width: 145px;
+    min-height: 44px;
+    padding: 11px 20px;
+    border-radius: 999px;
+    border: none;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-send,
+.btn-primary-wide {
+    background: #12889c;
+    color: #ffffff;
+}
+
+.btn-save,
+.btn-secondary {
+    background: #66aca7;
+    color: #ffffff;
+}
+
+.btn-light {
+    background: #f2f5f7;
+    color: #20232a;
+    border: 1px solid #d8e1e8;
+}
+
+    .btn-send:hover,
+    .btn-save:hover,
+    .btn-primary-wide:hover,
+    .btn-secondary:hover,
+    .btn-light:hover {
+        opacity: 0.92;
+    }
+
+.notes-input {
+    width: 260px;
+    padding: 11px 16px;
+    border-radius: 999px;
+    border: 1px solid #cfd8dc;
+    outline: none;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .form4-container,
+    .advisor-form4-page {
+        padding: 24px 20px 40px;
+    }
+
+    .form4-header,
+    .form4-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form4-paper {
+        padding: 28px 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .form4-card {
+        padding: 18px;
+    }
+
+    .form4-paper {
+        padding: 22px 18px;
+    }
+
+    .f4-title {
+        font-size: 22px;
+    }
+
+    .f4-paragraph,
+    .f4-list {
+        font-size: 14px;
+    }
+
+    .decision-type-select,
+    .equivalent-course-select,
+    .notes-input {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .course-decision-controls {
+        flex-direction: column;
+    }
+}
+
+/* Print */
+@media print {
+    body * {
+        visibility: hidden !important;
+    }
+
+    .form4-paper,
+    .form4-paper * {
+        visibility: visible !important;
+    }
+
+    html,
+    body {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0;
+        padding: 0;
+        background: #ffffff !important;
+    }
+
+    .form4-paper {
+        position: absolute !important;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 12mm 14mm !important;
+        border: none !important;
+        box-shadow: none !important;
+        background: #ffffff !important;
+        border-radius: 0 !important;
+    }
+
+    .form4-header,
+    .form4-top,
+    .form4-actions,
+    .form4-msg,
+    .advisor-sidebar,
+    .print-btn,
+    .btn-history,
+    .form4-equivalency-box {
+        display: none !important;
+    }
+
+    .f4-title {
+        font-size: 22px !important;
+        margin-bottom: 18px !important;
+    }
+
+    .f4-paragraph,
+    .f4-list,
+    .f4-notes-title,
+    .f4-sign,
+    .f4-sign-row,
+    .f4-sign-label {
+        font-size: 17px !important;
+        line-height: 2 !important;
+    }
+
+    .f4-line {
+        min-width: 170px !important;
+    }
+
+    .f4-num {
+        min-width: 55px !important;
+    }
+
+    .f4-notes-box,
+    .f4-notes {
+        border: 1px solid #000 !important;
+        background: transparent !important;
+        min-height: 110px !important;
+    }
+
+    .f4-notes-textarea,
+    .f4-note-input,
+    .f4-sign-input,
+    input,
+    textarea {
+        border: none !important;
+        box-shadow: none !important;
+        outline: none !important;
+        background: transparent !important;
+        resize: none !important;
+        font-size: 16px !important;
+    }
+
+    @page {
+        size: A4;
+        margin: 10mm;
+    }
+}

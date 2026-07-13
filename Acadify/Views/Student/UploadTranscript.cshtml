@@ -1,0 +1,114 @@
+@{
+    Layout = "_StudentLayout";
+    ViewBag.BodyClass = "upload-page";
+    ViewData["Title"] = "Upload Transcript";
+}
+
+<main class="student-content">
+    <section class="upload-card">
+
+        <h2>Upload your <span>transcript</span></h2>
+
+        <form id="uploadForm"
+              asp-controller="Student"
+              asp-action="UploadTranscript"
+              method="post"
+              enctype="multipart/form-data">
+
+            @Html.AntiForgeryToken()
+
+            <div class="drop-box">
+                <div class="cloud-icon">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                </div>
+
+                <p class="small-text">
+                    drag and drop file or <label for="fileUpload" class="browse-link">Browse</label>
+                </p>
+
+                <input id="fileUpload"
+                       type="file"
+                       name="transcriptFile"
+                       accept=".pdf"
+                       required />
+
+                <p id="selectedFileName"
+                   class="selected-file"
+                   style="display:none;"></p>
+            </div>
+
+            <p class="format-text">Supported format : PDF</p>
+
+            @if (TempData["TranscriptRequired"] != null)
+            {
+                <div class="text-info" style="margin-top:10px;">
+                    @TempData["TranscriptRequired"]
+                </div>
+            }
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="text-danger" style="margin-top:10px;">
+                    @ViewBag.Error
+                </div>
+            }
+
+            @if (ViewBag.Success != null)
+            {
+                <div class="text-success" style="margin-top:10px;">
+                    @ViewBag.Success
+                </div>
+            }
+
+            <button id="uploadBtn" type="submit" class="upload-btn">
+                <span id="btnText">Upload</span>
+                <span id="btnLoader" style="display:none;">Uploading...</span>
+            </button>
+
+        </form>
+
+    </section>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("uploadForm");
+        const uploadBtn = document.getElementById("uploadBtn");
+        const btnText = document.getElementById("btnText");
+        const btnLoader = document.getElementById("btnLoader");
+        const fileInput = document.getElementById("fileUpload");
+        const selectedFileName = document.getElementById("selectedFileName");
+        const pageTitle = document.querySelector(".upload-card h2");
+
+        if (fileInput) {
+            fileInput.addEventListener("change", function () {
+                if (fileInput.files.length > 0) {
+                    selectedFileName.textContent = "File: " + fileInput.files[0].name;
+                    selectedFileName.style.display = "block";
+                } else {
+                    selectedFileName.textContent = "";
+                    selectedFileName.style.display = "none";
+                }
+            });
+        }
+
+        if (form) {
+            form.addEventListener("submit", function () {
+                if (!fileInput || fileInput.files.length === 0) {
+                    return;
+                }
+
+                uploadBtn.disabled = true;
+                btnText.style.display = "none";
+                btnLoader.style.display = "inline";
+
+                if (pageTitle) {
+                    pageTitle.innerHTML = "Uploading <span>file...</span>";
+                }
+
+                selectedFileName.textContent = "File: " + fileInput.files[0].name;
+                selectedFileName.style.display = "block";
+            });
+        }
+    });
+</script>

@@ -1,0 +1,165 @@
+﻿@model Acadify.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>@ViewData["Title"]</title>
+
+    <link rel="stylesheet" href="~/css/login.css" />
+</head>
+
+<body>
+    <div class="login-page">
+
+        <div class="left-bar"></div>
+
+        <div class="main">
+            <div class="card">
+
+                <div class="logo">
+                    <img src="~/images/acadify-logo2.png"
+                         alt="Acadify Logo"
+                         class="logo-img" />
+                </div>
+
+                <div class="title">
+                    Login to <span>your account</span>
+                </div>
+
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="success-message">
+                        @TempData["SuccessMessage"]
+                    </div>
+                }
+
+                <form class="form"
+                      asp-action="Login"
+                      asp-controller="Account"
+                      method="post">
+
+                    @Html.AntiForgeryToken()
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger validation-summary">
+                    </div>
+
+                    <!-- University email -->
+                    <input class="input"
+                           asp-for="Email"
+                           type="email"
+                           id="loginEmailInput"
+                           placeholder="University email"
+                           autocomplete="email" />
+
+                    <span asp-validation-for="Email"
+                          class="text-danger">
+                    </span>
+
+                    <!-- Role appears only for staff accounts -->
+                    <div id="loginRoleContainer">
+                        <select class="input"
+                                asp-for="Role"
+                                id="loginRoleSelect">
+
+                            <option value="">Choose role</option>
+                            <option value="Advisor">Advisor</option>
+                            <option value="Admin">Admin</option>
+
+                        </select>
+
+                        <span asp-validation-for="Role"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <!-- Password -->
+                    <input class="input"
+                           asp-for="Password"
+                           type="password"
+                           placeholder="Password"
+                           autocomplete="current-password" />
+
+                    <span asp-validation-for="Password"
+                          class="text-danger">
+                    </span>
+
+                    <button class="btn" type="submit">
+                        Login
+                    </button>
+                    <div class="section signup-section">
+                        <span>Do not have an account?</span>
+
+                        <a class="signup-text-link"
+                               asp-action="SignUp"
+                               asp-controller="Account">
+                            Sign up
+                        </a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+            const loginEmailInput =
+                document.getElementById("loginEmailInput");
+
+            const loginRoleContainer =
+                document.getElementById("loginRoleContainer");
+
+            const loginRoleSelect =
+                document.getElementById("loginRoleSelect");
+
+            function handleRoleSelection() {
+                const email =
+                    (loginEmailInput.value || "").toLowerCase().trim();
+
+                const isStudentEmail =
+                    email.endsWith("@@stu.kau.edu.sa");
+
+                if (isStudentEmail) {
+                    // Students do not select a role.
+                    loginRoleSelect.value = "";
+                    loginRoleSelect.disabled = true;
+                    loginRoleSelect.required = false;
+                    loginRoleContainer.style.display = "none";
+                }
+                else {
+                    // Staff members choose Advisor or Admin.
+                    loginRoleSelect.disabled = false;
+                    loginRoleSelect.required = true;
+                    loginRoleContainer.style.display = "block";
+                }
+            }
+
+            loginEmailInput.addEventListener(
+                "input",
+                handleRoleSelection
+            );
+
+            loginEmailInput.addEventListener(
+                "change",
+                handleRoleSelection
+            );
+
+            window.addEventListener(
+                "load",
+                handleRoleSelection
+            );
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+</body>
+</html>

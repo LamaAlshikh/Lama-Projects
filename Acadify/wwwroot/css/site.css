@@ -1,0 +1,2967 @@
+﻿/* -----------------------
+   Global Settings
+-------------------------*/
+body.welcome-body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #ffffff;
+}
+/**************************** -----------------------**************************************
+                               Welcome Page Layout
+*************************** -----------------------**************************************/
+.welcome-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 80px;
+}
+
+.welcome-left {
+    width: 50%;
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+======= > > > > > > > origin_second/linaLMversion
+======= > > > > > > > origin_second/لما2
+.welcome-left h1 {
+    font-size: 38px;
+    font-weight: bold;
+    line-height: 1.3;
+    margin: 0;
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+======= > > > > > > > origin_second/linaLMversion
+======= > > > > > > > origin_second/لما2
+.welcome-left p {
+    font-size: 14px;
+    color: #444;
+    margin-top: 15px;
+    width: 80%;
+}
+/* Gradient Text */
+.text-gradient {
+    background: linear-gradient(90deg, #94C7B6, #2272AD, #76BAA5, #12889C);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+/* -----------------------
+   Start Button
+-------------------------*/
+.btn-start {
+    display: inline-block;
+    margin-top: 40px;
+    background: #12889C;
+    padding: 12px 45px;
+    color: #fff;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 17px;
+    transition: 0.3s ease;
+}
+
+    .btn-start:hover {
+        opacity: 0.8;
+    }
+/* -----------------------
+   Right Side Image + Gradient Border Box
+-------------------------*/
+.welcome-right {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+======= > > > > > > > origin_second/linaLMversion
+======= > > > > > > > origin_second/لما2
+.welcome-logo-box {
+    padding: 35px 45px;
+    border-radius: 35px;
+    border: 4px solid transparent;
+    background: linear-gradient(#ffffff, #ffffff) padding-box, linear-gradient(90deg, #94C7B6, #2272AD, #76BAA5, #12889C) border-box;
+    box-shadow: 0 0 12px rgba(0,0,0,0.05);
+    margin-top: 35px; /* تنزل شوي تحت */
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+======= > > > > > > > origin_second/linaLMversion
+======= > > > > > > > origin_second/لما2
+.welcome-logo {
+    width: 350px;
+    display: block;
+}
+/* -----------------------
+   Welcome Top Line
+-------------------------*/
+.welcome-body::before {
+    content: "";
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(90deg, #94C7B6, #2272AD, #12889C);
+    opacity: 0.35;
+}
+/* -----------------------
+   Welcome Logo Box (Second Version)
+-------------------------*/
+.welcome-logo-box {
+    padding: 55px 70px;
+    border-radius: 45px;
+    border: 3px solid rgba(0, 128, 128, 0.25); /* خفيف جدًا */
+    background: #ffffff;
+    margin-top: 25px;
+    max-width: 500px; /* عرض يشبه الصورة الأصلية */
+    box-shadow: 0 0 20px rgba(0,0,0,0.03); /* ظل خفي خفي */
+}
+
+.welcome-logo {
+    width: 430px; /* أكبر مثل الصورة */
+}
+/*************************** -----------------------**************************************
+                               Authentication Pages
+****************************-------------------------*************************************/
+.auth-body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #94C7B6, #2272AD, #12889C);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.auth-container {
+    background: white;
+    width: 380px;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.auth-logo {
+    width: 65px;
+    margin-bottom: 15px;
+}
+
+.auth-title {
+    font-size: 22px;
+    margin-bottom: 25px;
+    font-weight: bold;
+}
+
+.auth-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 13px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+    .auth-input:focus {
+        outline: none;
+        border-color: #12889C;
+    }
+
+.auth-btn {
+    width: 100%;
+    padding: 12px;
+    background: #12889C;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    .auth-btn:hover {
+        opacity: 0.85;
+    }
+
+    .auth-btn.secondary {
+        background: transparent;
+        color: #12889C;
+        border: 2px solid #12889C;
+        margin-top: 5px;
+    }
+
+.auth-foot-text {
+    margin-top: 18px;
+    font-size: 13px;
+    color: #555;
+}
+/* Gradient text */
+.text-gradient {
+    background: linear-gradient(90deg, #94C7B6, #2272AD, #12889C);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+/*************************** -----------------------**************************************
+                               Shared Layout
+ *************************** -----------------------************************************** */
+
+/* =========================
+   MAIN LAYOUT
+   ========================= */
+.main-layout {
+    min-height: 100vh;
+    background: #ffffff;
+    font-family: Arial, sans-serif;
+    padding: 0; /* ❗ مهم */
+}
+/* =========================
+   SIDEBAR (مطابق للتصميم)
+   ========================= */
+<<<<<<< HEAD
+/* =========================
+   MAIN CONTENT AREA
+   ========================= */
+<<<<<<< HEAD
+.main-background-box {
+    margin-left: 260px;
+    ======= .student-sidebar
+
+{
+    width: 240px;
+    background: linear-gradient(to bottom, #76BAA5, #2272AD);
+    color: #ffffff;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    border-radius: 0 26px 26px 0;
+}
+/* =========================
+   MAIN CONTENT AREA
+   ========================= */
+.main-background-box {
+    <<<<<<< HEAD margin-left: 260px;
+    >>>>>>> origin_second/linaLMversion ======= margin-left: 260px;
+    >>>>>>> origin_second/لما2 margin-top: 30px;
+    margin-right: 30px;
+    margin-bottom: 30px;
+    background: rgba(183, 180, 192, 0.09);
+    border-radius: 36px;
+    padding: 60px;
+    flex: 1;
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+======= > > > > > > > origin_second/rahafgh
+
+======= > > > > > > > origin_second/linaLMversion
+======= > > > > > > > origin_second/لما2
+.main-layout {
+    min-height: 100vh;
+    padding: 20px;
+    overflow: hidden;
+}
+
+<<<<<<< HEAD
+/* =========================
+   Sidebar
+========================= */
+=======
+.student-layout {
+    display: flex;
+    height: calc(100vh - 40px);
+    gap: 24px;
+}
+/* =========================
+   Sidebar
+========================= */
+.student-sidebar,
+> > > > > > > origin_second/linaLMversion
+.advisor-sidebar {
+    width: 210px;
+    border-radius: 1px;
+    padding: 25px 18px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient( 180deg, #94C7B6 0%, #2272AD 50%, #76BAA5 100%, #12889C 100% );
+}
+/***************************
+   Root Layout
+****************************/
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+.main-layout {
+    height: 100vh;
+    background: #ffffff;
+    padding: 0;
+}
+/***************************
+   Sidebar (مطابق للبروتوتايب)
+****************************/
+<<<<<<< HEAD
+/* =========================
+   Main Background Box
+========================= */
+.main-background-box {
+    flex: 1;
+    padding: 26px !important;
+    box-sizing: border-box;
+    background: #f3f3f3;
+    overflow: hidden;
+}
+
+
+
+<<<<<<< HEAD
+.student-profile h4 {
+    color: #ffffff; /* الاسم أبيض */
+    font-size: 11px;
+    margin: 20px 0 4px;
+    ======= .student-avatar
+
+{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #ffffff;
+    padding: 15px;
+}
+
+.student-menu {
+    list-style: none;
+    padding: 0;
+    flex: 1;
+}
+
+    .student-menu li {
+        padding: 12px;
+        margin-bottom: 8px;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+        .student-menu li.active {
+            background-color: rgba(255,255,255,0.25);
+        }
+/* =========================
+   Main Background Box
+========================= */
+.main-background-box {
+    flex: 1;
+    background: #f7f7f7;
+    border-radius: 36px;
+    padding: 36px 42px;
+    min-height: calc(100vh - 60px); /* يوصل لنهاية الشاشة */
+    margin-top: 50px; /* عدّلي الرقم حسب اللي يريحك */
+    background: #f7f7f7;
+}
+
+/* =========================
+   Sidebar Menu Items
+========================= */
+.student-menu li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 15px;
+    margin-top: 30px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 14px;
+}
+
+    .student-menu li i {
+        font-size: 16px;
+    }
+    /* العنصر النشط */
+    .student-menu li.active {
+        background: rgba(255,255,255,0.15);
+    }
+/* =========================
+   Student Profile
+========================= */
+.student-profile {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+    .student-profile h4 {
+        color: #ffffff; /* الاسم أبيض */
+        <<<<<<< HEAD font-size: 15px;
+        font-weight: 600;
+        margin: 8px 0 4px;
+        >>>>>>> origin_second/linaLMversion ======= font-size:11px;
+        margin: 20px 0 4px;
+        >>>>>>> origin_second/لما2
+    }
+
+    .student-profile p {
+        color: #E0E0E0; /* 👈 رصاصي فاتح */
+        font-size: 12px;
+        font-weight: 400;
+        margin: 0;
+    }
+
+.icon i {
+    font-size: 22px;
+    color: white;
+}
+
+.card.highlight .icon i {
+    color: #12889C;
+}
+
+.profile-top {
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.logout {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 170px 14px;
+    border-radius: 12px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+    .logout i {
+        font-size: 16px;
+    }
+
+<<<<<<< HEAD
+======= > > > > > > > origin_second/rahafgh
+======= > > > > > > > origin_second/linaLMversion
+/*************************** -----------------------**************************************
+                              صفحة الطالب الرئيسية
+ *************************** -----------------------************************************** */
+/* =========================
+   CARDS
+   ========================= */
+.cards {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+}
+
+.card {
+    background: #ffffff;
+    padding: 40px 30px;
+    width: 280px;
+    min-height: 330px; /* 👈 أطول */
+    border-radius: 26px;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+    .card.highlight {
+        background: linear-gradient(180deg, #66ACA7, #317FAB);
+        color: #ffffff;
+        border: 2px dashed rgba(255,255,255,0.6);
+    }
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+======= > > > > > > > origin_second/linaLMversion
+======= > > > > > > > origin_second/لما2
+.begin {
+    color: #1db954;
+}
+
+.current {
+    color: #f5a400;
+}
+
+.near {
+    color: red;
+}
+/***************************
+   Cards
+****************************/
+.cards {
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    display: flex;
+    gap: 26px;
+    justify-content: center;
+    margin-top: 70px;
+}
+
+/* =========================
+   Graduation Status
+========================= */
+.graduation-box h3 {
+    background: linear-gradient(90deg, #317FAB 0%, #66ACA7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 600;
+    margin-bottom: 40px;
+    <<<<<<< HEAD <<<<<<< HEAD margin-left: 80px;
+    ======= margin-left: 80px;
+    >>>>>>> origin_second/linaLMversion ======= margin-left: 80px;
+    >>>>>>> origin_second/لما2
+}
+/* =========================
+   Cards Section
+========================= */
+
+
+.card {
+    width: 250px;
+    height: 10px; /* أقصر */
+    background: #ffffff;
+    border-radius: 28px;
+    padding: 26px 20px;
+    text-align: center;
+    box-shadow: 0 28px 60px rgba(0, 0, 0, 0.25);
+    border: 3px dashed #dcdcdc; /* الحواف الرمادية */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative; /* 👈 مهم */
+}
+    /* Highlight card */
+    .card.highlight {
+        background: linear-gradient(180deg, #66ACA7, #317FAB);
+        color: #fff;
+        border: 2px dashed #ffffff80;
+    }
+/* =========================
+   Icons
+========================= */
+.icon {
+    width: 80px;
+    height: 80px;
+    background: #0f8fa3;
+    border-radius: 50%;
+    position: absolute; /* 👈 هنا السر */
+    top: 60px; /* 👈 نزول الأيقونة */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card.highlight .icon {
+    background: #fff;
+}
+
+.icon img {
+    filter: brightness(0) invert(1);
+    width: 36px; /* 👈 لا تكون كبيرة */
+    height: auto;
+    display: block;
+}
+
+.card.highlight .icon img {
+    filter: none;
+}
+/* =========================
+   Buttons
+========================= */
+/* أزرار الكروت */
+.btn-outline,
+.btn-white {
+    margin-top: 8px;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+}
+/* زر الكرت الأبيض */
+.btn-outline {
+    background: #12889C;
+    border: none;
+    color: white;
+    padding: 12px 26px; /* مريح بدون تكبير */
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    width: fit-content; /* 👈 هذا المهم */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.btn-white {
+    background: #ffffff;
+    color: #12889C;
+    border: none;
+    padding: 12px 26px; /* مريح بدون تكبير */
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    width: fit-content; /* 👈 هذا المهم */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+/* =========================
+   Progress Bar
+========================= */
+.progress-bar {
+    height: 40px; /* 👈 قصير مثل فيغما */
+    border-radius: 999px;
+    background: #ffffff; /* بدون بوكس أبيض */
+    border: 1.5px solid #C9DBF8; /* الإطار الأزرق الخفيف */
+    overflow: hidden;
+    margin: 16px 0 10px;
+    width: 85%;
+    margin: 16px auto 10px; /* 👈 auto يوسّطه */
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient( to right, #f1ff9d 0%, #ffd400 100% );
+}
+/* =========================
+   Typography Helpers
+========================= */
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.card:not(.highlight) p {
+    color: #5A6474; /* 👈 الرصاصي */
+    font-size: 14px;
+    line-height: 1.5;
+    max-width: 1920px;
+    margin: 0 auto 16px;
+}
+
+.card h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 100px 0 8px;
+}
+
+.card h4 {
+    margin-top: 160px; /* 👈 يبعد العنوان عن الأيقونة */
+}
+
+.status-labels {
+    width: 85%; /* نفس عرض البار */
+    margin: 0 auto; /* توسيط */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+
+/*************************************************
+   FORM 5 - Graduation Eligibility
+*************************************************/
+.form5-container {
+    max-width: 900px;
+    margin-left: 60px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 30px 40px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    font-family: Arial, sans-serif;
+}
+
+/* Header */
+.form5-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.form5-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    .form5-title i {
+        font-size: 24px;
+        color: #1f6fa7;
+    }
+
+    .form5-title h2 {
+        font-size: 20px;
+        margin: 0;
+    }
+
+/* Print Button */
+.print-btn {
+    background: #f3f3f3;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+    .print-btn:hover {
+        background: #e5e5e5;
+    }
+
+/* Student Info */
+.form5-info p {
+    margin: 6px 0;
+    font-size: 14px;
+}
+
+/* Sections */
+.form5-section {
+    margin-top: 25px;
+}
+
+    .form5-section h4 {
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
+
+/* Courses */
+.course-list {
+    list-style: none;
+    padding: 0;
+}
+
+.course-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.completed {
+    color: #2e8b57;
+}
+
+.not-completed {
+    color: #c0392b;
+}
+
+/* Eligibility */
+.eligibility-status {
+    margin-top: 25px;
+    padding: 14px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.eligible {
+    background: #e8f5ee;
+    color: #2e8b57;
+}
+
+.not-eligible {
+    background: #fdecea;
+    color: #c0392b;
+}
+
+/* Actions */
+.form5-actions {
+    <<<<<<< HEAD <<<<<<< HEAD margin-top: 13px;
+    ======= margin-top: 20px;
+    >>>>>>> origin_second/linaLMversion ======= margin-top: 13px;
+    >>>>>>> origin_second/لما2 display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+    .form5-actions button {
+        padding: 10px 18px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+.btn-accept {
+    background: #2e8b57;
+    color: #fff;
+}
+
+.btn-reject {
+    background: #c0392b;
+    color: #fff;
+}
+
+.btn-update {
+    background: #f1c40f;
+    color: #000;
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+======= > > > > > > > origin_second/linaLMversion
+======= > > > > > > > origin_second/لما2
+.btn-history {
+    background: #e0e0e0;
+    color: #333;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.btn-history i {
+    margin-right: 6px;
+}
+
+/* =========================
+   Advisor Layout Root
+========================= */
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+.advisor-layout {
+    display: flex;
+    height: 100vh;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.advisor-sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    height: 100vh;
+}
+
+
+/* =========================
+   Profile
+========================= */
+.advisor-profile {
+    text-align: center;
+    margin-bottom: 40px;
+    <<<<<<< HEAD <<<<<<< HEAD
+}
+
+
+
+=======
+}
+
+
+
+> > > > > > > origin_second/linaLMversion
+=======
+}
+
+
+
+> > > > > > > origin_second/لما2
+.advisor-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #ffffff;
+    padding: 15px;
+}
+
+.advisor-profile h4 {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 10px 0 4px;
+}
+
+.advisor-profile p {
+    color: #E0E0E0;
+    font-size: 12px;
+    margin: 0;
+}
+
+/* =========================
+   Menu
+========================= */
+.advisor-menu {
+    list-style: none;
+    padding: 0;
+    flex: 1;
+}
+
+    .advisor-menu li {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        <<<<<<< HEAD <<<<<<< HEAD ======= >>>>>>> origin_second/linaLMversion ======= >>>>>>> origin_second/لما2 border-radius: 10px;
+        cursor: pointer;
+        font-size: 14px;
+        color: #ffffff;
+        padding-top: 15px;
+        <<<<<<< HEAD <<<<<<< HEAD margin-top: 30px;
+        ======= margin-top: 30px;
+        >>>>>>> origin_second/linaLMversion ======= margin-top: 30px;
+        >>>>>>> origin_second/لما2
+    }
+
+        .advisor-menu li i {
+            font-size: 16px;
+        }
+
+        .advisor-menu li.active {
+            background: rgba(255,255,255,0.18);
+        }
+
+/* =========================
+   Logout
+========================= */
+.advisor-logout {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px;
+    border-radius: 12px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* =========================
+   Main Content
+========================= */
+<<<<<<< HEAD
+.advisor-content {
+    flex: 1;
+    background: #f7f7f7;
+    border-radius: 36px;
+    padding: 20px 42px;
+    margin: 30px;
+    overflow-y: hidden;
+}
+
+.advisor-content {
+    flex: 1;
+    background: #f7f7f7;
+    margin: 30px;
+    border-radius: 36px;
+    /* ⬅️ احذفي أي shadow هنا */
+    box-shadow: none;
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+======= > > > > > > > origin_second/rahafgh
+======= > > > > > > > origin_second/linaLMversion
+======= > > > > > > > origin_second/لما2
+.form5-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 30px 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+======= > > > > > > > origin_second/linaLMversion
+======= > > > > > > > origin_second/لما2
+.form5-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.form5-header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* History Button */
+.btn-history {
+    background: #eeeeee;
+    color: #333;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+/*************************************************
+   NOTIFICATIONS – BUTTON (Bell)
+*************************************************/
+
+/* زر الجرس */
+.topbar-notif-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+    .topbar-notif-btn i {
+        color: #ffffff;
+        font-size: 16px;
+    }
+
+/* Overlay */
+.notif-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35); /* ← هذا هو التغميق */
+    z-index: 9999;
+}
+
+/* Panel */
+.notif-panel {
+    position: fixed;
+    top: 90px;
+    left: 260px; /* بعد السايدبار */
+    width: 360px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+
+/* Header */
+.notif-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 18px;
+}
+
+.notif-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #000;
+}
+
+.notif-close {
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Divider */
+.notif-divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, #317FAB, #66ACA7);
+    margin: 0;
+}
+
+/* List */
+.notif-list {
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.notif-item {
+    display: flex;
+    gap: 12px;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: #000;
+}
+
+    .notif-item:hover {
+        background: #f6fbff;
+    }
+
+/* Avatar */
+.notif-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, #317FAB, #66ACA7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .notif-avatar span {
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+/* Body */
+.notif-body {
+    flex: 1;
+}
+
+.notif-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notif-desc {
+    font-size: 12px;
+    color: #777;
+    margin-top: 2px;
+}
+
+.notif-time {
+    font-size: 11px;
+    color: #999;
+    margin-top: 4px;
+}
+
+/* Unread dot */
+.notif-unread-dot {
+    width: 8px;
+    height: 8px;
+    background: #e53935;
+    border-radius: 50%;
+}
+/* ===== Notifications (ONE SOURCE OF TRUTH) ===== */
+
+.topbar-notif-btn,
+.advisor-notification {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+    .topbar-notif-btn i,
+    .advisor-notification i {
+        color: #ffffff;
+        font-size: 16px;
+    }
+
+/* Overlay (hidden by default) */
+.notif-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35); /* التغميق */
+    display: none; /* مهم */
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 90px;
+    z-index: 9999;
+}
+
+    .notif-overlay.show {
+        display: flex;
+    }
+
+/* Panel */
+.notif-panel {
+    width: 420px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    overflow: hidden;
+}
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+======= > > > > > > > origin_second/لما2
+.form-alert-success {
+    background: #eaf7ef;
+    color: #1f7a3d;
+    border: 1px solid #b9e2c7;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+<<<<<<< HEAD
+=======
+======= > > > > > > > origin_second/linaLMversion
+/* =========================
+   Advisor Layout Root
+========================= */
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+.advisor-layout {
+    display: flex;
+    height: 100vh;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.advisor-sidebar {
+    width: 210px;
+    flex-shrink: 0;
+    height: 100vh;
+    border-radius: 1px;
+    padding: 25px 18px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, #94C7B6 0%, #2272AD 50%, #76BAA5 100%, #12889C 100%);
+    box-sizing: border-box;
+}
+
+.advisor-content {
+    flex: 1;
+    height: calc(100vh - 60px);
+    margin: 30px;
+    padding: 36px 42px;
+    background: #f7f7f7;
+    border-radius: 36px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: none;
+}
+/* =========================================
+   FINAL ADVISOR LAYOUT FIX
+========================================= */
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+.advisor-layout {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.advisor-sidebar {
+    width: 210px;
+    flex-shrink: 0;
+    height: 100vh;
+    padding: 25px 18px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    background: linear-gradient(180deg, #94C7B6 0%, #2272AD 50%, #76BAA5 100%, #12889C 100%);
+}
+
+.advisor-content {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    margin: 30px;
+    padding: 36px 42px;
+    box-sizing: border-box;
+    background: #f7f7f7;
+    border-radius: 36px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: none;
+}
+/* ===== FIX SIDEBAR AVATAR ONLY ===== */
+.advisor-sidebar .advisor-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #ffffff !important;
+    padding: 15px;
+    display: block;
+    box-sizing: content-box;
+}
+
+
+
+
+<<<<<<< HEAD
+/* -----------------------
+   Global Settings
+-------------------------*/
+body.welcome-body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #ffffff;
+}
+/**************************** -----------------------**************************************
+                               Welcome Page Layout
+*************************** -----------------------**************************************/
+.welcome-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 80px;
+}
+
+.welcome-left {
+    width: 50%;
+}
+
+    .welcome-left h1 {
+        font-size: 38px;
+        font-weight: bold;
+        line-height: 1.3;
+        margin: 0;
+    }
+
+    .welcome-left p {
+        font-size: 14px;
+        color: #444;
+        margin-top: 15px;
+        width: 80%;
+    }
+/* Gradient Text */
+.text-gradient {
+    background: linear-gradient(90deg, #94C7B6, #2272AD, #76BAA5, #12889C);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+/* -----------------------
+   Start Button
+-------------------------*/
+.btn-start {
+    display: inline-block;
+    margin-top: 40px;
+    background: #12889C;
+    padding: 12px 45px;
+    color: #fff;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 17px;
+    transition: 0.3s ease;
+}
+
+    .btn-start:hover {
+        opacity: 0.8;
+    }
+/* -----------------------
+   Right Side Image + Gradient Border Box
+-------------------------*/
+.welcome-right {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.welcome-logo-box {
+    padding: 35px 45px;
+    border-radius: 35px;
+    border: 4px solid transparent;
+    background: linear-gradient(#ffffff, #ffffff) padding-box, linear-gradient(90deg, #94C7B6, #2272AD, #76BAA5, #12889C) border-box;
+    box-shadow: 0 0 12px rgba(0,0,0,0.05);
+    margin-top: 35px; /* تنزل شوي تحت */
+}
+
+.welcome-logo {
+    width: 350px;
+    display: block;
+}
+/* -----------------------
+   Welcome Top Line
+-------------------------*/
+.welcome-body::before {
+    content: "";
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(90deg, #94C7B6, #2272AD, #12889C);
+    opacity: 0.35;
+}
+/* -----------------------
+   Welcome Logo Box (Second Version)
+-------------------------*/
+.welcome-logo-box {
+    padding: 55px 70px;
+    border-radius: 45px;
+    border: 3px solid rgba(0, 128, 128, 0.25); /* خفيف جدًا */
+    background: #ffffff;
+    margin-top: 25px;
+    max-width: 500px; /* عرض يشبه الصورة الأصلية */
+    box-shadow: 0 0 20px rgba(0,0,0,0.03); /* ظل خفي خفي */
+}
+
+.welcome-logo {
+    width: 430px; /* أكبر مثل الصورة */
+}
+/*************************** -----------------------**************************************
+                               Authentication Pages
+****************************-------------------------*************************************/
+.auth-body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(180deg, #94C7B6, #2272AD, #12889C);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.auth-container {
+    background: white;
+    width: 380px;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.auth-logo {
+    width: 65px;
+    margin-bottom: 15px;
+}
+
+.auth-title {
+    font-size: 22px;
+    margin-bottom: 25px;
+    font-weight: bold;
+}
+
+.auth-input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 13px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+    .auth-input:focus {
+        outline: none;
+        border-color: #12889C;
+    }
+
+.auth-btn {
+    width: 100%;
+    padding: 12px;
+    background: #12889C;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    .auth-btn:hover {
+        opacity: 0.85;
+    }
+
+    .auth-btn.secondary {
+        background: transparent;
+        color: #12889C;
+        border: 2px solid #12889C;
+        margin-top: 5px;
+    }
+
+.auth-foot-text {
+    margin-top: 18px;
+    font-size: 13px;
+    color: #555;
+}
+/* Gradient text */
+.text-gradient {
+    background: linear-gradient(90deg, #94C7B6, #2272AD, #12889C);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+/*************************** -----------------------**************************************
+                               Shared Layout
+ *************************** -----------------------************************************** */
+/* =========================
+   MAIN LAYOUT
+   ========================= */
+.main-layout {
+    min-height: 100vh;
+    background: #ffffff;
+    font-family: Arial, sans-serif;
+    padding: 0; /* ❗ مهم */
+}
+/* =========================
+   SIDEBAR (مطابق للتصميم)
+   ========================= */
+.student-sidebar {
+    width: 240px;
+    background: linear-gradient(to bottom, #76BAA5, #2272AD);
+    color: #ffffff;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    border-radius: 0 26px 26px 0;
+}
+/* =========================
+   MAIN CONTENT AREA
+   ========================= */
+
+.main-layout {
+    min-height: 100vh;
+    padding: 20px;
+    overflow: hidden;
+}
+/* =========================
+   Sidebar
+========================= */
+
+.advisor-sidebar {
+    width: 210px;
+    border-radius: 1px;
+    padding: 25px 18px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient( 180deg, #94C7B6 0%, #2272AD 50%, #76BAA5 100%, #12889C 100% );
+}
+/***************************
+   Root Layout
+****************************/
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+.main-layout {
+    height: 100vh;
+    background: #ffffff;
+    padding: 0;
+}
+/***************************
+   Sidebar (مطابق للبروتوتايب)
+****************************/
+/* =========================
+   Main Background Box
+========================= */
+
+
+.main-background-box {
+    flex: 1;
+    padding: 26px !important;
+    box-sizing: border-box;
+    background: #f3f3f3;
+    overflow: hidden;
+}
+/* =========================
+   Sidebar Menu Items
+========================= */
+.student-menu li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 15px;
+    margin-top: 30px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 14px;
+}
+
+    .student-menu li i {
+        font-size: 16px;
+    }
+    /* العنصر النشط */
+    .student-menu li.active {
+        background: rgba(255,255,255,0.15);
+    }
+/* =========================
+   Student Profile
+========================= */
+
+
+
+
+
+
+.icon i {
+    font-size: 22px;
+    color: white;
+}
+
+.card.highlight .icon i {
+    color: #12889C;
+}
+/*************************** -----------------------**************************************
+                              صفحة الطالب الرئيسية
+ *************************** -----------------------************************************** */
+/* =========================
+   CARDS
+   ========================= */
+.cards {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+}
+
+.card {
+    background: #ffffff;
+    padding: 40px 30px;
+    width: 280px;
+    min-height: 330px; /* 👈 أطول */
+    border-radius: 26px;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+    .card.highlight {
+        background: linear-gradient(180deg, #66ACA7, #317FAB);
+        color: #ffffff;
+        border: 2px dashed rgba(255,255,255,0.6);
+    }
+
+.begin {
+    color: #1db954;
+}
+
+.current {
+    color: #f5a400;
+}
+
+.near {
+    color: red;
+}
+/***************************
+   Cards
+****************************/
+.cards {
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    display: flex;
+    gap: 26px;
+    justify-content: center;
+    margin-top: 70px;
+}
+/* =========================
+   Graduation Status
+========================= */
+.graduation-box h3 {
+    background: linear-gradient(90deg, #317FAB 0%, #66ACA7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 600;
+    margin-bottom: 40px;
+    margin-left: 80px;
+}
+/* =========================
+   Cards Section
+========================= */
+
+
+.card {
+    width: 250px;
+    height: 10px; /* أقصر */
+    background: #ffffff;
+    border-radius: 28px;
+    padding: 26px 20px;
+    text-align: center;
+    box-shadow: 0 28px 60px rgba(0, 0, 0, 0.25);
+    border: 3px dashed #dcdcdc; /* الحواف الرمادية */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative; /* 👈 مهم */
+}
+    /* Highlight card */
+    .card.highlight {
+        background: linear-gradient(180deg, #66ACA7, #317FAB);
+        color: #fff;
+        border: 2px dashed #ffffff80;
+    }
+/* =========================
+   Icons
+========================= */
+.icon {
+    width: 80px;
+    height: 80px;
+    background: #0f8fa3;
+    border-radius: 50%;
+    position: absolute; /* 👈 هنا السر */
+    top: 60px; /* 👈 نزول الأيقونة */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card.highlight .icon {
+    background: #fff;
+}
+
+.icon img {
+    filter: brightness(0) invert(1);
+    width: 36px; /* 👈 لا تكون كبيرة */
+    height: auto;
+    display: block;
+}
+
+.card.highlight .icon img {
+    filter: none;
+}
+/* =========================
+   Buttons
+========================= */
+/* أزرار الكروت */
+.btn-outline,
+.btn-white {
+    margin-top: 6px;
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+}
+/* زر الكرت الأبيض */
+.btn-outline {
+    background: #12889C;
+    border: none;
+    color: white;
+    padding: 12px 26px; /* مريح بدون تكبير */
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    width: fit-content; /* 👈 هذا المهم */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.btn-white {
+    background: #ffffff;
+    color: #12889C;
+    border: none;
+    padding: 12px 26px; /* مريح بدون تكبير */
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    width: fit-content; /* 👈 هذا المهم */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+/* =========================
+   Progress Bar
+========================= */
+.progress-bar {
+    height: 40px; /* 👈 قصير مثل فيغما */
+    border-radius: 999px;
+    background: #ffffff; /* بدون بوكس أبيض */
+    border: 1.5px solid #C9DBF8; /* الإطار الأزرق الخفيف */
+    overflow: hidden;
+    margin: 16px 0 10px;
+    width: 85%;
+    margin: 16px auto 10px; /* 👈 auto يوسّطه */
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient( to right, #f1ff9d 0%, #ffd400 100% );
+}
+/* =========================
+   Typography Helpers
+========================= */
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.card:not(.highlight) p {
+    color: #5A6474; /* 👈 الرصاصي */
+    font-size: 14px;
+    line-height: 1.5;
+    max-width: 1920px;
+    margin: 0 auto 16px;
+}
+
+.card h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 100px 0 8px;
+}
+
+.card h4 {
+    margin-top: 160px; /* 👈 يبعد العنوان عن الأيقونة */
+}
+
+.status-labels {
+    width: 85%; /* نفس عرض البار */
+    margin: 0 auto; /* توسيط */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+/*************************************************
+   FORM 5 - Graduation Eligibility
+*************************************************/
+.form5-container {
+    max-width: 900px;
+    margin-left: 60px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 30px 40px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    font-family: Arial, sans-serif;
+}
+/* Header */
+.form5-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.form5-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    .form5-title i {
+        font-size: 24px;
+        color: #1f6fa7;
+    }
+
+    .form5-title h2 {
+        font-size: 20px;
+        margin: 0;
+    }
+/* Print Button */
+.print-btn {
+    background: #f3f3f3;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+    .print-btn:hover {
+        background: #e5e5e5;
+    }
+/* Student Info */
+.form5-info p {
+    margin: 6px 0;
+    font-size: 14px;
+}
+/* Sections */
+.form5-section {
+    margin-top: 25px;
+}
+
+    .form5-section h4 {
+        font-size: 15px;
+        margin-bottom: 12px;
+    }
+/* Courses */
+.course-list {
+    list-style: none;
+    padding: 0;
+}
+
+.course-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.completed {
+    color: #2e8b57;
+}
+
+.not-completed {
+    color: #c0392b;
+}
+/* Eligibility */
+.eligibility-status {
+    margin-top: 25px;
+    padding: 14px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.eligible {
+    background: #e8f5ee;
+    color: #2e8b57;
+}
+
+.not-eligible {
+    background: #fdecea;
+    color: #c0392b;
+}
+/* Actions */
+.form5-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+    .form5-actions button {
+        padding: 10px 18px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+.btn-accept {
+    background: #2e8b57;
+    color: #fff;
+}
+
+.btn-reject {
+    background: #c0392b;
+    color: #fff;
+}
+
+.btn-update {
+    background: #f1c40f;
+    color: #000;
+}
+
+.btn-history {
+    background: #e0e0e0;
+    color: #333;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+    .btn-history i {
+        margin-right: 6px;
+    }
+/* =========================
+   Advisor Layout Root
+========================= */
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+.advisor-layout {
+    display: flex;
+    height: 100vh;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.advisor-sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    height: 100vh;
+}
+/* =========================
+   Profile
+========================= */
+.advisor-profile {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+
+
+.advisor-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #ffffff;
+    padding: 15px;
+}
+
+.advisor-profile h4 {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 10px 0 4px;
+}
+
+.advisor-profile p {
+    color: #E0E0E0;
+    font-size: 12px;
+    margin: 0;
+}
+/* =========================
+   Menu
+========================= */
+.advisor-menu {
+    list-style: none;
+    padding: 0;
+    flex: 1;
+}
+
+    .advisor-menu li {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 14px;
+        color: #ffffff;
+        padding-top: 15px;
+        margin-top: 30px;
+    }
+
+        .advisor-menu li i {
+            font-size: 16px;
+        }
+
+        .advisor-menu li.active {
+            background: rgba(255,255,255,0.18);
+        }
+/* =========================
+   Logout
+========================= */
+.advisor-logout {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px;
+    border-radius: 12px;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+/* =========================
+   Main Content
+========================= */
+.advisor-content {
+    flex: 1;
+    background: #f7f7f7;
+    border-radius: 36px;
+    padding: 36px 42px;
+    margin: 30px;
+    overflow-y: hidden;
+}
+
+.advisor-content {
+    flex: 1;
+    background: #f7f7f7;
+    padding: 40px;
+    margin: 30px;
+    border-radius: 36px;
+    /* ⬅️ احذفي أي shadow هنا */
+    box-shadow: none;
+}
+
+
+.form5-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 30px 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.form5-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.form5-header-actions {
+    display: flex;
+    gap: 10px;
+}
+/* History Button */
+.btn-history {
+    background: #eeeeee;
+    color: #333;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+/*************************************************
+   NOTIFICATIONS – BUTTON (Bell)
+*************************************************/
+/* زر الجرس */
+.topbar-notif-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+    .topbar-notif-btn i {
+        color: #ffffff;
+        font-size: 16px;
+    }
+/* Overlay */
+.notif-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35); /* ← هذا هو التغميق */
+    z-index: 9999;
+}
+/* Panel */
+.notif-panel {
+    position: fixed;
+    top: 90px;
+    left: 260px; /* بعد السايدبار */
+    width: 360px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+/* Header */
+.notif-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 18px;
+}
+
+.notif-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #000;
+}
+
+.notif-close {
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+/* Divider */
+.notif-divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, #317FAB, #66ACA7);
+    margin: 0;
+}
+/* List */
+.notif-list {
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.notif-item {
+    display: flex;
+    gap: 12px;
+    padding: 14px 16px;
+    text-decoration: none;
+    color: #000;
+}
+
+    .notif-item:hover {
+        background: #f6fbff;
+    }
+/* Avatar */
+.notif-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(90deg, #317FAB, #66ACA7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .notif-avatar span {
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: 700;
+    }
+/* Body */
+.notif-body {
+    flex: 1;
+}
+
+.notif-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notif-desc {
+    font-size: 12px;
+    color: #777;
+    margin-top: 2px;
+}
+
+.notif-time {
+    font-size: 11px;
+    color: #999;
+    margin-top: 4px;
+}
+/* Unread dot */
+.notif-unread-dot {
+    width: 8px;
+    height: 8px;
+    background: #e53935;
+    border-radius: 50%;
+}
+/* ===== Notifications (ONE SOURCE OF TRUTH) ===== */
+
+.topbar-notif-btn,
+.advisor-notification {
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+    .topbar-notif-btn i,
+    .advisor-notification i {
+        color: #ffffff;
+        font-size: 16px;
+    }
+/* Overlay (hidden by default) */
+.notif-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35); /* التغميق */
+    display: none; /* مهم */
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 90px;
+    z-index: 9999;
+}
+
+    .notif-overlay.show {
+        display: flex;
+    }
+/* Panel */
+.notif-panel {
+    width: 420px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    overflow: hidden;
+}
+/* =========================
+   Advisor Layout Root
+========================= */
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+.advisor-layout {
+    display: flex;
+    height: 100vh;
+    background: #ffffff;
+    overflow: hidden;
+}
+
+.advisor-sidebar {
+    width: 210px;
+    flex-shrink: 0;
+    height: 100vh;
+    border-radius: 1px;
+    padding: 25px 18px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, #94C7B6 0%, #2272AD 50%, #76BAA5 100%, #12889C 100%);
+    box-sizing: border-box;
+}
+
+.advisor-content {
+    flex: 1;
+    height: calc(100vh - 60px);
+    margin: 30px;
+    padding: 36px 42px;
+    background: #f7f7f7;
+    border-radius: 36px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: none;
+}
+/* =========================================
+   FINAL ADVISOR LAYOUT FIX
+========================================= */
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+.advisor-layout {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.advisor-sidebar {
+    width: 210px;
+    flex-shrink: 0;
+    height: 100vh;
+    padding: 25px 18px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    background: linear-gradient(180deg, #94C7B6 0%, #2272AD 50%, #76BAA5 100%, #12889C 100%);
+}
+
+.advisor-content {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    margin: 30px;
+    padding: 36px 42px;
+    box-sizing: border-box;
+    background: #f7f7f7;
+    border-radius: 36px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: none;
+}
+/* ===== FIX SIDEBAR AVATAR ONLY ===== */
+.advisor-sidebar .advisor-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #ffffff !important;
+    padding: 15px;
+    display: block;
+    box-sizing: content-box;
+}
+
+
+
+
+
+
+> > > > > > > origin_second/rahafgh
+
+======= > > > > > > > origin_second/لما2
+.form-alert-info {
+    background: #eef5ff;
+    color: #245b9e;
+    border: 1px solid #c8dbfb;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.btn-update {
+    background: #f2c94c;
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .btn-update:hover {
+        opacity: 0.9;
+    }
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    .form5-container,
+    .form5-container * {
+        visibility: visible;
+    }
+
+    .form5-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        background: #fff;
+    }
+
+    .form5-header-actions,
+    .form5-actions,
+    .sidebar,
+    .side-nav,
+    .main-sidebar,
+    .advisor-sidebar,
+    .student-sidebar,
+    .navbar,
+    .topbar,
+    .header,
+    .layout-sidebar {
+        display: none !important;
+    }
+}
+
+.btn-send-committee {
+    background: #317FAB;
+    color: #fff;
+}
+
+.btn-white,
+.btn-white:link,
+.btn-white:visited,
+.btn-outline,
+.btn-outline:link,
+.btn-outline:visited {
+    text-decoration: none;
+}
+
+<<<<<<< HEAD
+=======
+
+
+.history-page {
+    padding: 28px 32px;
+}
+
+.history-header {
+    margin-bottom: 18px;
+}
+
+.history-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.history-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: #4ca8b8;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #dff3f5;
+    box-shadow: 0 0 0 2px #7cc6cf inset;
+    font-size: 18px;
+}
+
+.history-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #222;
+}
+
+.history-shell {
+    background: #f7f7f7;
+    border-radius: 30px;
+    padding: 28px;
+    min-height: 70vh;
+}
+
+.history-empty {
+    text-align: center;
+    color: #777;
+    font-size: 16px;
+    padding: 40px 0;
+}
+
+.history-card {
+    background: #fff;
+    border: 1px solid #a9c9ef;
+    border-radius: 10px;
+    padding: 16px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.history-card-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.history-doc-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #48a8b8;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #dff3f5;
+    font-size: 18px;
+}
+
+.history-form-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 4px;
+}
+
+.history-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 14px;
+}
+
+.history-status-label,
+.history-date-label {
+    color: #999;
+}
+
+.history-status {
+    color: #46b96d;
+}
+
+.history-date {
+    color: #f39a4a;
+}
+
+.history-view-btn {
+    display: inline-block;
+    min-width: 70px;
+    text-align: center;
+    padding: 8px 16px;
+    border-radius: 12px;
+    background: #f3f6f7;
+    border: 1px solid #a9c9ef;
+    color: #6e9bb0;
+    text-decoration: none;
+    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+
+    .history-view-btn:hover {
+        background: #eaf3f7;
+    }
+
+> > > > > > > origin_second/linaLMversion
+=======
+.btn-white,
+.btn-white:link,
+.btn-white:visited,
+.btn-white:hover,
+.btn-white:active,
+.btn-outline,
+.btn-outline:link,
+.btn-outline:visited,
+.btn-outline:hover,
+.btn-outline:active {
+    text-decoration: none !important;
+}
+
+.btn-outline,
+.btn-white, btn-outline-com {
+    width: 210px;
+    height: 58px;
+    border-radius: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 7px;
+}
+
+/* Keep the outline buttons same style */
+.btn-outline {
+    background-color: #0f92a3;
+    color: white;
+    margin-top: -0px;
+}
+
+/* Middle card button same size, different color only */
+.btn-white {
+    background-color: white;
+    color: #0f92a3;
+    margin-top: -20px;
+}
+/* =========================
+   Student Home Cards Final Fix
+========================= */
+
+.student-content .cards {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    gap: 35px !important;
+    margin-top: 55px !important;
+}
+
+    .student-content .cards .card {
+        width: 280px !important;
+        min-height: 330px !important;
+        height: auto !important;
+        padding: 36px 26px 26px !important;
+        border-radius: 28px !important;
+        background: #ffffff !important;
+        border: 3px dashed #dcdcdc !important;
+        box-shadow: 0 22px 50px rgba(0, 0, 0, 0.16) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        box-sizing: border-box !important;
+    }
+
+        .student-content .cards .card.highlight {
+            background: linear-gradient(180deg, #66ACA7, #317FAB) !important;
+            color: #ffffff !important;
+            border: 2px dashed rgba(255, 255, 255, 0.6) !important;
+        }
+
+        /* Icon */
+        .student-content .cards .card .icon {
+            position: static !important;
+            transform: none !important;
+            width: 76px !important;
+            height: 76px !important;
+            margin: 0 0 24px 0 !important;
+            border-radius: 50% !important;
+            background: #0f8fa3 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            flex-shrink: 0 !important;
+        }
+
+        .student-content .cards .card.highlight .icon {
+            background: #ffffff !important;
+        }
+
+        .student-content .cards .card .icon i {
+            color: #ffffff !important;
+            font-size: 24px !important;
+        }
+
+        .student-content .cards .card.highlight .icon i {
+            color: #12889C !important;
+        }
+
+        /* Text */
+        .student-content .cards .card h4 {
+            margin: 0 0 10px 0 !important;
+            min-height: 44px !important;
+            font-size: 17px !important;
+            font-weight: 700 !important;
+            line-height: 1.25 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .student-content .cards .card p {
+            margin: 0 0 18px 0 !important;
+            min-height: 50px !important;
+            font-size: 15px !important;
+            line-height: 1.35 !important;
+            color: #4b4b63 !important;
+            display: flex !important;
+            align-items: flex-start !important;
+            justify-content: center !important;
+        }
+
+        .student-content .cards .card.highlight h4,
+        .student-content .cards .card.highlight p {
+            color: #ffffff !important;
+        }
+
+        /* Buttons */
+        .student-content .cards .card .btn-outline,
+        .student-content .cards .card .btn-white {
+            width: 205px !important;
+            height: 52px !important;
+            padding: 0 !important;
+            border-radius: 999px !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+            text-decoration: none !important;
+            margin: auto auto 0 auto !important;
+            white-space: nowrap !important;
+        }
+
+        .student-content .cards .card .btn-outline {
+            background: #12889C !important;
+            color: #ffffff !important;
+        }
+
+        .student-content .cards .card .btn-white {
+            background: #ffffff !important;
+            color: #12889C !important;
+        }
+
+        /* لا نرفع كرت لحاله */
+        .student-content .cards .card:first-child {
+            transform: none !important;
+        }
+
+.form-empty-message {
+    text-align: center;
+    margin-top: 120px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #317FAB;
+}
+
+    .form-empty-message p {
+        margin: 0;
+    }
+
+/* Form 5 buttons - slim style */
+.form5-actions {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 16px !important;
+    margin-top: 26px !important;
+}
+
+    .form5-actions button {
+        border: none !important;
+        height: 44px !important;
+        border-radius: 24px !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        color: #ffffff !important;
+        cursor: pointer !important;
+        padding: 0 26px !important;
+        line-height: 1 !important;
+    }
+
+    .form5-actions .btn-send-committee {
+        width: 300px !important;
+        background: #0f8fa3 !important;
+    }
+
+    .form5-actions .btn-form5-save,
+    .form5-actions .btn-accept {
+        width: 140px !important;
+        background: #6AB5AF !important;
+    }
+
+    .form5-actions button:hover {
+        opacity: 0.9 !important;
+    }
+
+/* Form 4  buttons */
+.form4-header-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+    .form4-header-actions .btn-history,
+    .form4-header-actions .print-btn {
+        min-height: 42px !important;
+        height: auto !important;
+        min-width: unset !important;
+        width: auto !important;
+        padding: 10px 18px !important;
+        border-radius: 999px !important;
+        border: 1px solid #b9d8f7 !important;
+        background: #ffffff !important;
+        color: #1f6fa7 !important;
+        text-decoration: none !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        cursor: pointer !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        box-shadow: none !important;
+    }
+
+        .form4-header-actions .btn-history i,
+        .form4-header-actions .print-btn i {
+            color: #1f6fa7 !important;
+            font-size: 14px !important;
+        }
+
+        .form4-header-actions .btn-history:hover,
+        .form4-header-actions .print-btn:hover {
+            background: #eef7ff !important;
+            color: #1f6fa7 !important;
+            text-decoration: none !important;
+        }
+
+/* Mobile responsive fix for student layout */
+@media (max-width: 768px) {
+    html,
+    body {
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        height: auto !important;
+    }
+
+    .student-layout {
+        flex-direction: column !important;
+        height: auto !important;
+        min-height: 100vh !important;
+        overflow: visible !important;
+    }
+
+    .student-sidebar {
+        width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+        padding: 16px !important;
+        border-radius: 0 0 24px 24px !important;
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
+        bottom: auto !important;
+    }
+
+    .student-profile {
+        margin-bottom: 16px !important;
+        text-align: center !important;
+    }
+
+    .student-avatar {
+        width: 58px !important;
+        height: 58px !important;
+        padding: 10px !important;
+    }
+
+    .student-profile h4 {
+        font-size: 14px !important;
+        margin: 8px 0 2px !important;
+    }
+
+    .student-profile p {
+        font-size: 11px !important;
+    }
+
+    .student-menu {
+        display: flex !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        padding: 0 !important;
+        margin: 12px 0 !important;
+        flex-wrap: wrap !important;
+        list-style: none !important;
+    }
+
+        .student-menu li {
+            margin-top: 0 !important;
+            margin-bottom: 0 !important;
+            padding: 10px 12px !important;
+            font-size: 12px !important;
+        }
+
+            .student-menu li a {
+                display: flex !important;
+                align-items: center !important;
+                gap: 6px !important;
+                color: #ffffff !important;
+                text-decoration: none !important;
+            }
+
+    .logout,
+    .student-logout {
+        justify-content: center !important;
+        padding: 10px !important;
+        margin-top: 0 !important;
+        color: #ffffff !important;
+    }
+
+        .logout a,
+        .logout button,
+        .logout i,
+        .logout span,
+        .student-logout a,
+        .student-logout button,
+        .student-logout i,
+        .student-logout span {
+            color: #ffffff !important;
+        }
+
+    .main-background-box,
+    .student-content {
+        width: 100% !important;
+        margin: 16px 0 0 0 !important;
+        padding: 18px !important;
+        border-radius: 24px 24px 0 0 !important;
+        height: auto !important;
+        min-height: calc(100vh - 260px) !important;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        box-sizing: border-box !important;
+    }
+}

@@ -1,0 +1,403 @@
+﻿.advisor-menu li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+    .advisor-menu li a:visited,
+    .advisor-menu li a:hover,
+    .advisor-menu li a:active {
+        color: #ffffff;
+        text-decoration: none;
+    }
+
+.advisor-menu li.active a {
+    color: #ffffff;
+    text-decoration: none;
+}
+.advisor-menu li a i {
+    color: #ffffff;
+}
+.profile-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.topbar-notif-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .topbar-notif-btn i {
+        font-size: 18px;
+    }
+.advisor-profile .profile-top {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.advisor-profile .topbar-notif-btn {
+    position: absolute;
+    top: 0;
+    right: 8px;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 50;
+}
+
+    .advisor-profile .topbar-notif-btn i {
+        font-size: 18px;
+        color: #ffffff;
+    }
+
+/* Logout button color */
+.advisor-sidebar .advisor-logout .logout-link {
+    color: #ffffff !important;
+    background: transparent !important;
+    border: none !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+    .advisor-sidebar .advisor-logout .logout-link i,
+    .advisor-sidebar .advisor-logout .logout-link span {
+        color: #ffffff !important;
+    }
+
+    .advisor-sidebar .advisor-logout .logout-link:hover {
+        color: #ffffff !important;
+        opacity: 0.85;
+    }
+
+/* Mobile responsive fix for advisor layout */
+@media (max-width: 768px) {
+    html,
+    body {
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        height: auto !important;
+    }
+
+    .advisor-layout {
+        flex-direction: column !important;
+        height: auto !important;
+        min-height: 100vh !important;
+        overflow: visible !important;
+    }
+
+    .advisor-sidebar {
+        width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+        padding: 16px !important;
+        border-radius: 0 0 24px 24px !important;
+        position: relative !important;
+    }
+
+    .advisor-profile {
+        margin-bottom: 16px !important;
+    }
+
+    .advisor-avatar {
+        width: 58px !important;
+        height: 58px !important;
+        padding: 10px !important;
+    }
+
+    .advisor-profile h4 {
+        font-size: 14px !important;
+        margin: 8px 0 2px !important;
+    }
+
+    .advisor-profile p {
+        font-size: 11px !important;
+    }
+
+    .advisor-menu {
+        display: flex !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        padding: 0 !important;
+        margin: 12px 0 !important;
+        flex-wrap: wrap !important;
+    }
+
+        .advisor-menu li {
+            margin-top: 0 !important;
+            padding: 10px 12px !important;
+            font-size: 12px !important;
+        }
+
+            .advisor-menu li a {
+                display: flex !important;
+                align-items: center !important;
+                gap: 6px !important;
+                color: #ffffff !important;
+                text-decoration: none !important;
+            }
+
+    .advisor-logout {
+        justify-content: center !important;
+        padding: 10px !important;
+    }
+
+    .advisor-content {
+        width: 100% !important;
+        margin: 16px 0 0 0 !important;
+        padding: 18px !important;
+        border-radius: 24px 24px 0 0 !important;
+        height: auto !important;
+        min-height: calc(100vh - 260px) !important;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+    }
+}
+
+/* ================================
+   Advisor iPhone Fix Only
+================================ */
+
+@media (max-width: 700px) {
+
+    html,
+    body {
+        width: 100vw !important;
+        height: 100dvh !important;
+        margin: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .advisor-layout {
+        width: 100vw !important;
+        height: 100dvh !important;
+        display: grid !important;
+        grid-template-rows: 230px 1fr !important;
+        overflow: hidden !important;
+        background: #ffffff !important;
+    }
+
+    .advisor-sidebar {
+        position: relative !important;
+        width: 100% !important;
+        height: 230px !important;
+        min-height: 0 !important;
+        flex: none !important;
+        padding: 12px 14px 10px !important;
+        border-radius: 0 0 18px 18px !important;
+        overflow: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+    .advisor-profile {
+        margin-bottom: 8px !important;
+        text-align: center !important;
+    }
+
+        .advisor-profile .profile-top {
+            width: 100% !important;
+            justify-content: center !important;
+            position: relative !important;
+        }
+
+    .advisor-avatar {
+        width: 58px !important;
+        height: 58px !important;
+        padding: 8px !important;
+    }
+
+    .advisor-profile h4 {
+        font-size: 12px !important;
+        margin: 4px 0 1px !important;
+    }
+
+    .advisor-profile p {
+        font-size: 9px !important;
+        margin: 0 !important;
+    }
+
+    .advisor-profile .topbar-notif-btn {
+        position: absolute !important;
+        top: 0 !important;
+        right: 4px !important;
+        width: 28px !important;
+        height: 28px !important;
+        background: transparent !important;
+    }
+
+        .advisor-profile .topbar-notif-btn i {
+            font-size: 14px !important;
+            color: #ffffff !important;
+        }
+
+    .advisor-menu {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 6px !important;
+        margin: 8px 0 0 0 !important;
+        padding: 0 !important;
+        list-style: none !important;
+    }
+
+        .advisor-menu li {
+            margin: 0 !important;
+            padding: 7px 8px !important;
+            border-radius: 9px !important;
+            display: flex !important;
+            align-items: center !important;
+        }
+
+            .advisor-menu li a {
+                width: 100% !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 7px !important;
+                font-size: 11px !important;
+                line-height: 1.2 !important;
+                white-space: nowrap !important;
+                color: #ffffff !important;
+                text-decoration: none !important;
+            }
+
+                .advisor-menu li a i {
+                    font-size: 12px !important;
+                    color: #ffffff !important;
+                }
+
+            .advisor-menu li.active {
+                background: rgba(255, 255, 255, 0.20) !important;
+            }
+
+    .advisor-logout,
+    .logout {
+        padding: 7px 8px !important;
+        margin-top: 6px !important;
+        font-size: 12px !important;
+    }
+
+    .advisor-content {
+        width: 100% !important;
+        height: calc(100dvh - 230px) !important;
+        margin: 0 !important;
+        padding: 10px !important;
+        border-radius: 0 !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
+        background: #f7f7f7 !important;
+    }
+
+    .advisor-home-page {
+        width: 100% !important;
+        min-height: 100% !important;
+        padding: 14px 12px !important;
+        border-radius: 18px !important;
+        overflow-x: hidden !important;
+        box-sizing: border-box !important;
+    }
+
+        .advisor-home-page .page-head {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 8px !important;
+            margin-bottom: 12px !important;
+        }
+
+        .advisor-home-page .page-title {
+            font-size: 18px !important;
+            margin: 0 !important;
+        }
+
+        .advisor-home-page .cohort-select {
+            width: 118px !important;
+            height: 32px !important;
+            font-size: 11px !important;
+            border-radius: 8px !important;
+        }
+
+        .advisor-home-page .year-title {
+            font-size: 16px !important;
+            margin: 8px 0 10px !important;
+        }
+
+        .advisor-home-page .student-list {
+            gap: 10px !important;
+            margin-bottom: 18px !important;
+        }
+
+        .advisor-home-page .student-card {
+            width: 100% !important;
+            padding: 10px !important;
+            border-radius: 12px !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 10px !important;
+            box-sizing: border-box !important;
+        }
+
+        .advisor-home-page .student-left {
+            display: flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            min-width: 0 !important;
+        }
+
+        .advisor-home-page .student-avatar {
+            width: 40px !important;
+            height: 40px !important;
+            flex-shrink: 0 !important;
+        }
+
+        .advisor-home-page .student-name {
+            font-size: 14px !important;
+            margin: 0 0 6px !important;
+        }
+
+        .advisor-home-page .student-status-line {
+            gap: 6px !important;
+            font-size: 10px !important;
+            line-height: 1.3 !important;
+            flex-wrap: wrap !important;
+        }
+
+        .advisor-home-page .student-actions {
+            width: 100% !important;
+            display: flex !important;
+            justify-content: flex-end !important;
+            gap: 8px !important;
+        }
+
+        .advisor-home-page .btn-forms,
+        .advisor-home-page .btn-meeting {
+            min-width: 70px !important;
+            height: 30px !important;
+            font-size: 11px !important;
+            border-radius: 10px !important;
+        }
+}

@@ -1,0 +1,355 @@
+﻿@using Acadify.Models
+@* استدعاء موديلات المشروع عشان نقدر نستخدم CourseCardVM و SelectedCourseVM *@
+
+@model Acadify.Models.CourseRecommendationViewModel
+@* تحديد الموديل الخاص بهذه الصفحة، وهو يحتوي على الكروت المقترحة والمواد المختارة *@
+
+@{
+    // استخدام Layout الطالب
+    Layout = "_StudentLayout";
+
+    // ملاحظات المرشد إذا كانت موجودة
+    var advisorNotes = ViewBag.AdvisorNotes as string;
+
+    // جلب كروت التوصية من الموديل، وإذا كانت null نخليها قائمة فاضية
+    var recommendationCards = Model.Cards ?? new List<CourseCardVM>();
+
+    // عرض أول 6 كروت فقط
+    var displayedCards = recommendationCards.Take(6).ToList();
+
+    // حساب عدد الكروت الفاضية عشان التصميم يظل مرتب دائمًا 6 كروت
+    var emptyCardCount = Math.Max(0, 6 - displayedCards.Count);
+}
+
+@* ملف CSS الخاص بصفحة Course Recommendation *@
+<link rel="stylesheet" href="~/css/CourseRecommendation.css" asp-append-version="true" />
+
+<main class="cr-page">
+    @* الغلاف الأساسي لمحتوى الصفحة *@
+    <section class="cr-shell">
+
+        @* عنوان الصفحة *@
+        <h2 class="cr-title">course recommendation</h2>
+
+        @* عرض رسالة الخطأ إذا كانت موجودة *@
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="cr-message cr-error">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+
+        @* عرض رسالة النجاح إذا كانت موجودة *@
+        @if (TempData["Success"] != null)
+        {
+            <div class="cr-message cr-success">
+                @TempData["Success"]
+            </div>
+        }
+
+        @* عرض رسالة معلومات إذا كانت موجودة *@
+        @if (TempData["InfoMessage"] != null)
+        {
+            <div class="cr-message cr-info">
+                @TempData["InfoMessage"]
+            </div>
+        }
+
+        @* جزء رفع الترانسكربت *@
+        <div class="cr-upload-wrap">
+            <form asp-action="UploadTranscriptForRecommendation"
+                  asp-controller="Student"
+                  method="post"
+                  enctype="multipart/form-data"
+                  class="cr-upload-form">
+
+                @* حماية الفورم من CSRF *@
+                @Html.AntiForgeryToken()
+
+                @* منطقة السحب والإفلات لرفع ملف PDF *@
+                <div class="cr-drop-zone" id="crDropZone">
+                    <i class="fa-solid fa-cloud-arrow-up cr-upload-icon"></i>
+
+                    <p class="cr-drop-text">
+                        drag and drop file or
+                        @* عند الضغط على browse يفتح اختيار الملف *@
+                        <label for="transcriptFile" class="cr-browse-link">browse</label>
+                    </p>
+
+                    @* يعرض اسم الملف المختار *@
+                    <span id="crFileName" class="cr-file-name">No file selected</span>
+
+                    @* input مخفي/مصمم لاختيار ملف الترانسكربت PDF *@
+                    <input type="file"
+                           id="transcriptFile"
+                           name="transcriptFile"
+                           accept=".pdf"
+                           class="cr-file-input" />
+                </div>
+
+                @* توضيح نوع الملف المدعوم *@
+                <p class="cr-supported-format">
+                    Supported format: PDF (.pdf)
+                </p>
+
+                @* زر رفع الترانسكربت وتشغيل التوصيات *@
+                <button type="submit" class="cr-upload-btn">
+                    Upload Transcript
+                </button>
+            </form>
+        </div>
+
+        @* صندوق Debug يظهر المواد المقروءة من الترانسكربت إذا كان موجود *@
+        @if (TempData["ParsedCoursesDebug"] != null)
+        {
+            <div class="cr-debug-box">
+                @TempData["ParsedCoursesDebug"]
+            </div>
+        }
+
+        @* منطقة عرض كروت المواد المقترحة *@
+        <div class="cr-cards">
+            @foreach (var course in displayedCards)
+            {
+                // فحص هل المادة المقترحة مادة حرة أو اختيارية
+                var isManualSuggestion = IsFreeOrElectiveCard(course.CourseId, course.CourseName);
+
+                <div class="cr-card">
+
+                    @* أعلى الكرت: كود المادة *@
+                    <div class="cr-card-top">
+                        <span class="cr-code">@course.CourseId</span>
+                    </div>
+
+                    @* اسم المادة إذا كان موجود *@
+                    @if (!string.IsNullOrWhiteSpace(course.CourseName))
+                    {
+                        <div class="cr-course-name">@course.CourseName</div>
+                    }
+
+                    @* عدد ساعات المادة *@
+                    <div class="cr-course-hours">@course.Hours credit hour(s)</div>
+
+                    @* إذا كانت المادة Free أو Elective، نخلي الطالب يكتب كود المادة يدويًا *@
+                    @if (isManualSuggestion)
+                    {
+                        <form asp-action="SelectRecommendedCourse"
+                              asp-controller="Student"
+                              method="post"
+                              class="cr-card-manual-form">
+
+                            @Html.AntiForgeryToken()
+
+                            @* إرسال كود المادة الأصلي للكنترولر *@
+                            <input type="hidden" name="courseId" value="@course.CourseId" />
+
+                            @* خانة إدخال كود المادة الحرة أو الاختيارية *@
+                            <input type="text"
+                                   name="manualCourseValue"
+                                   class="cr-manual-input cr-card-manual-input"
+                                   placeholder="Enter course code" />
+
+                            @* زر اعتماد المادة *@
+                            <div class="cr-icons">
+                                <button type="submit" class="cr-icon cr-ok">✓</button>
+                            </div>
+                        </form>
+                    }
+                    else
+                    {
+                        @* إذا كانت مادة عادية، يظهر زر اختيار وزر حذف *@
+                        <div class="cr-icons">
+
+                            @* زر اختيار المادة وحفظها ضمن المواد المختارة *@
+                            <form asp-action="SelectRecommendedCourse" asp-controller="Student" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="courseId" value="@course.CourseId" />
+                                <button type="submit" class="cr-icon cr-ok">✓</button>
+                            </form>
+
+                            @* زر إزالة المادة من التوصيات *@
+                            <form asp-action="RemoveRecommendedCourse" asp-controller="Student" method="post">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="courseId" value="@course.CourseId" />
+                                <button type="submit" class="cr-icon cr-no">✕</button>
+                            </form>
+
+                        </div>
+                    }
+                </div>
+            }
+
+            @* إضافة كروت فاضية إذا عدد التوصيات أقل من 6 للحفاظ على شكل الصفحة *@
+            @for (int i = 0; i < emptyCardCount; i++)
+            {
+                <div class="cr-card cr-card-empty">
+                    <span class="cr-code">No course</span>
+                </div>
+            }
+        </div>
+
+        @* قسم إدخال المواد الحرة والاختيارية يدويًا *@
+        <div class="cr-manual-wrap">
+            <h3 class="cr-manual-title">Free or Elective Courses</h3>
+
+            <form asp-action="SaveManualElectiveCourses"
+                  asp-controller="Student"
+                  method="post"
+                  class="cr-manual-form">
+
+                @Html.AntiForgeryToken()
+
+                @* ثلاث خانات لإدخال مواد حرة أو اختيارية *@
+                <div class="cr-manual-grid">
+                    <input asp-for="FreeElectiveCourse1"
+                           class="cr-manual-input"
+                           placeholder="Enter free course code" />
+
+                    <input asp-for="FreeElectiveCourse2"
+                           class="cr-manual-input"
+                           placeholder="Enter elective course code" />
+
+                    <input asp-for="FreeElectiveCourse3"
+                           class="cr-manual-input"
+                           placeholder="Enter elective course code" />
+                </div>
+
+                @* زر حفظ المواد الحرة/الاختيارية *@
+                <button type="submit" class="cr-manual-btn">Save</button>
+            </form>
+        </div>
+
+        @* جدول المواد التي اختارها الطالب *@
+        <div class="cr-table-wrap">
+            <table class="cr-table">
+                <thead>
+                    <tr>
+                        <th colspan="2" class="cr-table-title">selected courses</th>
+                    </tr>
+                    <tr>
+                        <th>course</th>
+                        <th>credit</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @{
+                        // جلب المواد المختارة من الموديل
+                        var selectedSource = Model.Selected ?? new List<SelectedCourseVM>();
+
+                        // تنظيف الأكواد وإزالة التكرار
+                        var selectedRows = selectedSource
+                            .Where(x => !string.IsNullOrWhiteSpace(x.CourseId))
+                            .GroupBy(x => x.CourseId.Trim()
+                                .ToUpper()
+                                .Replace(" ", "")
+                                .Replace("-", "")
+                                .Replace("_", "")
+                                .Replace("/", ""))
+                            .Select(g => g.OrderByDescending(x => x.Hours).First())
+                            .ToList();
+                    }
+
+                    @* عرض كل مادة مختارة في الجدول *@
+                    @foreach (var item in selectedRows)
+                    {
+                        <tr>
+                            <td>@item.CourseId</td>
+                            <td>@item.Hours</td>
+                        </tr>
+                    }
+
+                    @* حساب مجموع الساعات المختارة *@
+                    <tr class="cr-total-row">
+                        <td>Total</td>
+                        <td>@selectedRows.Sum(x => x.Hours)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        @* عرض ملاحظات المرشد إذا كانت موجودة *@
+        @if (!string.IsNullOrWhiteSpace(advisorNotes))
+        {
+            <div class="cr-advisor-notes-wrap">
+                <h3 class="cr-advisor-notes-title">Advisor Notes</h3>
+
+                <div class="cr-advisor-notes-box">
+                    @advisorNotes
+                </div>
+            </div>
+        }
+
+        @* زر إرسال التوصيات المختارة إلى المرشد *@
+        <div class="cr-btn-wrap">
+            <form asp-action="SendCourseRecommendationToAdvisor" asp-controller="Student" method="post">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="cr-btn">Confirm &amp; send to advisor</button>
+            </form>
+        </div>
+
+    </section>
+</main>
+
+@functions {
+    // دالة تفحص هل الكرت يمثل مادة حرة أو اختيارية
+    private bool IsFreeOrElectiveCard(string? courseId, string? courseName)
+    {
+        var code = courseId ?? "";
+        var name = courseName ?? "";
+
+        return code.Contains("FREE", StringComparison.OrdinalIgnoreCase)
+            || code.Contains("ELEC", StringComparison.OrdinalIgnoreCase)
+            || name.Contains("Free", StringComparison.OrdinalIgnoreCase)
+            || name.Contains("Elective", StringComparison.OrdinalIgnoreCase);
+    }
+}
+
+<script>
+    // جلب عناصر رفع الملف من الصفحة
+    const dropZone = document.getElementById("crDropZone");
+    const fileInput = document.getElementById("transcriptFile");
+    const fileName = document.getElementById("crFileName");
+
+    // تحديث اسم الملف بعد اختيار أو سحب الملف
+    function updateSelectedFileName(file) {
+        if (file) {
+            fileName.textContent = "File uploaded: " + file.name;
+            fileName.classList.add("uploaded");
+        } else {
+            fileName.textContent = "No file selected";
+            fileName.classList.remove("uploaded");
+        }
+    }
+
+    // التأكد أن العناصر موجودة قبل إضافة الأحداث عليها
+    if (dropZone && fileInput && fileName) {
+
+        // عند اختيار ملف من الجهاز
+        fileInput.addEventListener("change", function () {
+            updateSelectedFileName(this.files.length > 0 ? this.files[0] : null);
+        });
+
+        // عند سحب الملف فوق منطقة الرفع
+        dropZone.addEventListener("dragover", function (e) {
+            e.preventDefault();
+            dropZone.classList.add("drag-over");
+        });
+
+        // عند خروج الملف من منطقة السحب
+        dropZone.addEventListener("dragleave", function () {
+            dropZone.classList.remove("drag-over");
+        });
+
+        // عند إفلات الملف داخل منطقة الرفع
+        dropZone.addEventListener("drop", function (e) {
+            e.preventDefault();
+            dropZone.classList.remove("drag-over");
+
+            if (e.dataTransfer.files.length > 0) {
+                fileInput.files = e.dataTransfer.files;
+                updateSelectedFileName(e.dataTransfer.files[0]);
+            }
+        });
+    }
+</script>

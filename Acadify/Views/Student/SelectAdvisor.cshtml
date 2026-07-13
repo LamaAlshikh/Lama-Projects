@@ -1,0 +1,100 @@
+﻿@model Acadify.Models.StudentPages.SelectAdvisorVM
+@{
+    ViewData["Title"] = "Select Advisor";
+    Layout = "_StudentLayout";
+}
+
+<link rel="stylesheet" href="~/css/select-advisor.css" />
+
+<div class="advisor-page">
+
+    <div class="advisor-topbar">
+        <div class="advisor-search-box">
+            <h2>my advisor</h2>
+
+            <form asp-action="SelectAdvisor" method="get" class="search-form">
+                <input type="text" name="search" value="@Model.SearchTerm" placeholder="name" />
+                <button type="submit">🔍</button>
+            </form>
+        </div>
+
+        <div class="manual-connect-box">
+            <span>could not find your advisor?</span>
+            <button type="button" class="connect-btn" onclick="openManualPopup()">Connect</button>
+        </div>
+    </div>
+
+    @if (TempData["AdvisorSuccess"] != null)
+    {
+        <div class="alert success">@TempData["AdvisorSuccess"]</div>
+    }
+
+    @if (TempData["AdvisorError"] != null)
+    {
+        <div class="alert error">@TempData["AdvisorError"]</div>
+    }
+
+    @if (Model.HasPendingRequest)
+    {
+        <div class="pending-box">
+            Your request is under review by the admin.
+            @if (!string.IsNullOrWhiteSpace(Model.PendingAdvisorEmail))
+            {
+                <span>Requested advisor: @Model.PendingAdvisorEmail</span>
+            }
+        </div>
+    }
+
+    <div class="advisor-list">
+        @foreach (var advisor in Model.Advisors)
+        {
+            <div class="advisor-card">
+                <div class="advisor-info">
+                    <div class="advisor-avatar">
+                        <img src="@Url.Content("~/images/user.png")" alt="advisor" />
+                    </div>
+
+                    <div class="advisor-text">
+                        <h3>@advisor.AdvisorName</h3>
+                        <p><span>email:</span> @advisor.AdvisorEmail</p>
+                        <p><span>department:</span> @advisor.Department</p>
+                    </div>
+                </div>
+
+                <form asp-action="SubmitAdvisorSelection" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="advisorId" value="@advisor.AdvisorId" />
+                    <button type="submit" class="select-btn">Select</button>
+                </form>
+            </div>
+        }
+    </div>
+</div>
+
+<div id="manualPopup" class="popup-overlay">
+    <div class="popup-card">
+        <button type="button" class="close-btn" onclick="closeManualPopup()">×</button>
+
+        <form asp-action="SubmitManualAdvisorEmail" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="popup-title">
+                Enter your advisor email to connect with them:
+            </div>
+
+            <input asp-for="ManualAdvisorEmail" class="popup-input" placeholder="advisor@kau.edu.sa" />
+
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openManualPopup() {
+        document.getElementById("manualPopup").style.display = "flex";
+    }
+
+    function closeManualPopup() {
+        document.getElementById("manualPopup").style.display = "none";
+    }
+</script>

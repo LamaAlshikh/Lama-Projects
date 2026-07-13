@@ -1,0 +1,497 @@
+﻿/* ملاحظة: خلفية صفحة الرفع */
+.upload-page {
+    min-height: 79vh;
+    background: #f7f7f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 36px;
+    padding: 36px 42px;
+    margin: 30px;
+}
+
+/* ملاحظة: الكارد الأبيض */
+.upload-card {
+    width: 640px;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 42px 48px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+/* العنوان */
+.upload-title {
+    text-align: center;
+    margin: 0 0 28px 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #222;
+}
+
+.accent {
+    color: #1f7f86;
+}
+
+/* ملاحظة: منطقة السحب */
+.drop-zone {
+    border: 2px dashed #9cc7d1;
+    border-radius: 10px;
+    padding: 26px 18px;
+    text-align: center;
+    background: #fbf6f7;
+}
+
+.drop-icon {
+    font-size: 40px;
+    color: #1f7f86;
+    margin-bottom: 10px;
+}
+
+.drop-text {
+    margin: 0;
+    color: #666;
+    font-size: 13px;
+}
+
+.browse {
+    color: #1f7f86;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* ملاحظة: نص دعم الصيغة */
+.hint {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+    color: #d24c6a;
+    font-size: 12px;
+}
+
+/* زر الرفع */
+.actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 22px;
+}
+
+.btn-upload {
+    background: #197a80;
+    color: #fff;
+    border: none;
+    padding: 10px 54px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    box-shadow: 0 6px 14px rgba(25,122,128,0.25);
+}
+
+    .btn-upload:hover {
+        opacity: 0.95;
+    }
+
+.validation {
+    text-align: center;
+    margin-top: 12px;
+    color: #c0392b;
+    font-size: 12px;
+}
+
+.success-msg {
+    margin-top: 14px;
+    text-align: center;
+    color: #1e8449;
+    font-size: 13px;
+}
+
+.file-info {
+    margin-top: 8px;
+    text-align: center;
+    color: #333;
+    font-size: 13px;
+}
+
+/* ملاحظة: صفحة الطلبات */
+.page {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 34px 24px;
+}
+
+/* ملاحظة: البوكس الرئيسي */
+.card {
+    width: 100%;
+    height: 100%;
+    border-radius: 30px;
+    padding: 36px 42px;
+    border: 3px solid transparent;
+    background: linear-gradient(#f7f7f7, #f7f7f7) padding-box;
+    box-shadow: 0 10px 26px rgba(0,0,0,0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ملاحظة: السكرول الداخلي للطلبات */
+.requests-table-wrapper {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+    /* شكل السكرول داخل البوكس */
+    .requests-table-wrapper::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .requests-table-wrapper::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .requests-table-wrapper::-webkit-scrollbar-thumb {
+        background: rgba(25, 122, 128, 0.45);
+        border-radius: 20px;
+    }
+
+        .requests-table-wrapper::-webkit-scrollbar-thumb:hover {
+            background: rgba(25, 122, 128, 0.65);
+        }
+
+.title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+/* ملاحظة: جدول الطلبات */
+.table {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+    border-radius: 10px;
+}
+
+    .table thead th {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        text-align: left;
+        font-size: 12px;
+        color: #000;
+        padding: 12px;
+        border-bottom: 1px solid #e3eceb;
+        border-top: 1px solid #e3eceb;
+        background: #ffffff;
+    }
+
+    .table tbody td {
+        padding: 12px;
+        font-size: 13px;
+        border-bottom: 1px solid #eef3f2;
+        color: #222;
+        background: #ffffff;
+    }
+
+.actions-col {
+    width: 260px;
+    white-space: nowrap;
+}
+
+.inline {
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.btn {
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-approve {
+    background: #197a80;
+    color: #fff;
+}
+
+.btn-correct {
+    background: #2f8f6f;
+    color: #fff;
+}
+
+.btn-reject {
+    background: #d35454;
+    color: #fff;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 999px;
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+/* ملاحظة: صف التعديل داخل الجدول */
+.update-row td {
+    background: #f8fcff;
+    border-top: none;
+}
+
+.update-box {
+    padding: 14px 8px 6px;
+}
+
+.update-form {
+    display: flex;
+    align-items: end;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.update-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 320px;
+}
+
+    .update-form-group label {
+        font-weight: 600;
+        color: #4c6475;
+        font-size: 14px;
+    }
+
+.advisor-dropdown {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #b7cddd;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 14px;
+    outline: none;
+}
+
+.update-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* Page wrapper for Form History */
+.fh-page {
+    padding: 35px 45px;
+}
+
+/* List spacing */
+.fh-list {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    max-width: 980px;
+}
+
+/* Row */
+.fh-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 10px;
+    border: 1.5px solid rgba(168, 200, 234, 1);
+    background: rgba(183, 180, 192, 0.09);
+    padding: 16px 22px;
+}
+
+/* Left section */
+.fh-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Circle icon */
+.fh-circle {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: #12889C;
+    border: 2px solid #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+}
+
+    .fh-circle i {
+        color: #ffffff;
+        font-size: 20px;
+    }
+
+/* Title */
+.fh-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2d2d2d;
+    margin-bottom: 6px;
+}
+
+/* Meta line */
+.fh-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 14px;
+}
+
+.fh-meta-label {
+    color: #a3a3a3;
+}
+
+.fh-meta-status {
+    color: #4cc269;
+    font-weight: 500;
+}
+
+.fh-date-label {
+    margin-left: 16px;
+}
+
+.fh-meta-date {
+    color: #f0a262;
+    font-weight: 500;
+}
+
+/* Right button */
+.fh-view-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 78px;
+    height: 30px;
+    padding: 0 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(156, 196, 220, 1);
+    background: rgba(255, 255, 255, 0.55);
+    color: #7aa9c7;
+    font-size: 13px;
+    text-decoration: none;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.10);
+    transition: 0.2s ease;
+}
+
+    .fh-view-btn:hover {
+        background: rgba(255, 255, 255, 0.75);
+        transform: translateY(-1px);
+    }
+
+/* ملاحظة: خلفية البوب أب */
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.18);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* ملاحظة: كارد البوب أب العام */
+.popup-card {
+    width: 420px;
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 26px 22px 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    position: relative;
+}
+
+    .popup-card h3 {
+        margin: 0 0 18px;
+        color: #456274;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+.popup-close {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    border: none;
+    background: transparent;
+    font-size: 24px;
+    cursor: pointer;
+    color: #6f7d88;
+}
+
+.popup-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #b7cddd;
+    border-radius: 10px;
+    font-size: 14px;
+    outline: none;
+    margin-bottom: 18px;
+}
+
+.popup-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* ملاحظة: بوب أب رسالة النجاح أو الخطأ */
+.request-status-popup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.request-status-card {
+    width: 380px;
+    min-height: 230px;
+    text-align: center;
+    padding: 34px 28px 28px;
+}
+
+.request-status-icon {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 14px;
+    border-radius: 50%;
+    background: #12889C;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.request-status-card h3 {
+    margin: 8px 0 10px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #456274;
+}
+
+.request-status-card p {
+    margin: 0 0 22px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #444;
+}

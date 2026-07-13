@@ -1,0 +1,109 @@
+﻿@model Acadify.Models.Form1ViewModel
+@{
+    ViewData["Title"] = "Form 1";
+    Layout = "_AdvisorLayout";
+}
+
+<link rel="stylesheet" href="~/css/AdvisorForm1.css" asp-append-version="true" />
+
+<div class="form1-paper">
+
+    <div class="form1-header">
+        <div class="form1-title">
+            <i class="fa-solid fa-file-lines"></i>
+            <h2>Student Advising Confirmation (Form 1)</h2>
+        </div>
+
+        <div class="form1-header-actions">
+
+            <a asp-controller="FormHistory"
+                   asp-action="FormHistory"
+                   asp-route-studentId="@Model.StudentId"
+                   asp-route-formType="Form 1"
+                   class="btn-history">
+                <i class="fa-solid fa-clock-rotate-left"></i> History
+            </a>
+
+            <button type="button" class="btn-history print-btn" onclick="window.print()">
+                <i class="fa fa-print"></i> Print
+            </button>
+
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="f1-success-message">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="f1-error-message">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <form asp-controller="Advisor" asp-action="SaveForm1" method="post">
+        @Html.AntiForgeryToken()
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label asp-for="FullName"></label>
+                <input asp-for="FullName" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="StudentId"></label>
+                <input asp-for="StudentId" readonly />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MobilePhone"></label>
+                <input asp-for="MobilePhone" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="GpaCurrent"></label>
+                <input asp-for="GpaCurrent" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AdvisorName"></label>
+                <input asp-for="AdvisorName" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ApprovalDate"></label>
+                <input asp-for="ApprovalDate" type="date" />
+            </div>
+
+        </div>
+
+        <div class="form-group full">
+            <label asp-for="MedicalNeedsOptional"></label>
+            <textarea asp-for="MedicalNeedsOptional"></textarea>
+        </div>
+
+        <div class="form-actions">
+            <button class="btn-save"
+                    type="submit"
+                    formaction="@Url.Action("SaveForm1", "Advisor")">
+                Save
+            </button>
+
+            <button class="btn-send"
+                    type="submit"
+                    formaction="@Url.Action("SendForm1", "Advisor")">
+                Send To The Advising Committee
+            </button>
+        </div>
+    </form>
+</div>

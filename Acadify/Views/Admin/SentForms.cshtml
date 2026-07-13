@@ -1,0 +1,130 @@
+﻿@model Acadify.Models.AdminPages.AdvisorSentFormsVM
+
+@{
+    Layout = "~/Views/Admin/_AdminLayout.cshtml";
+    ViewData["Title"] = "Sent Forms";
+}
+
+<link rel="stylesheet" href="~/css/admin-sent-forms.css" />
+
+<div class="admin-forms-page">
+
+    @if (Model.AdvisorGroups == null || !Model.AdvisorGroups.Any())
+    {
+        <div class="admin-empty-forms">
+            <i class="fa-regular fa-folder-open"></i>
+            <h4>No sent forms yet</h4>
+            <p>Submitted forms will appear here after advisors send them.</p>
+        </div>
+    }
+    else
+    {
+        foreach (var advisor in Model.AdvisorGroups)
+        {
+            <div class="advisor-forms-card">
+
+                <div class="advisor-forms-top">
+                    <div class="advisor-forms-info">
+                        <img src="~/images/user.png" class="advisor-forms-avatar" alt="Advisor" />
+
+                        <div>
+                            <h3>@advisor.AdvisorName</h3>
+                            <p>@advisor.AdvisorEmail</p>
+                        </div>
+                    </div>
+
+                   
+                </div>
+
+                <div class="forms-table-wrapper">
+
+                    <table class="forms-table">
+                        <thead>
+                            <tr>
+                                <th>Form</th>
+                                <th>Student</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th class="forms-actions-head">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in advisor.Forms)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="form-title-cell">
+                                            <span class="form-type-text">@item.FormType</span>
+                                            <span class="form-name-text">@item.FormTitle</span>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="student-cell">
+                                            <span>@item.StudentName</span>
+                                            <small>@item.StudentId</small>
+                                        </div>
+                                    </td>
+
+                                    <td>@item.SentDateText</td>
+                                    <td>@item.SentTimeText</td>
+
+                                    <td>
+                                        <div class="forms-actions">
+                                            <button type="button"
+                                                    class="forms-action-btn print-form-btn"
+                                                    data-print-url="@item.PrintUrl"
+                                                    onclick="printSentForm(this)">
+                                                Print
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        }
+    }
+
+</div>
+
+@section Scripts {
+    <script>
+        function printSentForm(button) {
+            const url = button.getAttribute("data-print-url");
+
+            if (!url || url === "#") {
+                alert("This form cannot be opened for printing.");
+                return;
+            }
+
+            const oldFrame = document.getElementById("printFrame");
+            if (oldFrame) {
+                oldFrame.remove();
+            }
+
+            const iframe = document.createElement("iframe");
+            iframe.id = "printFrame";
+            iframe.style.position = "fixed";
+            iframe.style.right = "0";
+            iframe.style.bottom = "0";
+            iframe.style.width = "0";
+            iframe.style.height = "0";
+            iframe.style.border = "0";
+
+            iframe.onload = function () {
+                setTimeout(function () {
+                    iframe.contentWindow.focus();
+                    iframe.contentWindow.print();
+                }, 500);
+            };
+
+            iframe.src = url;
+            document.body.appendChild(iframe);
+        }
+    </script>
+}

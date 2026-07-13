@@ -1,0 +1,76 @@
+﻿@model Acadify.Models.StudentChatViewModel
+
+@{
+    Layout = "~/Views/Shared/_AdvisorLayout.cshtml";
+}
+
+<main class="advisor-chat-page">
+
+    <!-- Header -->
+    <section class="advisor-chat-header">
+        <div class="advisor-chat-header-left">
+            <div class="advisor-chat-avatar"></div>
+            <h2>@Model.StudentName</h2>
+        </div>
+    </section>
+
+    <!-- Messages -->
+    <section class="advisor-chat-body">
+
+        @if (ViewBag.RecordingMessage != null && ViewBag.RecordingMessage != "")
+        {
+            <div class="advisor-chat-recording-line">
+                @ViewBag.RecordingMessage
+            </div>
+        }
+
+        @foreach (var msg in Model.Messages)
+        {
+            if (msg.IsFromStudent)
+            {
+                <div class="advisor-msg-row advisor-msg-right">
+                    <div class="advisor-msg-bubble">
+                        <div class="advisor-msg-name advisor-msg-name-right">@msg.SenderName</div>
+                        <div class="advisor-msg-text">@msg.Text</div>
+                    </div>
+
+                    <div class="advisor-msg-circle advisor-blue">LA</div>
+                </div>
+            }
+            else
+            {
+                <div class="advisor-msg-row advisor-msg-left">
+                    <div class="advisor-msg-circle advisor-purple">AG</div>
+
+                    <div class="advisor-msg-bubble">
+                        <div class="advisor-msg-name">@msg.SenderName.Replace("(me)", "")</div>
+                        <div class="advisor-msg-text">@msg.Text</div>
+                    </div>
+                </div>
+            }
+        }
+
+    </section>
+
+    <!-- Recording buttons -->
+    <section class="advisor-recording-actions">
+
+        <form method="post" asp-action="StartRecording" asp-controller="Advisor">
+            <button type="submit" class="advisor-record-btn advisor-record-start">start recording</button>
+        </form>
+
+        <form method="post" asp-action="StopRecording" asp-controller="Advisor">
+            <button type="submit" class="advisor-record-btn advisor-record-stop">stop recording</button>
+        </form>
+
+    </section>
+
+    <!-- Input -->
+    <section class="advisor-chat-footer">
+        <form method="post" asp-action="SendMessage" asp-controller="Advisor" class="advisor-chat-form">
+            <input type="text" name="message" placeholder="Type here..." class="advisor-chat-input" required />
+            <button type="submit" class="advisor-chat-send">Send</button>
+        </form>
+    </section>
+
+</main>

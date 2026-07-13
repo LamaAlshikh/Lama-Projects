@@ -1,0 +1,54 @@
+﻿@model List<Acadify.Models.FormHistoryItemViewModel>
+@{
+    Layout = "_AdvisorLayout";
+}
+
+<link rel="stylesheet" href="~/css/site.css" />
+
+<div class="history-page">
+    <div class="history-header">
+        <div class="history-title-wrap">
+            <div class="history-icon">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+            <h2 class="history-title">Form History</h2>
+        </div>
+    </div>
+
+    <div class="history-shell">
+        @if (Model == null || !Model.Any())
+        {
+            <div class="history-empty">
+                No saved Form 3 records found.
+            </div>
+        }
+        else
+        {
+            @foreach (var item in Model)
+            {
+                <div class="history-card">
+                    <div class="history-card-left">
+                        <div class="history-doc-icon">
+                            <i class="fa-regular fa-file-lines"></i>
+                        </div>
+
+                        <div class="history-info">
+                            <div class="history-form-name">@item.FormTitle</div>
+                            <div class="history-meta">
+                                <span class="history-status-label">status:</span>
+                                <span class="history-status">@item.Status</span>
+
+                                <span class="history-date-label">date:</span>
+                                <span class="history-date">@item.DateText</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="history-card-right">
+                        <a href="@item.ViewUrl" class="history-view-btn">View</a>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

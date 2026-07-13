@@ -1,0 +1,182 @@
+﻿.advisor-chat-page {
+    height: calc(100vh - 90px);
+    display: flex;
+    flex-direction: column;
+    background: transparent;
+}
+
+/* Header */
+.advisor-chat-header {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 14px 18px;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+    margin-bottom: 15px;
+}
+
+.advisor-chat-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.advisor-chat-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #e8eef6;
+    border: 2px solid #66ACA7;
+}
+
+.advisor-chat-header h2 {
+    font-size: 18px;
+    margin: 0;
+    color: #317FAB;
+    font-weight: 700;
+}
+
+/* Body */
+.advisor-chat-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 6px;
+}
+
+/* Recording line */
+.advisor-chat-recording-line {
+    text-align: center;
+    color: #9a9a9a;
+    font-size: 12px;
+    margin: 14px 0 18px;
+}
+
+/* Message rows */
+.advisor-msg-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 12px 0;
+}
+
+.advisor-msg-left {
+    justify-content: flex-start;
+}
+
+.advisor-msg-right {
+    justify-content: flex-end;
+}
+
+/* Bubbles */
+.advisor-msg-bubble {
+    max-width: 560px;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 10px 12px;
+    border: 2px solid rgba(114, 112, 255, 0.35);
+}
+
+.advisor-msg-right .advisor-msg-bubble {
+    border-color: rgba(49,127,171,0.35);
+}
+
+.advisor-msg-name {
+    font-size: 12px;
+    color: #6b66ff;
+    margin-bottom: 4px;
+}
+
+.advisor-msg-name-right {
+    color: #317FAB;
+    text-align: right;
+}
+
+.advisor-msg-text {
+    font-size: 14px;
+    color: #222;
+    line-height: 1.45;
+}
+
+/* Circles */
+.advisor-msg-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.advisor-blue {
+    background: #2b78b8;
+}
+
+.advisor-purple {
+    background: #8a7dff;
+}
+
+/* Recording buttons */
+.advisor-recording-actions {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.advisor-record-btn {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 999px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.advisor-record-start {
+    background: #43c463;
+}
+
+.advisor-record-stop {
+    background: #ff5c5c;
+}
+
+/* Footer input */
+.advisor-chat-footer {
+    padding-top: 4px;
+}
+
+.advisor-chat-form {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.advisor-chat-input {
+    flex: 1;
+    padding: 14px 18px;
+    border-radius: 999px;
+    border: 2px solid rgba(49,127,171,0.35);
+    outline: none;
+    font-size: 14px;
+    background: #fff;
+}
+
+.advisor-chat-send {
+    padding: 12px 22px;
+    border: none;
+    border-radius: 999px;
+    background: #12889C;
+    color: #fff;
+    cursor: pointer;
+}
+
+    .advisor-chat-send:hover {
+        background: #0f6f7f;
+    }
+.advisor-recording-actions form {
+    margin: 0;
+}

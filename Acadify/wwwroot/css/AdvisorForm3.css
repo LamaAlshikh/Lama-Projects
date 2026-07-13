@@ -1,0 +1,401 @@
+/* =====================================================
+   Advisor Form 3 - Meeting Record
+   Clean version
+===================================================== */
+
+.form3-container {
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 34px 36px 48px;
+    box-sizing: border-box;
+    font-family: "Poppins", Arial, sans-serif;
+}
+
+/* Top header */
+.form3-top {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 20px 26px;
+    margin-bottom: 24px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.form3-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.form3-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #eaf6ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .form3-icon i {
+        color: #1f6fa7;
+        font-size: 18px;
+    }
+
+.form3-title h2 {
+    margin: 0;
+    color: #20232a;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.form3-top-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.form3-top-btn,
+.print-btn {
+    min-height: 42px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 1px solid #b9d8f7;
+    background: #ffffff;
+    color: #1f6fa7;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+    .form3-top-btn:hover,
+    .print-btn:hover {
+        background: #eef7ff;
+    }
+
+/* Success message */
+.form3-msg {
+    background: #e8f5ee;
+    color: #2e8b57;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    margin-bottom: 18px;
+}
+
+/* Main card */
+.form3-card {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 26px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+}
+
+/* Inner paper */
+.form3-paper {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #d9e3ea;
+    border-radius: 18px;
+    padding: 30px;
+    box-sizing: border-box;
+    overflow-x: auto;
+}
+
+.form3-title-center h3 {
+    text-align: center;
+    margin: 0 0 22px;
+    color: #20232a;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* Student info */
+.form3-student-line {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 28px;
+    margin-bottom: 24px;
+}
+
+    .form3-student-line > div {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .form3-student-line label {
+        white-space: nowrap;
+        font-size: 14px;
+        font-weight: 600;
+        color: #20232a;
+    }
+
+.line-input {
+    width: 100%;
+    min-width: 180px;
+    border: none;
+    border-bottom: 1.5px solid #9aa8b3;
+    background: transparent;
+    padding: 6px 8px;
+    outline: none;
+    font-size: 14px;
+}
+
+/* Table */
+.form3-table {
+    width: 100%;
+    min-width: 980px;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 13px;
+    color: #20232a;
+}
+
+    .form3-table th {
+        background: #f3f8fb;
+        color: #20232a;
+        font-weight: 600;
+        text-align: center;
+        padding: 12px 10px;
+        border: 1px solid #b9c8d3;
+        vertical-align: middle;
+    }
+
+    .form3-table td {
+        border: 1px solid #b9c8d3;
+        padding: 12px 10px;
+        vertical-align: top;
+        background: #ffffff;
+    }
+
+        .form3-table th:nth-child(1),
+        .form3-table td:nth-child(1) {
+            width: 80px;
+        }
+
+        .form3-table th:nth-child(2),
+        .form3-table td:nth-child(2) {
+            width: 170px;
+        }
+
+        .form3-table th:nth-child(3),
+        .form3-table td:nth-child(3) {
+            width: 170px;
+        }
+
+        .form3-table th:nth-child(4),
+        .form3-table td:nth-child(4) {
+            width: 260px;
+        }
+
+        .form3-table th:nth-child(5),
+        .form3-table td:nth-child(5) {
+            width: 300px;
+        }
+
+.center {
+    text-align: center;
+    font-weight: 600;
+    vertical-align: middle !important;
+}
+
+/* Inputs inside table */
+.cell-input,
+.cell-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #cbd8e0;
+    border-radius: 8px;
+    background: #ffffff;
+    outline: none;
+    font-size: 13px;
+}
+
+.cell-input {
+    min-height: 38px;
+    padding: 8px 10px;
+}
+
+.cell-textarea {
+    min-height: 110px;
+    padding: 10px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.check-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin: 8px 0;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+    .check-row input {
+        width: auto;
+        margin: 0;
+    }
+
+.mini-field {
+    display: grid;
+    grid-template-columns: 58px 1fr;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+    .mini-field span {
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+.initials {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #4b5563;
+}
+
+/* Bottom buttons */
+.form3-actions {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.btn-primary-wide,
+.btn-save,
+.btn-light {
+    min-width: 150px;
+    min-height: 44px;
+    padding: 11px 20px;
+    border-radius: 999px;
+    border: none;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-primary-wide {
+    min-width: 270px;
+    background: #12889c;
+    color: #ffffff;
+}
+
+.btn-save {
+    background: #66aca7;
+    color: #ffffff;
+}
+
+.btn-light {
+    background: #f2f5f7;
+    color: #20232a;
+    border: 1px solid #d8e1e8;
+}
+
+    .btn-primary-wide:hover,
+    .btn-save:hover,
+    .btn-light:hover {
+        opacity: 0.92;
+    }
+
+/* Responsive */
+@media (max-width: 992px) {
+    .form3-container {
+        padding: 24px 20px 40px;
+    }
+
+    .form3-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .form3-student-line {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Print */
+@media print {
+    body * {
+        visibility: hidden !important;
+    }
+
+    .form3-paper,
+    .form3-paper * {
+        visibility: visible !important;
+    }
+
+    .form3-paper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 20px !important;
+        border: none !important;
+        box-shadow: none !important;
+        background: #ffffff !important;
+        overflow: visible !important;
+    }
+
+    .form3-top,
+    .form3-actions,
+    .form3-msg,
+    .advisor-sidebar,
+    .topbar-notif-btn,
+    .print-btn,
+    .form3-top-btn {
+        display: none !important;
+    }
+
+    .form3-card,
+    .form3-container {
+        background: transparent !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: visible !important;
+    }
+
+    .form3-table {
+        width: 100% !important;
+        min-width: 0 !important;
+        border-collapse: collapse !important;
+        font-size: 11px !important;
+    }
+
+        .form3-table tr,
+        .form3-table td,
+        .form3-table th {
+            page-break-inside: avoid !important;
+        }
+
+    @page {
+        size: A4 landscape;
+        margin: 10mm;
+    }
+}

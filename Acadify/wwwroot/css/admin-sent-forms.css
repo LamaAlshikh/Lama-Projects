@@ -1,0 +1,255 @@
+﻿html,
+body {
+    height: 100%;
+}
+
+.admin-forms-page {
+    width: 100%;
+    height: 100vh;
+    padding: 30px;
+    padding-bottom: 60px;
+    background: #f8fbfd;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.admin-forms-page {
+    width: 100%;
+    padding: 30px;
+    background: #f8fbfd;
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
+}
+
+.advisor-forms-card {
+    background: #ffffff;
+    border: 1px solid #9fd7f5;
+    border-radius: 16px;
+    margin-bottom: 22px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(20, 129, 178, 0.06);
+}
+
+.advisor-forms-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 26px;
+    border-bottom: 1px solid #e4f3fb;
+    background: #ffffff;
+}
+
+.advisor-forms-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.advisor-forms-avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.advisor-forms-info h3 {
+    color: #1d1d1d;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.advisor-forms-info p {
+    color: #8a8f98;
+    font-size: 14px;
+    margin: 5px 0 0;
+}
+
+.advisor-forms-count {
+    background: #eaf7fd;
+    color: #1481b2;
+    border: 1px solid #9fd7f5;
+    border-radius: 30px;
+    padding: 8px 18px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.forms-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.forms-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .forms-table thead {
+        background: #f4fbff;
+    }
+
+    .forms-table th {
+        color: #6f747c;
+        font-size: 14px;
+        font-weight: 700;
+        padding: 17px 22px;
+        border-bottom: 1px solid #e4f3fb;
+        white-space: nowrap;
+    }
+
+    .forms-table td {
+        color: #1d1d1d;
+        font-size: 14px;
+        padding: 18px 22px;
+        border-bottom: 1px solid #eef6fb;
+        vertical-align: middle;
+    }
+
+    .forms-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .forms-table tbody tr:hover {
+        background: #fbfdff;
+    }
+
+.form-title-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+
+.form-type-text {
+    color: #1481b2;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.form-name-text {
+    color: #1d1d1d;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.student-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+    .student-cell span {
+        color: #1d1d1d;
+        font-weight: 500;
+    }
+
+    .student-cell small {
+        color: #9a9fa7;
+        font-size: 12px;
+    }
+
+.forms-actions-head {
+    text-align: center;
+}
+
+.forms-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.forms-action-btn {
+    min-width: 88px;
+    height: 40px;
+    border-radius: 14px;
+    border: none;
+    outline: none;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.print-form-btn {
+    background: #1481b2;
+    color: #ffffff;
+    box-shadow: 0 8px 16px rgba(20, 129, 178, 0.2);
+}
+
+    .print-form-btn:hover {
+        background: #0f729e;
+    }
+
+.admin-empty-forms {
+    background: #ffffff;
+    border: 1px solid #9fd7f5;
+    border-radius: 18px;
+    padding: 45px 25px;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(20, 129, 178, 0.06);
+}
+
+    .admin-empty-forms i {
+        color: #1481b2;
+        font-size: 42px;
+        margin-bottom: 14px;
+    }
+
+    .admin-empty-forms h4 {
+        color: #333333;
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .admin-empty-forms p {
+        color: #8a8f98;
+        font-size: 15px;
+        margin: 0;
+    }
+
+@media (max-width: 900px) {
+    .advisor-forms-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .forms-actions {
+        justify-content: flex-start;
+    }
+}
+
+@media print {
+    .admin-sidebar,
+    .forms-actions {
+        display: none !important;
+    }
+
+    .admin-content {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .admin-forms-page {
+        background: #ffffff;
+        padding: 0;
+    }
+
+    .advisor-forms-card {
+        box-shadow: none;
+        border: 1px solid #cccccc;
+    }
+}
+.admin-content {
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}

@@ -1,0 +1,32 @@
+# Visual Studio / .NET
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Local secrets and environment files
+.env
+.env.*
+secrets.json
+appsettings.Local.json
+appsettings.*.Local.json
+
+# Runtime-generated files and private uploads
+wwwroot/uploads/*
+!wwwroot/uploads/.gitkeep
+!wwwroot/uploads/transcripts/
+!wwwroot/uploads/transcripts/.gitkeep
+!wwwroot/uploads/study-plan/
+!wwwroot/uploads/study-plan/.gitkeep
+wwwroot/debug_*.txt
+
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db

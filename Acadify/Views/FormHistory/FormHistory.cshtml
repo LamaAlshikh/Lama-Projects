@@ -1,0 +1,82 @@
+﻿@model Acadify.ViewModels.FormHistoryVM
+
+@{
+    Layout = "_AdvisorLayout";
+
+    string GetFriendlyFormName(string? formType)
+    {
+        var value = (formType ?? "").Trim().ToUpper().Replace(" ", "");
+
+        return value switch
+        {
+            "FORM1" or "ACADEMICADVISINGFORM" => "Form 1",
+            "FORM2" or "NEXTSEMESTERCOURSESELECTIONFORM" or "COURSESELECTIONFORM" => "Form 2",
+            "FORM3" or "MEETINGFORM" or "MEETINGRECORDFORM" => "Form 3",
+            "FORM4" or "STUDYPLANMATCHINGFORM" => "Form 4",
+            "FORM5" or "GRADUATIONPROJECTELIGIBILITYFORM" => "Form 5",
+            _ => "Form"
+        };
+    }
+
+    var friendlyFormName = GetFriendlyFormName(Model?.FormType);
+    var emptyMessage = $"No saved {friendlyFormName} records found.";
+}
+
+<link rel="stylesheet" href="~/css/site2.css" />
+<link rel="stylesheet" href="~/css/form-history.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<div class="fh-page">
+
+    <div class="fh-header">
+        <div class="fh-circle">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+        <h2>Form History</h2>
+    </div>
+
+    @if (Model == null || Model.Forms == null || !Model.Forms.Any())
+    {
+        <div class="fh-empty">
+            @emptyMessage
+        </div>
+    }
+    else
+    {
+        <div class="fh-list">
+            @foreach (var item in Model.Forms)
+            {
+                <div class="fh-row">
+                    <div class="fh-left">
+                        <div class="fh-circle small">
+                            <i class="fa-regular fa-file-lines"></i>
+                        </div>
+
+                        <div class="fh-info">
+                            <div class="fh-title">@item.FormType</div>
+
+                            <div class="fh-meta">
+                                <span class="fh-meta-label">status:</span>
+                                <span class="fh-meta-status">@item.FormStatus</span>
+
+                                <span class="fh-meta-label fh-date-label">date:</span>
+                                <span class="fh-meta-date">@item.FormDate.ToString("MMM d, yyyy")</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fh-right">
+                        <a class="fh-view-btn"
+                               asp-controller="FormHistory"
+                               asp-action="ViewForm"
+                               asp-route-id="@item.FormId"
+                               asp-route-formType="@item.FormType">
+                            View
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+</div>

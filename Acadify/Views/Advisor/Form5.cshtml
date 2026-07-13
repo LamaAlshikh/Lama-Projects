@@ -1,0 +1,109 @@
+﻿@model Acadify.Models.Db.GraduationProjectEligibilityForm
+@{
+    Layout = "_AdvisorLayout";
+}
+<link rel="stylesheet" href="~/css/site.css" />
+
+<div class="form5-container">
+
+    <!-- Header -->
+    <div class="form5-header">
+        <div class="form5-title">
+            <i class="fa-solid fa-file-lines"></i>
+            <h2>Graduation Project Eligibility (Form 5)</h2>
+        </div>
+
+        <div class="form5-header-actions">
+            <a asp-controller="FormHistory"
+                   asp-action="FormHistory"
+                   asp-route-studentId="@Model.StudentId"
+                   asp-route-formType="Form 5"
+                   class="btn-history">
+                <i class="fa-solid fa-clock-rotate-left"></i> History
+            </a>
+
+            <button class="print-btn" onclick="window.print()">
+                <i class="fa-solid fa-print"></i>
+                Print
+            </button>
+        </div>
+    </div>
+
+    <!-- Student Info -->
+    <div class="form5-info">
+        <p><strong>Student Name:</strong> @Model.StudentName</p>
+        <p><strong>Student ID:</strong> @Model.StudentId</p>
+    </div>
+
+    <!-- Completed Courses -->
+    <div class="form5-section">
+        <h4>The Student Has Completed The Following Courses:</h4>
+
+        <ul class="course-list">
+            <li class="course-item">
+                <span>CPIS 351 – Analysis & Design II</span>
+                <i class="fa-solid @(Model.CPIS351 ? "fa-check completed" : "fa-xmark not-completed")"></i>
+            </li>
+
+            <li class="course-item">
+                <span>CPIS 358 – Internet Application & Web Programming</span>
+                <i class="fa-solid @(Model.CPIS358 ? "fa-check completed" : "fa-xmark not-completed")"></i>
+            </li>
+
+            <li class="course-item">
+                <span>CPIS 323 – Summer Training</span>
+                <i class="fa-solid @(Model.CPIS323 ? "fa-check completed" : "fa-xmark not-completed")"></i>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Registered / Expected Courses -->
+    <div class="form5-section">
+        <h4>The Student Has Completed or Registered For The Following Courses:</h4>
+
+        <ul class="course-list">
+            <li class="course-item">
+                <span>CPIS 360 – Introduction to E-Business Systems</span>
+                <i class="fa-solid @(Model.CPIS380 ? "fa-check completed" : "fa-xmark not-completed")"></i>
+            </li>
+
+            <li class="course-item">
+                <span>CPIS 375 – Software Quality & Testing</span>
+                <i class="fa-solid @(Model.CPIS357 ? "fa-check completed" : "fa-xmark not-completed")"></i>
+            </li>
+
+            <li class="course-item">
+                <span>CPIS 342 – Data Mining & Warehousing</span>
+                <i class="fa-solid @(Model.CPIS342 ? "fa-check completed" : "fa-xmark not-completed")"></i>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Eligibility -->
+    <div class="eligibility-status @(Model.IsEligible ? "eligible" : "not-eligible")">
+        @(Model.IsEligible ? "The Student Is Eligible to Register Graduation Project"
+                           : "The Student Is Not Eligible to Register Graduation Project")
+    </div>
+
+    <!-- Actions -->
+    <form method="post" class="form5-actions">
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" name="formId" value="@Model.FormId" />
+
+        <button type="submit"
+                formaction="@Url.Action("SendToAdvisingCommittee", "GraduationProjectEligibility")"
+                class="btn-send-committee">
+            Send To The Advising Committee
+        </button>
+
+        <button type="submit"
+                name="status"
+                value="Updated"
+                formaction="@Url.Action("UpdateStatus", "GraduationProjectEligibility")"
+                class="btn-form5-save">
+            Save
+        </button>
+    </form>
+
+</div>

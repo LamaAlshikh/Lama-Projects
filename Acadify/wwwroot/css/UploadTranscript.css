@@ -1,0 +1,112 @@
+﻿.student-content {
+    padding: 40px;
+}
+
+.upload-card {
+    background: #fff;
+    padding: 60px 40px;
+    border-radius: 18px;
+    width: 850px;
+    margin: 30px auto;
+}
+
+    .upload-card h2 {
+        font-size: 26px;
+        font-weight: 700;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+        .upload-card h2 span {
+            color: #12889C;
+        }
+
+.drop-box {
+    border: 2px dashed #76BAA5;
+    border-radius: 12px;
+    padding: 45px;
+    width: 520px;
+    margin: 0 auto 20px auto;
+    background: #fbfbfb;
+    text-align: center;
+}
+
+.cloud-icon {
+    font-size: 55px;
+    color: #12889C;
+    margin-bottom: 15px;
+}
+
+.small-text {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.browse-link {
+    color: #12889C;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#fileUpload {
+    display: none;
+}
+
+.format-text {
+    color: #d9534f;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.upload-btn {
+    display: block;
+    margin: 0 auto;
+    background: #12889C;
+    color: #fff;
+    padding: 12px 70px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+}
+
+    .upload-btn:hover {
+        background: #0f6f7f;
+    }
+
+    .upload-btn:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+
+.upload-page .student-sidebar {
+    width: 120px !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+}
+
+    .upload-page .student-sidebar * {
+        display: none !important;
+    }
+
+.upload-page .main-background-box {
+    margin-left: 30px !important;
+}
+
+.selected-file {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #12889C;
+    text-align: center;
+    word-break: break-word;
+}
+
+.
+
+.text-success,
+.text-danger {
+    display: none !important;
+}

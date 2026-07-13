@@ -1,0 +1,82 @@
+﻿@model List<Acadify.Models.NotificationViewModel>
+
+<div class="notif-overlay" id="notifOverlay" onclick="closeNotifications(event)">
+    <aside class="notif-panel" onclick="event.stopPropagation()">
+        <div class="notif-header">
+            <h2 class="notif-title">Notifications</h2>
+            <button type="button" class="notif-close" onclick="closeNotifications(event)">×</button>
+        </div>
+
+        <hr class="notif-divider" />
+
+        <div class="notif-list">
+            @if (Model == null || !Model.Any())
+            {
+                <div class="notif-empty">
+                    No notifications yet.
+                </div>
+            }
+            else
+            {
+                foreach (var n in Model)
+                {
+                    var isDisplayOnly = string.IsNullOrWhiteSpace(n.TargetUrl) || n.TargetUrl == "#";
+
+                    <a class="notif-item @(isDisplayOnly ? "notif-item-display-only" : "")"
+                           href="@(isDisplayOnly ? "javascript:void(0)" : n.TargetUrl)">
+
+                        <div class="notif-avatar">
+                            <span>@GetInitials(n)</span>
+                        </div>
+
+                        <div class="notif-body">
+                            <div class="notif-title-row">
+                                <span class="notif-item-title">@n.Title</span>
+
+                                @if (!n.IsRead)
+                                {
+                                    <span class="notif-unread-dot"></span>
+                                }
+                            </div>
+
+                            <div class="notif-desc">@n.NotificationContent</div>
+                            <div class="notif-time">@n.TimeAgo</div>
+                        </div>
+
+                        @if (!isDisplayOnly)
+                        {
+                            <span class="notif-arrow">›</span>
+                        }
+                    </a>
+                }
+            }
+        </div>
+    </aside>
+</div>
+
+@functions {
+    string GetInitials(Acadify.Models.NotificationViewModel notification)
+    {
+        if (!string.IsNullOrWhiteSpace(notification.Initials))
+            return notification.Initials;
+
+        return BuildInitialsFromTitle(notification.Title);
+    }
+
+    string BuildInitialsFromTitle(string title)
+    {
+        if (string.IsNullOrWhiteSpace(title))
+            return "SY";
+
+        var words = title
+            .Trim()
+            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+            .Take(2)
+            .ToList();
+
+        if (words.Count == 0)
+            return "SY";
+
+        return string.Join("", words.Select(w => w[0].ToString().ToUpper()));
+    }
+}

@@ -1,0 +1,240 @@
+@model List<Acadify.Models.StudentFormsVM>
+
+@{
+    Layout = "_AdvisorLayout";
+    ViewData["Title"] = "Student Forms";
+
+    int studentId = ViewBag.StudentId != null ? (int)ViewBag.StudentId : 0;
+    var studentName = ViewBag.StudentName as string ?? "Student";
+    var forms = Model ?? new List<Acadify.Models.StudentFormsVM>();
+
+    bool transcriptMissing = ViewBag.TranscriptMissing != null && (bool)ViewBag.TranscriptMissing;
+    string transcriptMessage = ViewBag.TranscriptMessage as string ?? "The student has not uploaded the transcript yet.";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successToast" class="success-toast">
+        <span>@TempData["SuccessMessage"]</span>
+    </div>
+}
+
+<div class="studentforms-page">
+    <div class="app">
+        <main class="main">
+
+            <div class="topbar">
+                <div class="user-line">
+                    <div class="mini logo">
+                        <img src="~/images/user.png" alt="Logo" />
+                    </div>
+                    <h2>@studentName</h2>
+                </div>
+            </div>
+
+            <section class="panel">
+
+                @if (transcriptMissing)
+                {
+                    <div style="min-height: 520px; width: 100%; display: flex; align-items: center; justify-content: center; text-align: center;">
+                        <div style="max-width: 520px;">
+                            <div class="icon-wrap" style="margin: 0 auto 22px auto;">
+                                <div class="icon-inner">
+                                    <i class="fa-regular fa-file-lines"></i>
+                                </div>
+                            </div>
+
+                            <h3 style="font-size: 24px; font-weight: 700; color: #317FAB; margin-bottom: 12px;">
+                                Transcript Not Uploaded
+                            </h3>
+
+                            <p style="font-size: 17px; color: #555; line-height: 1.7; margin: 0;">
+                                @transcriptMessage
+                            </p>
+
+                            <p style="font-size: 15px; color: #888; margin-top: 10px;">
+                                The forms will be available after the student uploads the transcript.
+                            </p>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="grid">
+                        @foreach (var form in forms.Take(3))
+                        {
+                            <div class="student-form-card">
+
+                                <div class="icon-wrap">
+                                    <div class="icon-inner">
+                                        <i class="fa-regular fa-file-lines"></i>
+                                    </div>
+                                </div>
+
+                                <h3>@form.FormTitle</h3>
+
+                                <div class="form-id">(Form @form.FormId)</div>
+
+                                <div class="actions">
+
+                                    <a asp-controller="Advisor"
+                                           asp-action="ViewForm"
+                                           asp-route-studentId="@studentId"
+                                           asp-route-formId="@form.FormId"
+                                           class="action-btn">
+                                        <i class="fa-regular fa-eye"></i>
+                                        <span>View</span>
+                                    </a>
+
+                                    <button type="button"
+                                            class="action-btn external-print-btn"
+                                            data-print-url="@Url.Action("ViewForm", "Advisor", new { studentId = studentId, formId = form.FormId })">
+                                        <i class="fa-solid fa-print"></i>
+                                        <span>Print</span>
+                                    </button>
+
+                                    <form asp-controller="Advisor"
+                                          asp-action="SendForm"
+                                          method="post">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="studentId" value="@studentId" />
+                                        <input type="hidden" name="formId" value="@form.FormId" />
+
+                                        <button type="submit" class="action-btn">
+                                            <i class="fa-regular fa-paper-plane"></i>
+                                            <span>Send</span>
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="grid bottom">
+                        @foreach (var form in forms.Skip(3))
+                        {
+                            <div class="student-form-card">
+
+                                <div class="icon-wrap">
+                                    <div class="icon-inner">
+                                        <i class="fa-regular fa-file-lines"></i>
+                                    </div>
+                                </div>
+
+                                <h3>@form.FormTitle</h3>
+
+                                <div class="form-id">(Form @form.FormId)</div>
+
+                                <div class="actions">
+
+                                    <a asp-controller="Advisor"
+                                           asp-action="ViewForm"
+                                           asp-route-studentId="@studentId"
+                                           asp-route-formId="@form.FormId"
+                                           class="action-btn">
+                                        <i class="fa-regular fa-eye"></i>
+                                        <span>View</span>
+                                    </a>
+
+                                    <button type="button"
+                                            class="action-btn external-print-btn"
+                                            data-print-url="@Url.Action("ViewForm", "Advisor", new { studentId = studentId, formId = form.FormId })">
+                                        <i class="fa-solid fa-print"></i>
+                                        <span>Print</span>
+                                    </button>
+
+                                    <form asp-controller="Advisor"
+                                          asp-action="SendForm"
+                                          method="post">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="studentId" value="@studentId" />
+                                        <input type="hidden" name="formId" value="@form.FormId" />
+
+                                        <button type="submit" class="action-btn">
+                                            <i class="fa-regular fa-paper-plane"></i>
+                                            <span>Send</span>
+                                        </button>
+                                    </form>
+
+                                </div>
+
+                            </div>
+                        }
+                    </div>
+                }
+
+            </section>
+
+        </main>
+    </div>
+</div>
+
+<script>
+    setTimeout(function () {
+        var toast = document.getElementById("successToast");
+        if (toast) {
+            toast.remove();
+        }
+    }, 3000);
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".external-print-btn").forEach(function (button) {
+            button.addEventListener("click", function () {
+                const printUrl = button.getAttribute("data-print-url");
+
+                if (!printUrl) {
+                    return;
+                }
+
+                const oldFrame = document.getElementById("externalPrintFrame");
+                if (oldFrame) {
+                    oldFrame.remove();
+                }
+
+                const frame = document.createElement("iframe");
+                frame.id = "externalPrintFrame";
+                frame.src = printUrl;
+
+                frame.style.position = "fixed";
+                frame.style.left = "-10000px";
+                frame.style.top = "0";
+                frame.style.width = "1200px";
+                frame.style.height = "900px";
+                frame.style.border = "0";
+                frame.style.opacity = "0";
+                frame.style.pointerEvents = "none";
+
+                document.body.appendChild(frame);
+
+                frame.onload = function () {
+                    setTimeout(function () {
+                        try {
+                            frame.contentWindow.focus();
+                            frame.contentWindow.print();
+                        } catch (error) {
+                            console.error("Print failed:", error);
+                        }
+
+                        try {
+                            frame.contentWindow.addEventListener("afterprint", function () {
+                                frame.remove();
+                            });
+                        } catch (error) {
+                            console.error("afterprint listener failed:", error);
+                        }
+
+                        setTimeout(function () {
+                            if (document.body.contains(frame)) {
+                                frame.remove();
+                            }
+                        }, 60000);
+
+                    }, 1000);
+                };
+            });
+        });
+    });
+</script>

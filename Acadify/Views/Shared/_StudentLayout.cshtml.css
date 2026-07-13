@@ -1,0 +1,289 @@
+<<<<<<< HEAD
+﻿/* ============================= */
+/* Student Layout - Final Clean */
+/* ============================= */
+
+body.main-layout {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #ffffff;
+    overflow-x: hidden;
+}
+
+.student-layout {
+    display: flex;
+    min-height: 100vh;
+    background: #ffffff;
+}
+
+/* Sidebar */
+.student-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    padding: 28px 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, #8fc7b5 0%, #2f80c3 100%);
+    color: #ffffff;
+    z-index: 1000;
+    border-radius: 0 0 28px 0;
+}
+
+    .student-sidebar,
+    .student-sidebar * {
+        color: #ffffff !important;
+        box-sizing: border-box;
+    }
+
+/* Profile */
+.student-profile {
+    text-align: center;
+    margin-bottom: 38px;
+}
+
+.profile-top {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.student-avatar {
+    width: 138px;
+    height: 138px;
+    border-radius: 50%;
+    background: #ffffff;
+    padding: 8px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+}
+
+.topbar-notif-btn {
+    position: absolute;
+    top: 6px;
+    right: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+    .topbar-notif-btn i {
+        font-size: 20px;
+        color: #ffffff !important;
+    }
+
+.student-profile h4 {
+    margin: 8px 0 4px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.student-profile p {
+    margin: 0;
+    font-size: 13px;
+    color: #eef7ff !important;
+}
+
+/* Menu */
+.student-menu {
+    list-style: none;
+    margin: 26px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+    .student-menu li {
+        margin: 0;
+        padding: 0;
+    }
+
+        .student-menu li a,
+        .student-menu li a:link,
+        .student-menu li a:visited,
+        .student-menu li a:hover,
+        .student-menu li a:active {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            padding: 16px 18px;
+            border-radius: 18px;
+            text-decoration: none !important;
+            color: #ffffff !important;
+            font-size: 16px;
+            font-weight: 500;
+            background: transparent;
+        }
+
+            .student-menu li a i {
+                width: 24px;
+                text-align: center;
+                font-size: 19px;
+            }
+
+            .student-menu li.active a,
+            .student-menu li a:hover {
+                background: rgba(255, 255, 255, 0.16);
+            }
+
+/* Logout */
+.logout {
+    margin-top: auto;
+    padding-top: 20px;
+}
+
+    .logout a,
+    .logout a:link,
+    .logout a:visited,
+    .logout a:hover,
+    .logout a:active {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        width: 100%;
+        padding: 16px 18px;
+        border-radius: 18px;
+        text-decoration: none !important;
+        color: #ffffff !important;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+        .logout a i {
+            width: 24px;
+            text-align: center;
+            font-size: 19px;
+        }
+
+        .logout a:hover {
+            background: rgba(255, 255, 255, 0.16);
+        }
+
+/* Main area */
+.main-background-box {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+    min-height: 100vh;
+    padding: 26px;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+
+.page-content {
+    width: 100%;
+    min-height: calc(100vh - 52px);
+    background: #f3f3f3;
+    border-radius: 32px;
+    padding: 34px 40px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .student-sidebar {
+        width: 240px;
+    }
+
+    .main-background-box {
+        margin-left: 240px;
+        width: calc(100% - 240px);
+    }
+
+    .student-avatar {
+        width: 110px;
+        height: 110px;
+    }
+}
+
+@media (max-width: 768px) {
+    .student-layout {
+        display: block;
+    }
+
+    .student-sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        border-radius: 0;
+    }
+
+    .main-background-box {
+        margin-left: 0;
+        width: 100%;
+        padding: 18px;
+    }
+
+    .page-content {
+        min-height: auto;
+        padding: 24px;
+    }
+=======
+﻿/* Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+a {
+  color: #0077cc;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+>>>>>>> origin_second/linaLMversion
+}
+
+
+
+
+
+
+
+
+
+

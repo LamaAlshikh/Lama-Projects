@@ -1,0 +1,80 @@
+@model Acadify.Models.StudentHomeViewModel
+
+@{
+    Layout = "_StudentLayout";
+    ViewData["Title"] = "Student Home";
+    ViewBag.BodyClass = "student-home-page";
+}
+
+<link rel="stylesheet" href="~/css/student-home.css" asp-append-version="true" />
+<main class="student-content">
+
+    <!-- Graduation Status -->
+    <section class="graduation-box">
+        <h3>Graduation status</h3>
+
+        <div class="progress-bar">
+            <div class="progress-fill" style="width:@(Model.ProgressPercentage)%"></div>
+        </div>
+
+        <div class="status-labels">
+            <span class="begin">Beginning</span>
+            <span class="current">@Model.CurrentStatus</span>
+            <span class="near">Near Graduation</span>
+        </div>
+    </section>
+
+    <!-- Cards -->
+    <section class="cards">
+
+        <!-- Course Recommendation -->
+        <div class="card">
+            <div class="icon">
+                <i class="fa-solid fa-clipboard-list"></i>
+            </div>
+
+            <h4>Course Recommendation</h4>
+            <p>Need support in selecting your courses?</p>
+
+            <a asp-controller="Student"
+                   asp-action="CourseRecommendation"
+                   class="btn-outline">
+                View Recommendation
+            </a>
+        </div>
+
+        <!-- Meeting card opens Chat page -->
+        <div class="card highlight">
+            <div class="icon">
+                <i class="fa-solid fa-calendar-check"></i>
+            </div>
+
+            <h4>REQUEST MEETING</h4>
+            <p>Do you want to request a meeting with your advisor?</p>
+
+            <a asp-controller="Student"
+                   asp-action="Chat"
+                   class="btn-white">
+                New Request
+            </a>
+        </div>
+
+        <!-- Community -->
+        <div class="card">
+            <div class="icon">
+                <i class="fa-solid fa-users"></i>
+            </div>
+
+            <h4>JOIN COMMUNITY</h4>
+            <p>Join now to start learning, asking, and collaborating.</p>
+
+            <a asp-controller="Student"
+                   asp-action="CommunityStudent"
+                   class="btn-outline">
+                View Community
+            </a>
+        </div>
+
+    </section>
+
+</main>

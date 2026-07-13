@@ -1,0 +1,218 @@
+@model Acadify.Models.Form4ViewModel
+
+@{
+    Layout = "_AdvisorLayout";
+    ViewData["Title"] = "Study Plan Matching";
+}
+
+<link rel="stylesheet" href="~/css/site.css" />
+
+<div class="form4-container">
+
+    <!-- Header -->
+    <div class="form4-header">
+        <div class="form4-title">
+            <i class="fa-solid fa-file-lines form4-title-icon"></i>
+            <div>
+                <h2>Study Plan Matching (Form 4)</h2>
+            </div>
+        </div>
+
+        <div class="form4-header-actions">
+            
+            <a asp-controller="FormHistory"
+                   asp-action="FormHistory"
+                   asp-route-studentId="@Model.StudentId"
+                   asp-route-formType="Form 4"
+                   class="btn-history">
+                <i class="fa-solid fa-clock-rotate-left"></i> History
+            </a>
+
+
+            <button type="button" onclick="printForm()" class="print-btn">
+                <i class="fa fa-print"></i> Print
+            </button>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="form4-msg">@TempData["Success"]</div>
+    }
+
+    <form method="post" asp-controller="Advisor">
+        @Html.AntiForgeryToken()
+
+        <input asp-for="StudentId" type="hidden" />
+        <input asp-for="StudentName" type="hidden" />
+        <input asp-for="Status" type="hidden" />
+        <input asp-for="EarnedHours" type="hidden" />
+        <input asp-for="RegisteredHours" type="hidden" />
+        <input asp-for="UniversityReqHours" type="hidden" />
+        <input asp-for="PrepYearReqHours" type="hidden" />
+        <input asp-for="FreeCoursesHours" type="hidden" />
+        <input asp-for="CollegeMandatoryHours" type="hidden" />
+        <input asp-for="DeptMandatoryHours" type="hidden" />
+        <input asp-for="DeptElectiveHours" type="hidden" />
+        <input asp-for="TotalHours" type="hidden" />
+
+        <div class="form4-paper" dir="rtl">
+
+            <h3 class="f4-title">تقرير عن مطابقة الخطة الدراسية</h3>
+
+            <p class="f4-paragraph">
+                أفيدكم بأن الطالبة/
+                <span class="f4-line">@Model.StudentName</span>
+                ذو الرقم الجامعي
+                <span class="f4-line">@Model.StudentId</span>
+                لديها عدد ساعات
+                <span class="f4-num">@Model.EarnedHours</span>
+                مكتسبة.
+                حيث أن الطالبة أنهت أو مسجلة حالياً التالي:
+            </p>
+
+            <div class="f4-list">
+                <div>(@Model.UniversityReqHours) ساعة متطلبات جامعة</div>
+                <div>(@Model.PrepYearReqHours) ساعة متطلبات السنة التحضيرية</div>
+                <div>(@Model.FreeCoursesHours) ساعات مواد حرة</div>
+                <div>(@Model.CollegeMandatoryHours) ساعة متطلبات الكلية الإجبارية</div>
+                <div>(@Model.DeptMandatoryHours) ساعة مواد القسم الإجبارية</div>
+                <div>(@Model.DeptElectiveHours) ساعات مواد القسم الاختيارية</div>
+            </div>
+
+            <p class="f4-paragraph">
+                وذلك يعني أن مجموع ساعاتها
+                <span class="f4-num">(@Model.TotalHours)</span>
+                ساعة.
+            </p>
+
+            @if (Model.PendingCourses != null && Model.PendingCourses.Any())
+            {
+                <div class="form4-equivalency-box" dir="ltr">
+                    <h3 class="form4-equivalency-title">Courses Requiring Advisor Decision</h3>
+
+                    <div class="form4-equivalency-list">
+                        @for (int i = 0; i < Model.PendingCourses.Count; i++)
+                        {
+                            <div class="course-decision-card">
+                                <div class="course-decision-info">
+                                    <span class="course-title">
+                                        @Model.PendingCourses[i].TranscriptCourseId
+                                        (@Model.PendingCourses[i].Hours hours)
+                                    </span>
+                                </div>
+
+                                <input type="hidden" asp-for="PendingCourses[i].TranscriptCourseId" />
+                                <input type="hidden" asp-for="PendingCourses[i].TranscriptCourseName" />
+                                <input type="hidden" asp-for="PendingCourses[i].Hours" />
+
+                                <div class="course-decision-controls">
+                                    <select asp-for="PendingCourses[i].DecisionType" class="decision-type-select">
+                                        <option value="">-- Select Decision --</option>
+                                        <option value="FreeElective">Free Elective</option>
+                                        <option value="EquivalentToPlan">Equivalent to IS Course</option>
+                                    </select>
+
+                                    <select asp-for="PendingCourses[i].EquivalentCourseId" class="equivalent-course-select">
+                                        <option value="">-- Select Equivalent Course --</option>
+                                        @if (Model.PlanCourseOptions != null)
+                                        {
+                                            @foreach (var course in Model.PlanCourseOptions)
+                                            {
+                                                <option value="@course.CourseId">
+                                                    @course.CourseId - @course.CourseName
+                                                </option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="form4-equivalency-actions">
+                        <button type="submit"
+                                class="btn-approve-free"
+                                formaction="@Url.Action("ApproveFreeCourses", "Advisor")">
+                            <i class="fa-solid fa-check"></i>
+                            Confirm
+                        </button>
+                    </div>
+                </div>
+            }
+
+            <div class="f4-notes-section">
+                <label class="f4-notes-title" for="AdvisorNotesBox">ملحوظات إن وجدت:</label>
+
+                <div class="f4-notes-box">
+                    <textarea id="AdvisorNotesBox"
+                              asp-for="AdvisorNotes"
+                              class="f4-notes-textarea"></textarea>
+                </div>
+            </div>
+
+            <div class="f4-sign">
+                <div class="f4-sign-label">@Model.AdvisorNameLabel</div>
+
+                <div class="f4-sign-row">
+                    <span>الاسم:</span>
+                    <input asp-for="AdvisorName" class="f4-sign-input" />
+                </div>
+
+                <div class="f4-sign-row">
+                    <span>التوقيع:</span>
+                    <input asp-for="AdvisorSignature" class="f4-sign-input" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form4-actions">
+            <button type="submit"
+                    class="btn-send"
+                    formaction="@Url.Action("SendForm4", "Advisor")">
+                Send To The Advising Committee
+            </button>
+
+            <button type="submit"
+                    class="btn-save"
+                    formaction="@Url.Action("SaveForm4", "Advisor")">
+                Save
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+    function printForm() {
+        window.print();
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const rows = document.querySelectorAll(".course-decision-card");
+
+        rows.forEach(row => {
+            const decisionSelect = row.querySelector(".decision-type-select");
+            const equivalentSelect = row.querySelector(".equivalent-course-select");
+
+            function toggleEquivalent() {
+                if (!decisionSelect || !equivalentSelect) return;
+
+                if (decisionSelect.value === "EquivalentToPlan") {
+                    equivalentSelect.style.display = "inline-block";
+                } else {
+                    equivalentSelect.value = "";
+                    equivalentSelect.style.display = "none";
+                }
+            }
+
+            toggleEquivalent();
+
+            if (decisionSelect) {
+                decisionSelect.addEventListener("change", toggleEquivalent);
+            }
+        });
+    });
+</script>
