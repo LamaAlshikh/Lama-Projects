@@ -1,0 +1,177 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@*
+---------------------------------------------------------------
+الصفحة: إدارة المستخدمين (Users Management)
+الوصف: عرض قائمة المستخدمين مع أدوات التصفية والتعديل والحذف
+Page: Users Management
+Description: Display user list with filtering, editing, and deleting options
+---------------------------------------------------------------
+*@
+
+@model List<WepApp2.Models.User>
+@using System.Text.Json
+
+<!-- ✅ محتوى تبويب المشرفين -->
+<!-- Tab content: Supervisors -->
+<div id="supervisors" class="tab-content active">
+
+    <!-- ✅ عنوان الجدول + زر الإضافة -->
+    <!-- Header with title and add button -->
+    <div class="table-header">
+        <h2 class="table-title">إدارة المستخدمين</h2>
+        <div class="table-actions">
+            <div></div>
+            <a class="btn btn-primary" href="@Url.Action("AddUser", "Users")">
+                <span>+</span> إضافة مستخدم
+            </a>
+        </div>
+
+        <!-- ✅ فلاتر التصفية -->
+        <!-- Filters: by type, status, and name -->
+        <div class="filters">
+            <select class="filter-select form-select2" id="userTypeFilter" onchange="filterUsers()">
+                <option value="">جميع الأنواع</option>
+                <option value="مشرف">مشرف</option>
+                <option value="طالب">طالب</option>
+                <option value="عضو هيئة تدريس">عضو هيئة تدريس</option>
+                <option value="مدير بديل">مدير بديل</option>
+            </select>
+
+            <select class="filter-select form-select2" id="statusFilter" onchange="filterUsers()">
+                <option value="">الكل</option>
+                <option value="نشط">نشط</option>
+                <option value="غير نشط">غير نشط</option>
+            </select>
+
+            <input type="text" class="filter-input form-control" id="nameFilter"
+                   placeholder="البحث بالاسم..." oninput="filterUsers()">
+        </div>
+    </div>
+
+    <!-- ✅ رسالة نجاح (بعد الإضافة أو التعديل مثلاً) -->
+    <!-- Success message (after adding or updating a user) -->
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success">@TempData["Message"]</div>
+    }
+
+    <!-- ✅ الجدول الرئيسي لعرض المستخدمين -->
+    <!-- Main user table -->
+    <div class="table-container mt-3">
+        <div class="table-responsive">
+            <table class="data-table table table-hover">
+                <thead>
+                    <tr>
+                        <th>المستخدم</th>
+                        <th>الرقم الجامعي</th>
+                        <th>النوع</th>
+                        <th>البريد الإلكتروني</th>
+                        <th>الجهة</th>
+                        <th>رقم الجوال</th>
+                        <th>آخر تسجيل دخول</th>
+                        <th>الحالة</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>@user.FirstName @user.LastName</td>
+                            <td>@user.UserName</td>
+                            <td>@user.UserRole</td>
+                            <td>@user.Email</td>
+                            <td>@user.Faculty</td>
+                            <td>@user.PhoneNumber</td>
+                            <td>@(user.LastLogIn.ToString("yyyy-MM-dd HH:mm"))</td>
+                            <td>
+                                @if (user.IsActive)
+                                {
+                                    <span class="badge bg-success">نشط</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">غير نشط</span>
+                                }
+                            </td>
+                            <td>
+                                <!-- زر تعديل المستخدم -->
+                                <!-- Edit user button -->
+                                <a href="@Url.Action("EditUser", "Users", new { id = user.UserID })" class="btn btn-sm btn-warning">تعديل</a>
+
+                                
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+   
+
+
+</div>
+
+<!-- ✅ ملفات التنسيق -->
+<!-- Styles section -->
+@section Styles {
+    <link href="~/css/Group1Style.css" rel="stylesheet" />
+}
+
+<!-- ✅ سكريبتات الصفحة -->
+<!-- Scripts section -->
+@section Scripts {
+    <script>
+
+        // ✅ تحويل بيانات المستخدمين من السيرفر إلى جافاسكربت
+        // Convert user list from server to JavaScript
+        const users = @Html.Raw(JsonSerializer.Serialize(Model));
+
+        let deleteModal; // متغير عام للمودال
+
+        // ✅ فتح نافذة حذف المستخدم
+        // Open delete user modal
+        function openDeleteModal(userId) {
+            document.getElementById("deleteUserId").value = userId;
+
+            const modalEl = document.getElementById("deleteUserModal");
+            deleteModal = new bootstrap.Modal(modalEl, {
+                backdrop: 'static', // منع إغلاق المودال بالنقر على الخلفية
+                keyboard: false     // منع الإغلاق بزر Esc
+            });
+
+            deleteModal.show();
+        }
+
+        // ✅ إزالة خلفية المودال السوداء تلقائياً (حل لمشكلة ظهورها أحيانًا بعد الإغلاق)
+        // Remove modal backdrop manually if it lingers
+        const observer = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+                    backdrop.remove(); // حذف الخلفية السوداء
+                });
+
+                // إعادة التمرير للصفحة بعد إزالة الطبقة
+                document.body.classList.remove('modal-open');
+                document.body.style.overflow = 'auto';
+            });
+        });
+
+        // ✅ البدء بمراقبة تغييرات البودي
+        // Start observing body DOM changes
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+
+    </script>
+
+    <!-- ✅ سكريبت إضافي لإدارة المستخدمين -->
+    <!-- Additional user management script -->
+    <script src="~/js/userscript.js"></script>
+}

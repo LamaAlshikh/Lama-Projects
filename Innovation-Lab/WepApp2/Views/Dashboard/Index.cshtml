@@ -1,0 +1,735 @@
+﻿@{
+    ViewBag.Title = "لوحة البيانات";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@*
+---------------------------------------------------------------
+الصفحة: لوحة البيانات (Dashboard)
+الوصف: تعرض إحصائيات واستخدامات المعمل من خلال رسوم بيانية
+وتتيح تصدير البيانات بصيغتي PDF و Excel
+
+Page: Dashboard
+Description: Displays lab statistics and usage data through charts,
+and allows exporting data to PDF and Excel formats
+---------------------------------------------------------------
+*@
+
+
+
+
+
+<!-- استدعاء مكتبة تصدير Excel -->
+<!-- Excel export library (SheetJS) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+
+
+<!-- بانر ترحيبي أعلى الصفحة -->
+<!-- Welcome banner at the top of the page -->
+<div class="card mb-4 p-4 d-flex flex-md-row align-items-center justify-content-between">
+    <h5 class="mb-0">أهلاً بك في لوحة بيانات معمل الابتكارات، نتمنى لك يومًا مليئًا بالإنجازات! ☀</h5>
+    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" width="70" />
+</div>
+
+
+<!-- فلترة البيانات حسب الفترة الزمنية ونوع المستخدم -->
+<!-- Filtering data based on time period and user type -->
+<div class="d-flex flex-wrap gap-3 align-items-center mb-3">
+    <div>
+        <label class="form-label">الفترة:</label>
+
+        @{
+            var period = Context.Request.Query["period"].ToString();
+            var isWeekly = period == "weekly";
+            var isMonthly = string.IsNullOrEmpty(period) || period == "monthly";
+            var isYearly = period == "yearly";
+        }
+        <select class="form-select" id="periodFilter">
+            <option value="weekly" selected="@(isWeekly)">أسبوعي</option>
+            <option value="monthly" selected="@(isMonthly)">شهري</option>
+            <option value="yearly" selected="@(isYearly)">سنوي</option>
+        </select>
+
+    </div>
+    <div>
+        <label class="form-label">نوع المستخدم:</label>
+        @{
+            var selectedRole = Context.Request.Query["role"].ToString();
+            var isAll = string.IsNullOrEmpty(selectedRole);
+            var isSupervisor = selectedRole == "مشرف";
+            var isTeacher = selectedRole == "أستاذ";
+            var isStudent = selectedRole == "طالب";
+        }
+        <select class="form-select" id="userTypeFilter">
+            <option value="" selected="@(isAll)">الكل</option>
+            <option value="مشرف" selected="@(isSupervisor)">مشرف</option>
+            <option value="أستاذ" selected="@(isTeacher)">أستاذ</option>
+            <option value="طالب" selected="@(isStudent)">طالب</option>
+        </select>
+    </div>
+
+
+
+    <!-- أزرار تصدير PDF وExcel -->
+    <!-- Export buttons for PDF and Excel -->
+    <div class="ms-auto">
+        <button class="btn custom-pdf-btn me-2" id="exportPdfBtn">تصدير PDF</button>
+        <button class="btn custom-excel-btn" id="exportExcelBtn">تصدير Excel</button>
+    </div>
+</div>
+
+
+<!--التبويبات الرئيسية: إحصائية وكفاءة-->
+<!-- Main tabs: Statistics and Efficiency- -->
+<div class="btn-group mb-4 w-100" role="group">
+    <button class="btn tab-btn active w-50" onclick="showTab('statistics', event)">إحصائية</button>
+    <button class="btn tab-btn w-50" onclick="showTab('efficiency', event)">كفاءة</button>
+</div>
+
+
+<!-- Statistics Tab -->
+<!-- عرض الرسوم البيانية: معدل الاستخدام، الذروة الزمنية، تفضيلات المستخدمين -->
+<!--Displaying charts: usage rate, time peaks, and user preferences-->
+<div id="statistics" class="chart-section">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card p-4 mb-4">
+                <h5 class="mb-3">معدلات الاستفادة من الخدمات</h5>
+                <canvas id="usageChart"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-4 mb-4">
+                <h5 class="mb-3">الذروة الزمنية للاستخدام</h5>
+                <canvas id="timeChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">تفضيلات المستخدمين</h5>
+                    <span class="fs-4">👥</span>
+                </div>
+                <div class="text-center mb-3">
+                    <canvas id="preferenceChart" width="220" height="220" style="max-width: 220px; display: block; margin: auto;"></canvas>
+                </div>
+                @*
+                عرض النسب المئوية لتفضيلات المستخدمين لكل جهاز
+                Display percentage preferences for each device
+                *@
+                @foreach (var preference in Model.UserPreferences)
+                {
+                    <div class="d-flex justify-content-between bg-light rounded p-2 mb-2">
+                        <strong>@preference.PreferencePercentage%</strong>
+                        <span class="text-primary">@preference.DeviceName</span>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-md-6"></div>
+    </div>
+</div>
+
+
+<!-- Efficiency Tab -->
+<!-- عرض مؤشرات التوفر وفعالية الصيانة وملخص الصيانة -->
+<!--Displays device availability, maintenance effectiveness, and summary -->
+<div id="efficiency" class="chart-section d-none">
+    <div class="card p-4 mb-4">
+        <h5>معدلات التوفر</h5>
+        <div class="row" id="availabilityCards"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card p-4 mb-4">
+                <h5>فعالية الصيانة</h5>
+                <canvas id="maintenanceChart"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-4 mb-4 efficiency-summary">
+                <h5>ملخص الصيانة</h5>
+                <div class="row g-2 mt-2">
+                    <div class="col-md-4">
+                        <div class="p-3 bg-warning bg-opacity-25 border border-warning rounded">
+                            معدل النجاح الإجمالي: @Model.MaintenanceSummary.SuccessRate%
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 bg-primary bg-opacity-25 border border-primary rounded">
+                            متوسط وقت الإصلاح: @Model.MaintenanceSummary.AverageRepairTimeDays يوم
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 bg-success bg-opacity-25 border border-success rounded">
+                            الطلبات المكتملة: @Model.MaintenanceSummary.CompletedRequests
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--------------------------------------------------------------------------------------------->
+<!-- PDF قوالب تستخدم عند التصدير كـ  -->
+<!-- HTML templates used for PDF export -->
+<template id="pdfTemplate">
+    <!-- محتوى تقرير الإحصائيات -->
+    <html dir="rtl" lang="ar">
+    <head>
+        <meta charset="UTF-8" />
+        <title>تقرير الإحصائيات</title>
+        <style>
+            body {
+                font-family: 'Tahoma', 'Arial', sans-serif;
+                direction: rtl;
+                text-align: center;
+                padding: 40px;
+            }
+
+            h1 {
+                font-size: 26px;
+                color: #333;
+                margin-bottom: 50px;
+            }
+
+            .dashboard-chart-container {
+                margin-bottom: 60px;
+            }
+
+            .dashboard-chart-title {
+                font-size: 18px;
+                margin-bottom: 10px;
+                color: #222;
+            }
+
+            .dashboard-chart-desc {
+                font-size: 14px;
+                margin-bottom: 20px;
+                color: #666;
+            }
+
+            .dashboard-chart-img {
+                max-width: 70%;
+                height: auto;
+                margin: auto;
+                display: block;
+            }
+
+            .dashboard-page-break {
+                page-break-after: always;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>تقرير الإحصائيات - معمل الابتكارات</h1>
+        <div id="chartContainer"></div>
+    </body>
+</html>
+</template>
+
+
+<template id="efficiencyTemplate">
+    <!-- محتوى تقرير الكفاءة -->
+    <html dir="rtl" lang="ar">
+    <head>
+        <meta charset="UTF-8" />
+        <title>تقرير الكفاءة</title>
+        <style>
+            body {
+                font-family: 'Tahoma', 'Arial', sans-serif;
+                direction: rtl;
+                text-align: center;
+                padding: 40px;
+                background-color: #fdfdfd;
+            }
+
+            h1 {
+                font-size: 26px;
+                color: #333;
+                margin-bottom: 50px;
+            }
+
+            .dashboard-chart-container {
+                margin-bottom: 60px;
+            }
+
+            .dashboard-chart-title {
+                font-size: 18px;
+                margin-bottom: 10px;
+                color: #222;
+            }
+
+            .dashboard-chart-desc {
+                font-size: 14px;
+                margin-bottom: 20px;
+                color: #666;
+            }
+
+            .dashboard-chart-img {
+                max-width: 100%;
+                height: auto;
+                margin: auto;
+                display: block;
+            }
+
+            .dashboard-page-break {
+                page-break-after: always;
+            }
+
+            .dashboard-footer-note {
+                font-size: 13px;
+                color: #888;
+                margin-top: 60px;
+                text-align: left;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>تقرير الكفاءة - معمل الابتكارات</h1>
+        <div id="efficiencyCharts"></div>
+    </body>
+</html>
+</template>
+<!--------------------------------------------------------------------------------------------->
+
+
+<!--------------------------------------------------------------------------------------------->
+<!-- ... بقية الكود خاص بجلب البيانات والرسم البياني والتصدير ... -->
+<!-- ... rest of the code for data preparation, chart rendering, and export ... -->
+@using System.Text.Json
+@using WepApp2.Models
+
+@{
+    var serviceUsages = (List<ServiceUsageDto>)Model.ServiceUsages;
+    var timePeaks = (List<TimePeakDto>)Model.TimePeaks;
+    var preferences = (List<UserPreferenceDto>)Model.UserPreferences;
+
+    var usageLabelsJson = JsonSerializer.Serialize(serviceUsages.Select(s => s.ServiceName));
+    var usageDataJson = JsonSerializer.Serialize(serviceUsages.Select(s => s.UsageCount));
+
+    var timeLabelsJson = JsonSerializer.Serialize(timePeaks.Select(p => p.TimePeriod));
+    var timeDataJson = JsonSerializer.Serialize(timePeaks.Select(p => p.UsageCount));
+
+    var preferenceLabelsJson = JsonSerializer.Serialize(preferences.Select(p => p.DeviceName));
+    var preferenceDataJson = JsonSerializer.Serialize(preferences.Select(p => p.PreferencePercentage));
+
+    var maintenanceLabelsJson = JsonSerializer.Serialize(((List<TimePeakDto>)Model.MaintenancePeaks).Select(p => p.TimePeriod));
+    var maintenanceDataJson = JsonSerializer.Serialize(((List<TimePeakDto>)Model.MaintenancePeaks).Select(p => p.UsageCount));
+}
+
+@{
+    var usagesList = (List<ServiceUsageDto>)Model.ServiceUsages;
+    var availList = (List<DeviceAvailabilityDto>)Model.DeviceAvailabilities;
+
+    var serviceUsagesData = usagesList.Select(s => new Dictionary<string, object>
+            {
+                ["الخدمة"] = s.ServiceName,
+                ["عدد الاستخدامات"] = s.UsageCount
+            }).ToList();
+
+    var deviceAvailabilitiesData = availList.Select(d => new Dictionary<string, object>
+            {
+                ["الجهاز"] = d.DeviceName,
+                ["الحالة"] = d.Status
+            }).ToList();
+
+    var serviceUsagesJson = JsonSerializer.Serialize(serviceUsagesData);
+    var deviceAvailabilitiesJson = JsonSerializer.Serialize(deviceAvailabilitiesData);
+}
+
+@{
+    var availabilityLabels = new List<string>();
+    var availabilityValues = new List<int>();
+
+    foreach (var d in Model.DeviceAvailabilities)
+    {
+        availabilityLabels.Add(d.DeviceName);
+
+        var percent = d.Status == "Available" ? 100 :
+                      d.Status == "In use" ? 60 :
+                      d.Status == "Maintenance" ? 40 : 20;
+
+        availabilityValues.Add(percent);
+    }
+
+    var availabilityLabelsJson = JsonSerializer.Serialize(availabilityLabels);
+    var availabilityValuesJson = JsonSerializer.Serialize(availabilityValues);
+
+    var successRate = Model.MaintenanceSummary.SuccessRate;
+    var averageRepairTime = Model.MaintenanceSummary.AverageRepairTimeDays;
+    var completedRequests = Model.MaintenanceSummary.CompletedRequests;
+}
+
+
+
+@section Styles {
+    <link href="~/css/Group1Style.css" rel="stylesheet" />
+}
+
+
+@section Scripts {
+    <!-- استيراد مكتبات الرسم والتصدير -->
+    <!-- Importing libraries: Chart.js, html2canvas, jsPDF, SheetJS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="/js/vfs_fonts_arabic.js"></script>
+
+    <script>
+        // إعداد البيانات من الموديل وتحويلها إلى JSON
+        // Prepare data from Model and serialize it to JSON for JavaScript usage
+        const usage = @Html.Raw(serviceUsagesJson);
+        const usageLabels = @Html.Raw(usageLabelsJson);
+        const usageData = @Html.Raw(usageDataJson);
+
+        const timeLabels = @Html.Raw(timeLabelsJson);
+        const timeData = @Html.Raw(timeDataJson);
+
+        const preferenceLabels = @Html.Raw(preferenceLabelsJson);
+        const preferenceData = @Html.Raw(preferenceDataJson);
+
+        const deviceAvailabilities = @Html.Raw(deviceAvailabilitiesJson);
+        const maintenanceLabels = @Html.Raw(maintenanceLabelsJson);
+        const maintenanceData = @Html.Raw(maintenanceDataJson);
+
+        const availabilityLabels = @Html.Raw(availabilityLabelsJson);
+        const availabilityValues = @Html.Raw(availabilityValuesJson);
+
+        // إنشاء الرسم البياني لمعدل الاستخدام
+        // Render service usage chart
+        new Chart(document.getElementById('usageChart'), {
+            type: 'bar',
+            data: {
+                labels: usageLabels,
+                datasets: [{
+                    label: 'معدل الاستخدام',
+                    data: usageData,
+                    backgroundColor: '#D8B4FE'
+                }]
+            }
+        });
+
+        // إنشاء الرسم البياني للذروة الزمنية
+        // Render time peak chart
+        let timeChart;
+
+        timeChart = new Chart(document.getElementById('timeChart'), {
+            type: 'line',
+            data: {
+                labels: timeLabels,
+                datasets: [{
+                    label: 'الذروة الزمنية',
+                    data: timeData,
+                    fill: true,
+                    backgroundColor: 'rgba(59,130,246,0.2)',
+                    borderColor: 'rgba(59,130,246,1)'
+                }]
+            }
+        });
+
+
+        // إنشاء الرسم البياني لتفضيلات المستخدمين
+        // Render device preference chart
+        new Chart(document.getElementById('preferenceChart'), {
+            type: 'pie',
+            data: {
+                labels: preferenceLabels,
+                datasets: [{
+                    data: preferenceData,
+                    backgroundColor: ['#8B5CF6', '#10B981', '#F59E0B', '#EF4444', '#6B7280', '#0EA5E9', '#EC4899', '#22C55E']
+                }]
+            },
+            options: {
+                responsive: false,
+                maintainAspectRatio: false
+            }
+        });
+
+
+        // رسم كروت توفر الأجهزة
+        // Render availability cards
+        const cardsContainer = document.getElementById('availabilityCards');
+        if (cardsContainer) {
+            cardsContainer.innerHTML = availabilityLabels.map((name, i) => {
+                const percent = availabilityValues[i];
+                return `
+                                            <div class="col-md-3 mb-4">
+                                                <div class="p-3 rounded border text-center bg-light">
+                                                    <h5 class="mb-3">${name}</h5>
+                                                    <div class="position-relative mx-auto" style="width: 80px; height: 80px;">
+                                                        <svg viewBox="0 0 36 36" style="transform: rotate(-90deg);">
+                                                            <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#eee" stroke-width="3"/>
+                                                            <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#10B981" stroke-width="3" stroke-dasharray="${percent}, 100"/>
+                                                        </svg>
+                                                        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-weight:bold;">${percent}%</div>
+                                                    </div>
+                                                </div>
+                                            </div>`;
+            }).join('');
+        }
+
+
+        // رسم فعالية الصيانة
+        // Render maintenance efficiency chart
+        new Chart(document.getElementById('maintenanceChart'), {
+            type: 'line',
+            data: {
+                labels: maintenanceLabels,
+                datasets: [{
+                    label: 'فعالية الصيانة الشهرية',
+                    data: maintenanceData,
+                    borderColor: '#F59E0B',
+                    backgroundColor: 'rgba(245,158,11,0.1)',
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: 'نسبة النجاح %'
+                        }
+                    }
+                }
+            }
+        });
+
+        // التحكم في التبويبات
+        // Handle tab switching
+        function showTab(id, event) {
+            document.querySelectorAll('.chart-section').forEach(s => s.classList.add('d-none'));
+            document.getElementById(id).classList.remove('d-none');
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            if (event?.target) event.target.classList.add('active');
+        }
+
+        // تصدير البيانات إلى Excel
+        // Export data to Excel
+        document.getElementById('exportExcelBtn').addEventListener('click', () => {
+            const activeTab = document.querySelector('.tab-btn.active').textContent.trim();
+            if (activeTab.includes('إحصائية')) exportStatisticsExcel();
+            else exportEfficiencyExcel();
+        });
+
+        function exportStatisticsExcel() {
+            const wb = XLSX.utils.book_new();
+
+            const preferences = preferenceLabels.map((label, i) => ({
+                "الجهاز": label,
+                "نسبة التفضيل": preferenceData[i] + "%"
+            }));
+
+            const timePeaks = timeLabels.map((time, i) => ({
+                "الفترة الزمنية": time,
+                "عدد الاستخدامات": timeData[i]
+            }));
+
+            wb.SheetNames.push("استخدام الخدمات");
+            wb.Sheets["استخدام الخدمات"] = XLSX.utils.json_to_sheet(usage);
+
+            wb.SheetNames.push("تفضيلات الأجهزة");
+            wb.Sheets["تفضيلات الأجهزة"] = XLSX.utils.json_to_sheet(preferences);
+
+            wb.SheetNames.push("الذروة الزمنية");
+            wb.Sheets["الذروة الزمنية"] = XLSX.utils.json_to_sheet(timePeaks);
+
+            XLSX.writeFile(wb, "تقرير_الإحصائيات.xlsx");
+        }
+
+        function exportEfficiencyExcel() {
+            const wb = XLSX.utils.book_new();
+
+            const availability = deviceAvailabilities.map(item => ({
+                "الجهاز": item["الجهاز"],
+                "الحالة": item["الحالة"],
+                "نسبة التوفر": item["الحالة"] === "Available" ? "100%" :
+                    item["الحالة"] === "In use" ? "60%" :
+                        item["الحالة"] === "Maintenance" ? "40%" : "20%"
+            }));
+
+            const maintenance = maintenanceLabels.map((month, i) => ({
+                "الشهر": month,
+                "معدل نجاح الصيانة": maintenanceData[i] + "%"
+            }));
+
+            wb.SheetNames.push("نسب التوفر");
+            wb.Sheets["نسب التوفر"] = XLSX.utils.json_to_sheet(availability);
+
+            wb.SheetNames.push("فعالية الصيانة");
+            wb.Sheets["فعالية الصيانة"] = XLSX.utils.json_to_sheet(maintenance);
+
+            XLSX.writeFile(wb, "تقرير_الكفاءة.xlsx");
+        }
+
+        // تصدير تقرير PDF
+        // Export PDF report
+        document.getElementById('exportPdfBtn').addEventListener('click', () => {
+            const activeTab = document.querySelector('.tab-btn.active').textContent.trim();
+
+            if (activeTab.includes('إحصائية')) {
+                exportStatistics();
+            } else if (activeTab.includes('كفاءة')) {
+                exportEfficiency();
+            }
+        });
+
+        async function exportStatistics() {
+            const charts = [
+                { id: 'usageChart', title: 'معدلات الاستفادة من الخدمات', desc: 'عدد مرات استخدام كل خدمة خلال الفترة.' },
+                { id: 'timeChart', title: 'الذروة الزمنية للاستخدام', desc: 'الفترات الزمنية التي شهدت أعلى نسب استخدام.' },
+                { id: 'preferenceChart', title: 'تفضيلات المستخدمين', desc: 'نسب تفضيل المستخدمين لكل جهاز.' }
+            ];
+
+            const template = document.getElementById('pdfTemplate');
+            const doc = new DOMParser().parseFromString(template.innerHTML, 'text/html');
+            const container = doc.getElementById('chartContainer');
+
+            for (let i = 0; i < charts.length; i++) {
+                const { id, title, desc } = charts[i];
+                const canvas = document.getElementById(id);
+                if (!canvas) continue;
+
+                const imgData = await html2canvas(canvas).then(c => c.toDataURL());
+
+                const block = document.createElement('div');
+                block.className = 'dashboard-chart-container';
+                block.innerHTML = `
+                                        <div class="dashboard-chart-title">${title}</div>
+                                        <div class="dashboard-chart-desc">${desc}</div>
+                                        <img class="dashboard-chart-img" src="${imgData}" />
+                                    `;
+                container.appendChild(block);
+
+                if ((i + 1) % 2 === 0 && i !== charts.length - 1) {
+                    container.appendChild(document.createElement('div')).className = 'page-break';
+                }
+            }
+
+            const win = window.open('', '_blank');
+            win.document.write('<!DOCTYPE html>' + doc.documentElement.outerHTML);
+            win.document.close();
+            setTimeout(() => { win.focus(); win.print(); }, 700);
+        }
+
+        async function exportEfficiency() {
+            const template = document.getElementById('efficiencyTemplate');
+            const doc = new DOMParser().parseFromString(template.innerHTML, 'text/html');
+            const container = doc.getElementById('efficiencyCharts');
+
+            // 1. مخطط الصيانة
+            const maintenanceChart = document.getElementById('maintenanceChart');
+            if (maintenanceChart) {
+                const imgData = await html2canvas(maintenanceChart).then(c => c.toDataURL());
+                const block = document.createElement('div');
+                block.className = 'dashboard-chart-container';
+                block.innerHTML = `
+                                        <div class="dashboard-chart-title">فعالية الصيانة</div>
+                                        <div class="dashboard-chart-desc">معدل النجاح الزمني في إصلاح الأعطال شهريًا.</div>
+                                        <img class="dashboard-chart-img" src="${imgData}" />
+                                    `;
+                container.appendChild(block);
+            }
+
+            // 2. ملخص الصيانة
+            const summaryElement = document.querySelector('.efficiency-summary');
+            if (summaryElement) {
+                const imgData = await html2canvas(summaryElement).then(c => c.toDataURL());
+                const block = document.createElement('div');
+                block.className = 'dashboard-chart-container';
+                block.innerHTML = `
+                                        <div class="dashboard-chart-title">ملخص الصيانة</div>
+                                        <div class="dashboard-chart-desc">بيانات تشمل معدل النجاح، الوقت، وعدد الطلبات.</div>
+                                        <img class="dashboard-chart-img" src="${imgData}" />
+                                    `;
+                container.appendChild(block);
+            }
+
+            // 3. نسب التوفر
+            const availability = document.getElementById('availabilityCards');
+            if (availability) {
+                const imgData = await html2canvas(availability).then(c => c.toDataURL());
+                const block = document.createElement('div');
+                block.className = 'dashboard-chart-container';
+                block.innerHTML = `
+                                        <div class="dashboard-chart-title">معدلات توفر الأجهزة</div>
+                                        <div class="dashboard-chart-desc">نسبة التوفر لكل جهاز بناءً على حالته.</div>
+                                        <img class="dashboard-chart-img" src="${imgData}" />
+                                    `;
+                container.appendChild(block);
+            }
+
+            const win = window.open('', '_blank');
+            win.document.write('<!DOCTYPE html>' + doc.documentElement.outerHTML);
+            win.document.close();
+            setTimeout(() => { win.focus(); win.print(); }, 800);
+        }
+
+
+        // فلترة الرسم البياني حسب اليوزر
+        // Filter chart based on user role
+        document.getElementById('userTypeFilter').addEventListener('change', function () {
+            const role = this.value;
+            const url = new URL(window.location.href);
+            if (role)
+                url.searchParams.set('role', role);
+            else
+                url.searchParams.delete('role');
+
+            window.location.href = url.toString();
+        });
+
+        // فلترة الرسم البياني حسب الفترات
+        // Filter chart based on time ranges
+
+        document.getElementById('periodFilter').addEventListener('change', function () {
+            const selectedPeriod = this.value;
+            const url = new URL(window.location.href);
+
+            url.searchParams.set('period', selectedPeriod);
+            window.location.href = url.toString();
+        });
+
+
+
+        function applyTimeFilter() {
+            const selected = document.getElementById('periodFilter').value;
+            const now = new Date();
+
+            const filtered = timeLabels.map((label, i) => {
+                const parts = label.split('-');
+                const year = parseInt(parts[0]);
+                const month = parseInt(parts[1]);
+                const date = new Date(year, month - 1);
+
+                const diffDays = (now - date) / (1000 * 60 * 60 * 24);
+
+                if ((selected === "weekly" && diffDays <= 7) ||
+                    (selected === "monthly" && diffDays <= 30) ||
+                    (selected === "yearly" && diffDays <= 365)) {
+                    return { label, value: timeData[i] };
+                }
+
+                return null;
+            }).filter(x => x !== null);
+
+
+            timeChart.data.labels = filtered.map(f => f.label);
+            timeChart.data.datasets[0].data = filtered.map(f => f.value);
+            timeChart.update();
+        }
+
+
+
+    </script>
+}
+<!--------------------------------------------------------------------------------------------->

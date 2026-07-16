@@ -1,0 +1,351 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section Styles {
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/Gruop3Style.css" />
+}
+<div class="create-report-page">
+    <div class="create-report-container">
+        <!-- عنوان الصفحة -->
+        <h2 class="create-report-title">إنشاء تقرير مخصص</h2>
+
+        <!-- عرض رسالة الخطأ إن وجدت -->
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger" role="alert" style="text-align: right; margin-bottom: 20px;">
+                @TempData["Error"]
+            </div>
+        }
+
+        <!-- النموذج -->
+        <form action="@Url.Action("CreateCustomReport", "Reports")" method="post">
+            @Html.AntiForgeryToken()
+
+            <!-- عنوان التقرير -->
+            <div class="report-form-group">
+                <label class="report-form-label">عنوان التقرير</label>
+                <input name="reportTitle"
+                       class="report-form-control"
+                       placeholder="مثال: تقرير الخدمات الشهري"
+                       required />
+            </div>
+
+            <!-- نوع التقرير -->
+            <div class="report-form-group">
+                <label class="report-form-label">نوع التقرير</label>
+                <select name="reportType" class="report-form-control" id="reportType" required>
+                    <option value="">-- اختر نوع التقرير --</option>
+                    <option value="تقرير الخدمات">تقرير الخدمات</option>
+                    <option value="تقرير الأجهزة">تقرير الأجهزة</option>
+                    <option value="تقرير المستخدمين">تقرير المستخدمين</option>
+                    <option value="تقرير الطلبات">تقرير الطلبات</option>
+                </select>
+            </div>
+
+            <!-- قسم تقرير الخدمات -->
+            <div id="serviceFilterSection" class="report-form-group" style="display: none;">
+                <label class="report-form-label">نوع الخدمة</label>
+                <select name="serviceType" class="report-form-control" id="serviceType">
+                    <option value="">-- جميع الخدمات --</option>
+                    <option value="زيارة المعمل">زيارة المعمل</option>
+                    <option value="الاستشارات التقنية">الاستشارات التقنية</option>
+                    <option value="إعارة الأجهزة">إعارة الأجهزة</option>
+                    <option value="الدورات التدريبية">الدورات التدريبية</option>
+                    <option value="حجز الأجهزة">حجز الأجهزة</option>
+                </select>
+            </div>
+
+            <!-- قسم تقرير الأجهزة -->
+            <div id="deviceFilterSection" class="report-form-group" style="display: none;">
+                <label class="report-form-label">حالة الجهاز</label>
+                <select name="deviceStatus" class="report-form-control" id="deviceStatus">
+                    <option value="">-- الكل --</option>
+                    <option value="عاملة">عاملة</option>
+                    <option value="صيانة">صيانة</option>
+                    <option value="غير متصل">غير متصل</option>
+                </select>
+            </div>
+
+            <!-- قسم تقرير المستخدمين -->
+            <div id="userFilterSection" class="report-form-group" style="display: none;">
+                <label class="report-form-label">نوع المستخدم</label>
+                <select name="userType" class="report-form-control" id="userType">
+                    <option value="">-- الكل --</option>
+                    <option value="مشرف">مشرف</option>
+                    <option value="عضو هيئة تدريس">عضو هيئة تدريس</option>
+                    <option value="طالب">طالب</option>
+                </select>
+            </div>
+
+            <!-- قسم تقرير الطلبات -->
+            <div id="requestFilterSection" class="report-form-group" style="display: none;">
+                <label class="report-form-label">حالة الطلب</label>
+                <select name="requestStatus" class="report-form-control" id="requestStatus">
+                    <option value="">-- الكل --</option>
+                    <option value="بانتظار اسناد المشرف">بانتظار اسناد المشرف</option>
+                    <option value="بانتظار موافقة المشرف">بانتظار موافقة المشرف</option>
+                    <option value="موافق عليه من قبل المشرف">موافق عليه من قبل المشرف</option>
+                    <option value="مرفوض من قبل المشرف">مرفوض من قبل المشرف</option>
+                    <option value="موافق عليه من قبل المسؤول">موافق عليه من قبل المسؤول</option>
+                    <option value="مرفوض من قبل المسؤول">مرفوض من قبل المسؤول</option>
+                </select>
+            </div>
+
+            <!-- حقول التاريخ -->
+            <div class="date-fields-row">
+                <div class="date-field-wrapper">
+                    <label>من تاريخ</label>
+                    <input type="date" name="fromDate" class="report-form-control" />
+                </div>
+                <span class="date-separator">-</span>
+                <div class="date-field-wrapper">
+                    <label>إلى تاريخ</label>
+                    <input type="date" name="toDate" class="report-form-control" />
+                </div>
+            </div>
+
+            <!-- الحقول المطلوبة -->
+            <div id="fieldsSection" class="fields-selection-section" style="display:none">
+                <div class="fields-selection-header">
+                    <h5 class="fields-selection-title">الحقول المطلوبة</h5>
+                    <button type="button" class="btn-select-all" onclick="toggleAllFields()">
+                        تحديد الكل
+                    </button>
+                </div>
+                <div id="fieldsContainer" class="fields-grid">
+                    <!-- سيتم تعبئتها ديناميكيًا -->
+                </div>
+            </div>
+
+            <!-- أزرار الإجراءات -->
+            <div class="report-actions">
+                <button type="submit" class="btn-create-report">
+                    إنشاء التقرير
+                </button>
+                <a href="@Url.Action("AllReports", "Reports")" class="btn-back">
+                    العودة
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const reportTypeSelect = document.getElementById('reportType');
+        const serviceFilterSection = document.getElementById('serviceFilterSection');
+        const deviceFilterSection = document.getElementById('deviceFilterSection');
+        const userFilterSection = document.getElementById('userFilterSection');
+        const requestFilterSection = document.getElementById('requestFilterSection');
+        const serviceTypeSelect = document.getElementById('serviceType');
+        const deviceStatusSelect = document.getElementById('deviceStatus');
+        const userTypeSelect = document.getElementById('userType');
+        const requestStatusSelect = document.getElementById('requestStatus');
+        const fieldsSection = document.getElementById('fieldsSection');
+        const fieldsContainer = document.getElementById('fieldsContainer');
+
+        // تعريف الحقول لكل نوع
+        const generalFields = [
+            { value: "نوع الخدمة", label: "نوع الخدمة" },
+            { value: "وصف الخدمة", label: "وصف الخدمة" },
+            { value: "تاريخ الطلب", label: "تاريخ الطلب" },
+            { value: "المستخدم", label: "المستخدم" },
+            { value: "الحالة", label: "حالة الخدمة" }
+        ];
+
+                const courseFields = [
+            { value: "اسم الدورة", label: "اسم الدورة" },
+            { value: "مجال الدورة", label: "مجال الدورة" },
+            { value: "مقدم الدورة", label: "مقدم الدورة" },
+            { value: "وصف الدورة", label: "وصف الدورة" },
+        ];
+
+               const deviceLoanFields = [
+            { value: "اسم الجهاز", label: "اسم الجهاز" },
+            { value: "الغرض", label: "الغرض" },
+            { value: "مدة الإعارة", label: "مدة الإعارة" },
+            { value: "مقدم الطلب", label: "مقدم الطلب" },
+            { value: "الحالة", label: "الحالة" }
+        ];
+
+        const consultationFields = [
+            { value: "عنوان الاستشارة", label: "عنوان الاستشارة" },
+            { value: "مجال الاستشارة", label: "مجال الاستشارة" },
+            { value: "وصف الاستشارة", label: "وصف الاستشارة" },
+            { value: "المستفيد", label: "المستفيد" },
+            { value: "مقدم الاستشارة", label: "مقدم الاستشارة" },
+           { value: "التاريخ", label: "التاريخ" },
+            { value: "الوقت", label: "الوقت" },
+            { value: "الحالة", label: "الحالة" }
+        ];
+
+                const visitFields = [
+            { value: "نوع الزيارة", label: "نوع الزيارة" },
+            { value: "وصف الزيارة", label: "وصف الزيارة" },
+            { value: "اسم المستفيد", label: "اسم المستفيد" },
+            { value: "تاريخ الزيارة", label: "تاريخ الزيارة" },
+            { value: "الحالة", label: "الحالة" },
+            { value: "عدد الزوار", label: "عدد الزوار" },
+            { value: "الوقت", label: "الوقت" },
+            { value: "طريقة التواصل", label: "طريقة التواصل" }
+        ];
+                const deviceReservationFields = [
+            { value: "اسم الجهاز", label: "اسم الجهاز" },
+            { value: "اسم المستفيد", label: "اسم المستفيد" },
+            { value: "اسم المشروع", label: "اسم المشروع" },
+            { value: "وصف المشروع", label: "وصف المشروع" },
+            { value: "تاريخ الحجز", label: "تاريخ الحجز" },
+            { value: "بداية الوقت", label: "بداية الوقت" },
+            { value: "نهاية الوقت", label: "نهاية الوقت" }
+        ];
+
+        const deviceReportFields = [
+            { value: "اسم الجهاز", label: "اسم الجهاز" },
+            { value: "الموقع", label: "الموقع" },
+            { value: "الشركة", label: "الشركة" },
+            { value: "الطراز", label: "الطراز" },
+            { value: "تاريخ آخر صيانة", label: "تاريخ آخر صيانة" },
+            { value: "الحالة", label: "الحالة" }
+        ];
+
+        // حقول تقرير المستخدمين
+        const userReportFields = [
+            { value: "الاسم", label: "الاسم" },
+            { value: "اسم المستخدم", label: "اسم المستخدم" },
+            { value: "نوع المستخدم", label: "نوع المستخدم" },
+            { value: "الجهة", label: "الجهة" },
+            { value: "القسم", label: "القسم" },
+            { value: "البريد الإلكتروني", label: "البريد الإلكتروني" },
+            { value: "رقم الجوال", label: "رقم الجوال" },
+        ];
+
+        // حقول تقرير الطلبات
+        const requestReportFields = [
+            { value: "المستفيد", label: "المستفيد" },
+            { value: "نوع الخدمة", label: "نوع الخدمة" },
+            { value: "الجهاز", label: "الجهاز" },
+            { value: "التاريخ", label: "التاريخ" },
+            { value: "الوقت", label: "الوقت" },
+            { value: "المشرف المسند", label: "المشرف المسند اليه" },
+            { value: "الحالة", label: "الحالة" }
+        ];
+
+        // وظيفة عرض الحقول
+        function renderFields(fields) {
+            fieldsContainer.innerHTML = "";
+            fields.forEach(field => {
+                const div = document.createElement('div');
+                div.classList.add('field-checkbox-item');
+                div.innerHTML = `
+                    <label class="field-checkbox-label">
+                        <input type="checkbox" name="fields" value="${field.value}" id="field_${field.value}">
+                        <span>${field.label}</span>
+                    </label>
+                `;
+                fieldsContainer.appendChild(div);
+            });
+            fieldsSection.style.display = 'block';
+        }
+
+        // تحديث الحقول حسب نوع الخدمة
+        function updateFieldsByServiceType(serviceType) {
+            switch (serviceType) {
+                case "الدورات التدريبية":
+                    renderFields(courseFields);
+                    break;
+                case "إعارة الأجهزة":
+                    renderFields(deviceLoanFields);
+                    break;
+                case "الاستشارات التقنية":
+                    renderFields(consultationFields);
+                    break;
+                case "زيارة المعمل":
+                    renderFields(visitFields);
+                    break;
+                case "حجز الأجهزة":
+                    renderFields(deviceReservationFields);
+                    break;
+                default:
+                    renderFields(generalFields);
+            }
+        }
+
+        // تحديد/إلغاء تحديد الكل
+        function toggleAllFields() {
+            const checkboxes = document.querySelectorAll('#fieldsContainer input[type="checkbox"]');
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+            checkboxes.forEach(cb => cb.checked = !allChecked);
+
+            // تحديث نص الزر
+            const button = document.querySelector('.btn-select-all');
+            if (!allChecked) {
+                button.textContent = 'إلغاء التحديد';
+            } else {
+                button.textContent = 'تحديد الكل';
+            }
+        }
+
+        // معالج تغيير نوع التقرير
+        reportTypeSelect.addEventListener('change', function () {
+            const selectedType = this.value;
+
+            // إخفاء جميع الأقسام أولاً
+            serviceFilterSection.style.display = 'none';
+            deviceFilterSection.style.display = 'none';
+            userFilterSection.style.display = 'none';
+            requestFilterSection.style.display = 'none';
+
+            if (selectedType === 'تقرير الخدمات') {
+                serviceFilterSection.style.display = 'block';
+                updateFieldsByServiceType(serviceTypeSelect.value);
+            } else if (selectedType === 'تقرير الأجهزة') {
+                deviceFilterSection.style.display = 'block';
+                renderFields(deviceReportFields);
+            } else if (selectedType === 'تقرير المستخدمين') {
+                userFilterSection.style.display = 'block';
+                renderFields(userReportFields);
+            } else if (selectedType === 'تقرير الطلبات') {
+                requestFilterSection.style.display = 'block';
+                renderFields(requestReportFields);
+            } else {
+                fieldsSection.style.display = 'none';
+                fieldsContainer.innerHTML = '';
+            }
+        });
+
+        // معالج تغيير نوع الخدمة
+        serviceTypeSelect.addEventListener('change', function () {
+            updateFieldsByServiceType(this.value);
+        });
+
+        // معالج تغيير حالة الجهاز
+        deviceStatusSelect.addEventListener('change', function () {
+            // يمكن إضافة منطق إضافي هنا إذا لزم الأمر
+            // حالياً الحقول ثابتة لتقرير الأجهزة
+            renderFields(deviceReportFields);
+        });
+
+        // معالج تغيير نوع المستخدم
+        userTypeSelect.addEventListener('change', function () {
+            // يمكن إضافة منطق إضافي هنا إذا لزم الأمر
+            // حالياً الحقول ثابتة لتقرير المستخدمين
+            renderFields(userReportFields);
+        });
+
+        // معالج تغيير حالة الطلب
+        requestStatusSelect.addEventListener('change', function () {
+            // يمكن إضافة منطق إضافي هنا إذا لزم الأمر
+            // حالياً الحقول ثابتة لتقرير الطلبات
+            renderFields(requestReportFields);
+        });
+
+        // إضافة تأثير التحميل عند إرسال النموذج
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const submitBtn = document.querySelector('.btn-create-report');
+            submitBtn.textContent = 'جاري إنشاء التقرير...';
+            submitBtn.disabled = true;
+        });
+    </script>
+}

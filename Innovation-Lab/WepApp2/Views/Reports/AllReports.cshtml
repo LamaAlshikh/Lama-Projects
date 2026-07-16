@@ -1,0 +1,400 @@
+﻿@{
+    ViewData["Title"] = "التقارير";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@using System.Text.Json
+@using WepApp2.Models
+
+@section Styles {
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/Gruop3Style.css" />
+    <style>
+        .allreports-chart-canvas-wrapper {
+            position: relative;
+            height: 280px !important;
+            padding-bottom: 30px;
+        }
+
+        .allreports-chart-card {
+            min-height: 380px;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 20px;
+        }
+
+            /* تقليل حجم legend للرسوم البيانية */
+            .allreports-chart-card canvas {
+                max-height: 240px !important;
+            }
+    </style>
+}
+
+<div class="container-fluid p-4">
+    <div class="allreports-page-header">
+        <h1>التقارير</h1>
+        <p>تحليلات مرئية حول الأجهزة والطلبات</p>
+    </div>
+
+    <div class="allreports-stats">
+        <div class="allreports-stat-box total">
+            <h3>@(ViewBag.RequestsThisMonth ?? 0)</h3>
+            <p>عدد الطلبات هذا الشهر</p>
+        </div>
+        <div class="allreports-stat-box maintenance">
+            <h3>@(ViewBag.DevicesNeedMaintenance ?? 0)</h3>
+            <p>أجهزة بحاجة للصيانة</p>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <a class="allreports-custom-btn" asp-controller="Reports" asp-action="CreateCustomReport">+ تقرير مخصص</a>
+    </div>
+
+    <div class="allreports-charts-container">
+        <div class="allreports-chart-card">
+            <div class="allreports-chart-title">توزيع الأجهزة حسب الحالة</div>
+            <div class="allreports-chart-canvas-wrapper">
+                <canvas id="allReportsDeviceStatusChart"></canvas>
+            </div>
+        </div>
+
+        <div class="allreports-chart-card">
+            <div class="allreports-chart-title"> توزيع الطلبات خلال الشهر</div>
+            <div class="allreports-chart-canvas-wrapper">
+                <canvas id="allReportsRequestTypeChart"></canvas>
+            </div>
+        </div>
+
+        <div class="allreports-chart-card">
+            <div class="allreports-chart-title">توزيع المستخدمين حسب النوع</div>
+            <div class="allreports-chart-canvas-wrapper">
+                <canvas id="allReportsUsersDistributionChart"></canvas>
+            </div>
+        </div>
+
+        <div class="allreports-chart-card">
+            <div class="allreports-chart-title">توزيع الأجهزة حسب النوع</div>
+            <div class="allreports-chart-canvas-wrapper">
+                <canvas id="allReportsDeviceTypesChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // البيانات من قاعدة البيانات
+        var deviceStatusData = @Html.Raw(ViewBag.DeviceStatusData != null ? JsonSerializer.Serialize(ViewBag.DeviceStatusData) : "[]");
+        var requestTypesData = @Html.Raw(ViewBag.RequestTypesData != null ? JsonSerializer.Serialize(ViewBag.RequestTypesData) : "[]");
+        var usersDistributionData = @Html.Raw(ViewBag.UsersDistributionData != null ? JsonSerializer.Serialize(ViewBag.UsersDistributionData) : "[]");
+        var deviceTypesData = @Html.Raw(ViewBag.DeviceTypesData != null ? JsonSerializer.Serialize(ViewBag.DeviceTypesData) : "[]");
+
+        // دالة مساعدة للحصول على الخاصية بغض النظر عن حالة الأحرف
+        function getPropertyValue(obj, propName) {
+            // جرب الحروف الصغيرة أولاً
+            if (obj[propName.toLowerCase()]) return obj[propName.toLowerCase()];
+            // ثم جرب الحروف الكبيرة
+            if (obj[propName.charAt(0).toUpperCase() + propName.slice(1)])
+                return obj[propName.charAt(0).toUpperCase() + propName.slice(1)];
+            // إذا لم تجد، ارجع null
+            return null;
+        }
+
+        // Wait for DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default font family for Chart.js
+            Chart.defaults.font.family = "'Tajawal', sans-serif";
+
+            // Initialize all charts
+            setTimeout(() => {
+                createAllReportsDeviceStatusChart();
+                createAllReportsRequestTypeChart();
+                createAllReportsUsersDistributionChart();
+                createAllReportsDeviceTypesChart();
+            }, 100);
+        });
+
+        // Device Status Chart
+        function createAllReportsDeviceStatusChart() {
+            const canvas = document.getElementById('allReportsDeviceStatusChart');
+            if (!canvas) return;
+
+            // تحضير البيانات
+            var labels = [];
+            var data = [];
+            var backgroundColor = [];
+
+            if (deviceStatusData && deviceStatusData.length > 0) {
+                deviceStatusData.forEach(function(item) {
+                    var status = getPropertyValue(item, 'status');
+                    var count = getPropertyValue(item, 'count');
+
+                    labels.push(status);
+                    data.push(count);
+
+                    // تحديد اللون حسب الحالة
+                    if (status === 'عاملة' || status === 'Active' || status === 'active') {
+                        backgroundColor.push('#38a169');
+                    } else if (status === 'صيانة' || status === 'Maintenance' || status === 'maintenance') {
+                        backgroundColor.push('#ed8936');
+                    } else if (status === 'غير متصل' || status === 'Offline' || status === 'offline') {
+                        backgroundColor.push('#e53e3e');
+                    } else {
+                        backgroundColor.push('#6b7280'); // لون رمادي للحالات غير المعروفة
+                    }
+                });
+            } else {
+                // بيانات افتراضية إذا لم تكن هناك بيانات
+                labels = ['لا توجد بيانات'];
+                data = [1];
+                backgroundColor = ['#cccccc'];
+            }
+
+            const ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: backgroundColor
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 8,
+                                boxWidth: 12,
+                                font: {
+                                    size: 10,
+                                    family: "'Tajawal', sans-serif"
+                                },
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.parsed + ' مستخدم';
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Request Type Chart
+        function createAllReportsRequestTypeChart() {
+            const canvas = document.getElementById('allReportsRequestTypeChart');
+            if (!canvas) return;
+
+            // تحضير البيانات
+            var labels = [];
+            var data = [];
+            var colors = ['#667eea', '#764ba2', '#63b3ed', '#f6ad55', '#48bb78', '#10b981', '#e11d48'];
+
+            if (requestTypesData && requestTypesData.length > 0) {
+                requestTypesData.forEach(function(item, index) {
+                    var type = getPropertyValue(item, 'type');
+                    var count = getPropertyValue(item, 'count');
+
+                    labels.push(type);
+                    data.push(count);
+                });
+            } else {
+                labels = ['لا توجد بيانات'];
+                data = [1];
+                colors = ['#cccccc'];
+            }
+
+            const ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors.slice(0, labels.length)
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 8,
+                                boxWidth: 12,
+                                font: {
+                                    size: 10,
+                                    family: "'Tajawal', sans-serif"
+                                },
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.parsed + ' طلب';
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            bottom: 20
+                        }
+                    }
+                }
+            });
+        }
+
+        // Users Distribution Chart
+        function createAllReportsUsersDistributionChart() {
+            const canvas = document.getElementById('allReportsUsersDistributionChart');
+            if (!canvas) return;
+
+            // تحضير البيانات
+            var labels = [];
+            var data = [];
+            var colors = ['#667eea', '#10b981', '#f59e0b', '#f472b6', '#a78bfa'];
+
+            // تحويل أنواع المستخدمين إلى العربية
+            var userTypeMapping = {
+                'Student': 'طالب',
+                'Faculty': 'عضو هيئة تدريس',
+                'Supervisor': 'مشرف',
+                'Admin': 'مدير',
+                'طالب': 'طالب',
+                'عضو هيئة تدريس': 'عضو هيئة تدريس',
+                'مشرف': 'مشرف',
+                'مدير': 'مدير'
+            };
+
+            if (usersDistributionData && usersDistributionData.length > 0) {
+                usersDistributionData.forEach(function(item) {
+                    var userType = getPropertyValue(item, 'userType');
+                    var count = getPropertyValue(item, 'count');
+
+                    // تحويل النوع إلى العربية إذا لزم الأمر
+                    var arabicUserType = userTypeMapping[userType] || userType;
+
+                    labels.push(arabicUserType);
+                    data.push(count);
+                });
+            } else {
+                labels = ['لا توجد بيانات'];
+                data = [1];
+                colors = ['#cccccc'];
+            }
+
+            const ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors.slice(0, labels.length)
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 8,
+                                boxWidth: 12,
+                                font: {
+                                    size: 10,
+                                    family: "'Tajawal', sans-serif"
+                                },
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Device Types Chart
+        function createAllReportsDeviceTypesChart() {
+            const canvas = document.getElementById('allReportsDeviceTypesChart');
+            if (!canvas) return;
+
+            // تحضير البيانات
+            var labels = [];
+            var data = [];
+            var colors = ['#ed64a6', '#f6ad55', '#9f7aea', '#4ade80', '#06b6d4'];
+
+            if (deviceTypesData && deviceTypesData.length > 0) {
+                deviceTypesData.forEach(function(item) {
+                    var type = getPropertyValue(item, 'type');
+                    var count = getPropertyValue(item, 'count');
+
+                    labels.push(type);
+                    data.push(count);
+                });
+            } else {
+                labels = ['لا توجد بيانات'];
+                data = [1];
+                colors = ['#cccccc'];
+            }
+
+            const ctx = canvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: colors.slice(0, labels.length)
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 8,
+                                boxWidth: 12,
+                                font: {
+                                    size: 10,
+                                    family: "'Tajawal', sans-serif"
+                                },
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+}

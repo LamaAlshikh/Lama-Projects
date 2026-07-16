@@ -1,0 +1,321 @@
+﻿@model List<WepApp2.Models.Request>
+
+@{
+Layout = "~/Views/Shared/_LayoutSupervisor.cshtml";
+    ViewBag.Title = "صفحة المشرف";
+}
+
+
+<!-- ربط ملف CSS -->
+<link rel="stylesheet" href="~/css/Gruop3Style.css" />
+<!-- ربط Font Awesome للأيقونات -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+<h2 class="mb-4">إدارة الطلبات</h2>
+
+<!-- الفلاتر -->
+<div class="supervisor-filters-container mb-4">
+    <div class="row">
+        <div class="col-md-4">
+            <label for="statusFilter" class="supervisor-filter-label">فلتر حسب الحالة:</label>
+            <select id="statusFilter" class="supervisor-filter-dropdown form-select">
+                <option value="">جميع الحالات</option>
+                <option value="بانتظار موافقة المشرف">بانتظار موافقة المشرف</option>
+                <option value="موافق عليه من قبل المشرف">موافق عليه من قبل المشرف</option>
+                <option value="مرفوض من قبل المشرف">مرفوض من قبل المشرف</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="requestTypeFilter" class="supervisor-filter-label">فلتر حسب نوع الطلب:</label>
+            <select id="requestTypeFilter" class="supervisor-filter-dropdown form-select">
+                <option value="">جميع الأنواع</option>
+                <option value="حجز أجهزة">حجز أجهزة</option>
+                <option value="إعارة">إعارة</option>
+                <option value="زيارة المعمل">زيارة المعمل</option>
+                <option value="استشارة">استشارة</option>
+                <option value="دورات تدريبية">دورات تدريبية</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label for="dateFilter" class="supervisor-filter-label">فلتر حسب التاريخ:</label>
+            <input type="date" id="dateFilter" class="supervisor-date-filter form-control">
+        </div>
+    </div>
+</div>
+
+<form id="requestsForm" method="post">
+    @Html.AntiForgeryToken()
+
+    <table id="requestsTable" class="table table-hover">
+        <thead>
+            <tr>
+                <th>الطلب</th>
+                <th>نوع الطلب</th>
+                <th>اسم المستخدم</th>
+                <th>التاريخ</th>
+                <th>الحالة</th>
+                <th>الإجراءات</th>
+                <th>التفاصيل</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var request in Model)
+
+            {
+                <tr>
+                    <td>@request.RequestID</td>
+                    <td>@request.RequestType</td>
+                    <td>@request.User?.UserName</td>
+                    <td>@request.RequestDate.ToString("yyyy-MM-dd")</td>
+                    <td class="status">@request.SupervisorStatus</td>
+                    <td class="actions">
+                        <div class="d-flex justify-content-start gap-2">
+                            @if (request.SupervisorStatus == "موافق عليه من قبل المشرف" || request.SupervisorStatus == "مرفوض من قبل المشرف")
+                            {
+                                <span>تم الإجراء</span>
+                            }
+                            else
+                            {
+                                <button type="button" class="supervisor-approve-btn btn btn-success" data-request-id="@request.RequestID">موافقة</button>
+                                <button type="button" class="supervisor-reject-btn btn btn-danger" data-request-id="@request.RequestID">رفض</button>
+                            }
+                        </div>
+                    </td>
+                    <td>
+                        <button type="button" class="supervisor-view-details-btn btn btn-outline-success"
+                                data-request-id="@request.RequestID"
+                                data-request-type="@request.RequestType"
+                                data-user-name="@request.User?.UserName"
+                                data-request-date="@request.RequestDate.ToString("yyyy-MM-dd")"
+                                data-status="@request.SupervisorStatus"
+                                data-device-name="@(request.RequestType == "حجز أجهزة" || request.RequestType == "إعارة" ? request.Device?.DeviceName : "غير متاح")">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</form>
+
+<!-- Modal Overlay -->
+<div class="supervisor-overlay" id="overlay"></div>
+
+<!-- Reject Modal -->
+<div class="supervisor-reject-modal" id="rejectModal">
+    <h3 class="mb-3">رفض الطلب</h3>
+    <label for="rejectReason">سبب الرفض *</label>
+    <textarea id="rejectReason" rows="4" class="form-control mt-2" placeholder="اكتب سبب رفض الطلب..."></textarea>
+    <div class="mt-3 text-start">
+        <button type="button" onclick="confirmReject()" class="btn btn-danger">تأكيد الرفض</button>
+        <button type="button" onclick="closeModal()" class="btn btn-secondary me-2">إغلاق</button>
+    </div>
+</div>
+
+<!-- Details Modal -->
+<div class="supervisor-details-modal" id="detailsModal">
+    <h3 class="mb-3">تفاصيل الطلب</h3>
+    <div class="supervisor-details-content">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="supervisor-detail-label">رقم الطلب:</label>
+                <span id="detailRequestId" class="supervisor-detail-value"></span>
+            </div>
+            <div class="col-md-6">
+                <label class="supervisor-detail-label">نوع الطلب:</label>
+                <span id="detailRequestType" class="supervisor-detail-value"></span>
+            </div>
+        </div>
+        <!-- ✨ خانة التفاصيل المحدثة -->
+        <div class="row mb-3">
+            <div class="col-12">
+                <label class="supervisor-detail-label">وصف الطلب:</label>
+                <span id="detailRequestInfo" class="supervisor-detail-value"></span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="supervisor-detail-label">اسم المستخدم:</label>
+                <span id="detailUserName" class="supervisor-detail-value"></span>
+            </div>
+            <div class="col-md-6">
+                <label class="supervisor-detail-label">تاريخ الطلب:</label>
+                <span id="detailRequestDate" class="supervisor-detail-value"></span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="supervisor-detail-label">الحالة:</label>
+                <span id="detailStatus" class="supervisor-detail-value"></span>
+            </div>
+        </div>
+    </div>
+    <div class="mt-3 text-start">
+        <button type="button" onclick="closeDetailsModal()" class="btn btn-secondary">إغلاق</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let selectedRow;
+        let selectedRequestId;
+
+        document.querySelectorAll(".supervisor-approve-btn").forEach(btn => {
+            btn.addEventListener("click", function () {
+                const row = this.closest("tr");
+                const requestId = this.getAttribute("data-request-id");
+                updateStatus(requestId, "موافق عليه من قبل المشرف", row);
+            });
+        });
+
+        document.querySelectorAll(".supervisor-reject-btn").forEach(btn => {
+            btn.addEventListener("click", function () {
+                selectedRow = this.closest("tr");
+                selectedRequestId = this.getAttribute("data-request-id");
+                document.getElementById("rejectModal").style.display = "block";
+                document.getElementById("overlay").style.display = "block";
+            });
+        });
+
+        // زر عرض التفاصيل
+        document.querySelectorAll(".supervisor-view-details-btn").forEach(btn => {
+            btn.addEventListener("click", function () {
+                const requestId = this.getAttribute("data-request-id");
+                const requestType = this.getAttribute("data-request-type");
+                const userName = this.getAttribute("data-user-name");
+                const requestDate = this.getAttribute("data-request-date");
+                const status = this.getAttribute("data-status");
+                const deviceName = this.getAttribute("data-device-name");
+
+                document.getElementById("detailRequestId").textContent = requestId;
+                document.getElementById("detailRequestType").textContent = requestType;
+                document.getElementById("detailUserName").textContent = userName || "غير محدد";
+                document.getElementById("detailRequestDate").textContent = requestDate;
+                document.getElementById("detailStatus").textContent = status;
+
+                if (requestType === "زيارة المعمل") {
+                    fetch(`/Supervisor/GetVisitType?id=${requestId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById("detailRequestInfo").textContent = data.visitType;
+                        })
+                        .catch(() => {
+                            document.getElementById("detailRequestInfo").textContent = "خطأ في جلب نوع الزيارة";
+                        });
+                } else if (requestType === "استشارة") {
+                    fetch(`/Supervisor/GetConsultationDescription?id=${requestId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById("detailRequestInfo").textContent = data.consultationDescription;
+                        })
+                        .catch(() => {
+                            document.getElementById("detailRequestInfo").textContent = "خطأ في جلب وصف الاستشارة";
+                        });
+                        } else if (requestType === "دورات تدريبية") {
+            fetch(`/Supervisor/GetCourseName?id=${requestId}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("detailRequestInfo").textContent = data.courseName;
+                })
+                .catch(() => {
+                    document.getElementById("detailRequestInfo").textContent = "خطأ في جلب اسم الدورة";
+                });
+        }
+                else if (requestType === "حجز أجهزة" || requestType === "إعارة") {
+            document.getElementById("detailRequestInfo").textContent = deviceName;
+        } else {
+            document.getElementById("detailRequestInfo").textContent = "غير متاح";
+        }
+
+                document.getElementById("detailsModal").style.display = "block";
+                document.getElementById("overlay").style.display = "block";
+            });
+        });
+
+
+        function confirmReject() {
+            const reason = document.getElementById("rejectReason").value.trim();
+            if (reason === "") {
+                alert("يرجى إدخال سبب الرفض.");
+                return;
+            }
+            updateStatus(selectedRequestId, "مرفوض من قبل المشرف", selectedRow, reason); // ✨ أرسل السبب هنا
+            closeModal();
+        }
+
+        function updateStatus(requestId, status, row, notes = null) {
+            const data = {
+                requestId: requestId,
+                status: status,
+                notes: notes // ✨ أرسل السبب هنا (null في الموافقة)
+            };
+
+            fetch('/Supervisor/UpdateStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    row.querySelector(".status").textContent = status;
+                    row.querySelector(".status").style.color = (status === "موافق عليه") ? "#16a34a" : "#dc2626";
+                    row.querySelector(".actions").innerHTML = `<span>تم الإجراء</span>`;
+                } else {
+                    alert("حدث خطأ أثناء التحديث.");
+                }
+            })
+            .catch(() => alert("فشل الاتصال بالخادم."));
+        }
+
+        function closeModal() {
+            document.getElementById("rejectModal").style.display = "none";
+            document.getElementById("overlay").style.display = "none";
+            document.getElementById("rejectReason").value = "";
+        }
+
+        function closeDetailsModal() {
+            document.getElementById("detailsModal").style.display = "none";
+            document.getElementById("overlay").style.display = "none";
+        }
+
+        document.getElementById("overlay").addEventListener("click", function() {
+            closeModal();
+            closeDetailsModal();
+        });
+
+        // وظائف الفلترة المحدثة
+        function filterTable() {
+            const statusFilter = document.getElementById("statusFilter").value;
+            const requestTypeFilter = document.getElementById("requestTypeFilter").value;
+            const dateFilter = document.getElementById("dateFilter").value;
+            const table = document.getElementById("requestsTable");
+            const rows = table.querySelectorAll("tbody tr");
+
+            rows.forEach(row => {
+                const status = row.querySelector(".status").textContent.trim();
+                const requestType = row.cells[1].textContent.trim();
+                const requestDate = row.cells[3].textContent.trim(); // عمود التاريخ
+
+                const statusMatch = statusFilter === "" || status === statusFilter;
+                const typeMatch = requestTypeFilter === "" || requestType === requestTypeFilter;
+                const dateMatch = dateFilter === "" || requestDate === dateFilter;
+
+                if (statusMatch && typeMatch && dateMatch) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
+        }
+
+        // ربط الفلاتر بالأحداث
+        document.getElementById("statusFilter").addEventListener("change", filterTable);
+        document.getElementById("requestTypeFilter").addEventListener("change", filterTable);
+        document.getElementById("dateFilter").addEventListener("change", filterTable);
+    </script>
+}

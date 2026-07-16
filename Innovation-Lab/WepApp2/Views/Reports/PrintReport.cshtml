@@ -1,0 +1,194 @@
+﻿@using System.Reflection
+@{
+    Layout = null;
+    var selectedFields = ViewBag.SelectedFields as List<string> ?? new List<string>();
+    var reportType = ViewBag.ReportType as string ?? "";
+    var serviceType = ViewBag.ServiceType as string ?? "";
+
+    // دالة للحصول على قيمة خاصية من كائن ديناميكي
+    Func<dynamic, string, object> GetPropertyValue = (obj, propName) =>
+    {
+        try
+        {
+            // استبدال المسافات بشرطة سفلية للوصول للخصائص
+            var prop = propName.Replace(" ", "_");
+            Type type = obj.GetType();
+            PropertyInfo propInfo = type.GetProperty(prop);
+            if (propInfo != null)
+                return propInfo.GetValue(obj, null);
+            return "غير محدد";
+        }
+        catch
+        {
+            return "غير محدد";
+        }
+    };
+
+    // تحديد الحقول المراد عرضها حسب نوع التقرير
+    List<string> displayFields = new List<string>();
+
+    if (reportType == "تقرير الطلبات")
+    {
+        displayFields = new List<string> { "المستفيد", "نوع الخدمة", "الجهاز", "التاريخ", "الوقت", "المشرف المسند", "الحالة" };
+    }
+    else if (reportType == "تقرير الأجهزة")
+    {
+        displayFields = new List<string> { "اسم الجهاز", "النوع", "الموقع", "الشركة", "الطراز", "تاريخ آخر صيانة", "الحالة" };
+    }
+    else if (reportType == "تقرير المستخدمين")
+    {
+        displayFields = new List<string> { "الاسم", "اسم المستخدم", "نوع المستخدم", "الجهة", "القسم", "البريد الإلكتروني", "رقم الجوال" };
+    }
+    else if (reportType == "تقرير الخدمات")
+    {
+        // تحديد الحقول حسب نوع الخدمة
+        if (serviceType == "الدورات التدريبية")
+        {
+            displayFields = new List<string> { "نوع الخدمة", "اسم الدورة", "مجال الدورة", "مقدم الدورة", "وصف الدورة" };
+        }
+        else if (serviceType == "إعارة الأجهزة")
+        {
+            displayFields = new List<string> { "اسم الجهاز", "الغرض", "مدة الإعارة", "مقدم الطلب", "الحالة" };
+        }
+        else if (serviceType == "حجز الأجهزة")
+        {
+            displayFields = new List<string> { "اسم الجهاز", "اسم المستفيد", "اسم المشروع", "وصف المشروع", "تاريخ الحجز", "بداية الوقت", "نهاية الوقت" };
+        }
+        else if (serviceType == "زيارة المعمل")
+        {
+            displayFields = new List<string> { "نوع الزيارة", "وصف الزيارة", "اسم المستفيد", "تاريخ الزيارة", "الحالة", "عدد الزوار", "الوقت" };
+        }
+        else if (serviceType == "الاستشارات التقنية")
+        {
+            displayFields = new List<string> { "عنوان الاستشارة", "مجال الاستشارة", "وصف الاستشارة", "المستفيد", "مقدم الاستشارة", "التاريخ", "الوقت", "الحالة" };
+        }
+        else
+        {
+            displayFields = new List<string> { "نوع الخدمة", "وصف الخدمة", "تاريخ الطلب", "المستخدم", "الحالة" };
+        }
+    }
+
+    // فلترة الحقول المطلوبة فقط
+    var fieldsToDisplay = selectedFields.Count > 0
+        ? displayFields.Where(f => selectedFields.Contains(f)).ToList()
+        : displayFields;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.ReportTitle</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="~/css/Gruop3Style.css" rel="stylesheet" />
+</head>
+<body class="print-report-body">
+    <div class="print-report-header">
+        <h1 class="print-report-main-title">@ViewBag.ReportTitle</h1>
+        <h2 class="print-report-sub-title">@ViewBag.ReportType</h2>
+        @if (!string.IsNullOrEmpty(serviceType) && reportType == "تقرير الخدمات")
+        {
+            <div class="print-report-service-type">نوع الخدمة: @serviceType</div>
+        }
+        <div class="print-report-meta-info">
+            @if (ViewBag.FromDate != null && ViewBag.ToDate != null)
+            {
+                <span>التقرير من تاريخ @ViewBag.FromDate إلى @ViewBag.ToDate</span>
+            }
+        </div>
+    </div>
+
+    @if (Model != null && ((IEnumerable<dynamic>)Model).Count() > 0)
+    {
+        <table class="print-report-data-table">
+            <thead>
+                <tr>
+                    @foreach (var field in fieldsToDisplay)
+                    {
+                        <th>@field</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @foreach (var field in fieldsToDisplay)
+                        {
+                            <td>
+                                @{
+                                    var value = GetPropertyValue(item, field);
+                                    string displayValue = value?.ToString() ?? "غير محدد";
+
+                                    // معالجة خاصة لبعض الحقول
+                                    if (field == "الحالة" || field == "حالة الطلب")
+                                    {
+                                        string statusClass = "";
+                                        switch (displayValue)
+                                        {
+                                            case "بانتظار اسناد المشرف":
+                                                statusClass = "print-report-status-new";
+                                                break;
+                                            case "بانتظار موافقة المشرف":
+                                                statusClass = "print-report-status-assigned";
+                                                break;
+                                            case "موافق عليه من قبل المسؤول":
+                                            case "موافق عليه من قبل المشرف":
+                                                statusClass = "print-report-status-approved";
+                                                break;
+                                            case "مرفوض من قبل المشرف":
+                                                statusClass = "print-report-status-rejected";
+                                                break;
+                                            case "مرفوض من قبل المسؤول":
+                                                statusClass = "print-report-status-rejected";
+                                                break;
+                                            case "نشط":
+                                            case "عاملة":
+                                                statusClass = "print-report-status-active";
+                                                break;
+                                            case "تحت الصيانة":
+                                            case "صيانة":
+                                                statusClass = "print-report-status-maintenance";
+                                                break;
+                                            case "غير عاملة":
+                                            case "غير متصل":
+                                                statusClass = "print-report-status-inactive";
+                                                break;
+                                        }
+                                        <span class="print-report-status-badge @statusClass">@displayValue</span>
+                                    }
+                                   
+                                    else if (field == "البريد الإلكتروني" && displayValue != "غير محدد")
+                                    {
+                                        <a href="mailto:@displayValue" class="print-report-email-link">@displayValue</a>
+                                    }
+                                    else if (field == "رقم الجوال")
+                                    {
+                                        <span class="print-report-phone-number">@displayValue</span>
+                                    }
+                                    else
+                                    {
+                                        @displayValue
+                                    }
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="print-report-no-data">
+            لا توجد بيانات للعرض في هذا التقرير
+        </p>
+    }
+
+    <div class="print-report-footer">
+        <p>تم إنشاء هذا التقرير بواسطة نظام تقارير معمل الابتكارات - @DateTime.Now.ToString("yyyy-MM-dd HH:mm")</p>
+    </div>
+
+    <button class="print-report-action-button" onclick="window.print()">طباعة التقرير</button>
+</body>
+</html>

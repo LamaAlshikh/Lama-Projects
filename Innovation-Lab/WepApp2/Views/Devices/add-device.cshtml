@@ -1,0 +1,116 @@
+﻿@{
+    ViewBag.Title = "إضافة جهاز جديد";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@*
+---------------------------------------------------------------
+الصفحة: إضافة جهاز جديد (Add New Device)
+الوصف: نموذج لإدخال بيانات جهاز جديد إلى النظام
+Page: Add New Device
+Description: Form to input new device information into the system
+---------------------------------------------------------------
+*@
+@model WepApp2.Models.Device
+
+
+
+
+@section Styles {
+    <!-- ربط ملف التنسيق المخصص -->
+    <!-- Link to custom CSS file -->
+    <link href="~/css/Group1Style.css" rel="stylesheet" />
+}
+
+
+<!-- حاوية الصفحة -->
+<!-- Main page container -->
+<div class="container">
+    <h2 class="mb-4"> إضافة جهاز جديد</h2>
+
+
+    <!-- عرض رسائل الخطأ إن وجدت -->
+    <!-- Display model validation errors if any -->
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <strong>⚠️ حدثت أخطاء:</strong>
+            <ul>
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
+
+
+
+    <!-- نموذج إضافة الجهاز -->
+    <!-- Form to add a new device -->
+    @using (Html.BeginForm("AddDevice", "Devices", FormMethod.Post, new { id = "deviceForm" }))
+    {
+
+        <!-- الحالة الابتدائية: الجهاز مفعّل -->
+        <!-- Initial status: device is active -->
+        <input type="hidden" name="DeviceStatus" value="active" />
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.DeviceName, "اسم الجهاز")
+                @Html.TextBoxFor(m => m.DeviceName, new { @class = "form-control", required = "required" })
+            </div>
+
+
+            <!-- قائمة اختيار نوع التقنية -->
+            <!-- Dropdown for technology type -->
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.TechnologyId, "نوع التقنية")
+                @Html.DropDownListFor(m => m.TechnologyId,
+                new SelectList(ViewBag.Technologies as List<Technology>, "TechnologyID", "TechnologyName"),
+                        "اختر نوع التقنية",
+                        new { @class = "form-select", required = "required" })
+
+            </div>
+
+
+            <!-- الرقم التسلسلي -->
+            <!-- Serial number -->
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.SerialNumber, "الرقم التسلسلي")
+                @Html.TextBoxFor(m => m.SerialNumber, new { @class = "form-control", required = "required" })
+            </div>
+
+
+            <!-- موقع الجهاز -->
+            <!-- Device location -->
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.DeviceLocation, "الموقع")
+                @Html.TextBoxFor(m => m.DeviceLocation, new { @class = "form-control", required = "required" })
+            </div>
+
+
+            <!-- اسم الشركة المصنعة -->
+            <!-- Manufacturer name -->
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.BrandName, "الشركة المصنعة")
+                @Html.TextBoxFor(m => m.BrandName, new { @class = "form-control", required = "required" })
+            </div>
+
+
+            <!-- الطراز -->
+            <!-- Device model -->
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.DeviceModel, "الطراز")
+                @Html.TextBoxFor(m => m.DeviceModel, new { @class = "form-control", required = "required" })
+            </div>
+        </div>
+
+
+        <!-- أزرار التحكم -->
+        <!-- Form action buttons -->
+        <div class="mt-4 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">إضافة</button>
+        <a href="@Url.Action("Devices", "Devices")" class="btn btn-secondary">↩ رجوع</a>
+        </div>
+    }
+</div>

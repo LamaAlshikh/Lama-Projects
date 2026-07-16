@@ -1,0 +1,379 @@
+﻿@{  
+    ViewBag.Title = "إدارة الأجهزة";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@*
+---------------------------------------------------------------
+الصفحة: إدارة الأجهزة (Device Management)
+الوصف: عرض جميع الأجهزة مع إمكانية البحث، التصفية، التعديل Page: Device Management
+Description: Displays all devices with search, filtering, editing, and deletion
+---------------------------------------------------------------
+*@
+@using WepApp2.Models
+@using System.Text.Json
+@model List<Device>
+
+
+
+
+<!-- العنوان والوصف -->
+<!-- Page heading and description -->
+<div class="container">
+    <h1 class="fs-3 fw-bold mb-2 text-dark">إدارة الأجهزة</h1>
+    <p class="text-muted mb-4">مراقبة وإدارة جميع أجهزة معمل الابتكارات</p>
+
+
+  <!-- عرض الإحصائيات الخاصة بحالة الأجهزة -->
+  <!-- Displaying device statistics based on their current status -->
+   <div class="row g-3 mb-4">
+        <div class="col-md-6 col-xl-3">
+            <div class="bg-white border-end border-primary border-4 rounded-3 p-3 shadow-sm">
+                <div class="fs-4 fw-bold text-primary" id="totalDevices">0</div>
+                <div class="small text-muted">
+                    إجمالي الأجهزة 
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="bg-white border-end border-success border-4 rounded-3 p-3 shadow-sm">
+                <div class="fs-4 fw-bold text-success" id="activeDevices">0</div>
+                <div class="small text-muted">الأجهزة العاملة</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="bg-white border-end border-warning border-4 rounded-3 p-3 shadow-sm">
+                <div class="fs-4 fw-bold text-warning" id="maintenanceDevices">0</div>
+                <div class="small text-muted">تحت الصيانة</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="bg-white border-end border-danger border-4 rounded-3 p-3 shadow-sm">
+                <div class="fs-4 fw-bold text-danger" id="inactiveDevices">0</div>
+                <div class="small text-muted">غير متصلة</div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- أدوات البحث والتصفية حسب الاسم، الحالة، والنوع -->
+    <!-- Search and filtering tools by name, status, and type -->
+    <div class="d-flex flex-wrap gap-3 align-items-center mb-4">
+        <input type="text" class="form-control w-auto flex-grow-1" id="deviceSearch" placeholder="ابحث عن جهاز...">
+        <select class="form-select2 w-auto" id="statusFilter">
+            <option value="">جميع الحالات</option>
+            <option value="active">عاملة</option>
+            <option value="maintenance">صيانة</option>
+            <option value="inactive">غير متصلة</option>
+        </select>
+
+
+        @* استخراج الأنواع التقنية المتاحة *@
+        @* Extract available technology types *@
+        @{
+            var deviceTypes = Model.Select(d => d.Technology?.TechnologyName)
+            .Where(type => !string.IsNullOrWhiteSpace(type))
+            .Distinct()
+            .OrderBy(type => type)
+            .ToList();
+        }
+
+        <select class="form-select w-auto" id="typeFilter">
+            <option value="">جميع الأنواع</option>
+            @foreach (var type in deviceTypes)
+            {
+                <option value="@type">@type</option>
+            }
+        </select>
+
+
+        <!-- روابط لإضافة جهاز أو إدارة الفئات -->
+        <!-- Links for adding a device or managing categories -->
+        <a href="@Url.Action("AddDevice", "Devices")" class="btn custom-primary-btn">+ إضافة جهاز</a>
+        <a href="@Url.Action("Index", "Technologies")" class="btn custom-primary-btn bi bi-tools me-2">
+             إدارة الفئات
+        </a>
+    </div>
+
+
+    <!-- عرض البطاقات إذا كانت الأجهزة موجودة -->
+    <!-- Display cards if devices exist -->
+    @if (Model != null && Model.Count > 0)
+    {
+        <div id="devicesGrid" class="row g-3">
+            @foreach (var device in Model.Select((d, i) => new { Device = d, Index = i }))
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm p-3 rounded-4">
+                        <!-- شارة الحالة -->
+                        <!-- Status badge -->
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <span class="badge rounded-pill px-3 py-2 border
+                                @(device.Device.DeviceStatus == "active" ? "bg-success-subtle text-success-emphasis border-success" :
+                                  device.Device.DeviceStatus == "maintenance" ? "bg-warning-subtle text-warning-emphasis border-warning" :
+                                  "bg-danger-subtle text-danger-emphasis border-danger")">
+                                @(device.Device.DeviceStatus == "active" ? "عاملة" :
+                                    device.Device.DeviceStatus == "maintenance" ? "صيانة" :
+                                    "غير متصلة")
+                            </span>
+
+                            <div class="text-end">
+                                <div class="fw-bold text-muted small">EQP@((device.Device.DeviceID).ToString("D3"))</div>
+                            </div>
+                        </div>
+
+                        <!-- اسم الجهاز -->
+                        <h5 class="fw-bold text-dark">@device.Device.DeviceName</h5>
+
+                        <!-- معلومات الجهاز -->
+                        <div class="mb-3">
+                            <div><strong>النوع:</strong> @device.Device.Technology?.TechnologyName</div>
+                            <div><strong>الموقع:</strong> @device.Device.DeviceLocation</div>
+                            <div><strong>الشركة:</strong> @device.Device.BrandName</div>
+                            <div><strong>الطراز:</strong> @device.Device.DeviceModel</div>
+                        </div>
+
+                        <!-- أدوات التحكم -->
+                        <div class="d-flex gap-2 flex-wrap mb-2">
+                            <a href="@Url.Action("EditDevice", "Devices", new { id = device.Device.DeviceID })" class="btn btn-sm custom-edit-btn">تعديل</a>
+                            <!-- قائمة تغيير الحالة -->
+                            <div class="dropdown">
+                                <button class="btn btn-sm custom-status-btn dropdown-toggle" type="button"
+                                        id="dropdownMenuButton@(device.Index)" data-bs-toggle="dropdown">
+                                    الحالة
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="@Url.Action("SetStatus", "Devices", new { id = device.Device.DeviceID, status = "active" })">عاملة</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("SetStatus", "Devices", new { id = device.Device.DeviceID, status = "maintenance" })">صيانة</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("SetStatus", "Devices", new { id = device.Device.DeviceID, status = "inactive" })">غير متصلة</a></li>
+                                </ul>
+                            </div>
+
+
+
+                            @* تحضير بيانات الجهاز للمودال *@
+                            @{
+                                var deviceJson = new
+                                {
+                                    device.Device.DeviceID,
+                                    Name = device.Device.DeviceName,
+                                    Type = device.Device.Technology?.TechnologyName,
+                                    TechDescription = device.Device.Technology?.TechnologyDescription,
+                                    Serial = device.Device.SerialNumber,
+                                    Location = device.Device.DeviceLocation,
+                                    Manufacturer = device.Device.BrandName,
+                                    Model = device.Device.DeviceModel,
+                                    Status = device.Device.DeviceStatus,
+                                    LastMaintenance = device.Device.LastMaintenance,
+                                    StatusUpdated = device.Device.LastUpdate
+                                };
+                            }
+
+                            <button class="btn btn-sm btn-secondary"
+                                    onclick='showDeviceModal(@Html.Raw(JsonSerializer.Serialize(deviceJson)))'>
+                                عرض
+                            </button>
+                        </div>
+
+                        <div>
+                            آخر صيانة: @(device.Device.LastMaintenance.HasValue? device.Device.LastMaintenance.Value.ToString("yyyy-MM-dd HH:mm") : "-")
+                        </div>
+                        <div>
+                            آخر تعديل: @(device.Device.LastUpdate.HasValue? device.Device.LastUpdate.Value.ToString("yyyy-MM-dd HH:mm") : "-")
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">لا توجد أجهزة مضافة بعد.</div>
+    }
+</div>
+
+<!--  مودال عرض تفاصيل الجهاز -->
+<div class="modal fade" id="deviceDetailsModal" tabindex="-1" aria-labelledby="deviceDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 shadow-sm">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="deviceDetailsModalLabel">تفاصيل الجهاز</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>اسم الجهاز:</strong> <span id="vName">—</span></p>
+                <p><strong>النوع:</strong> <span id="vType">—</span></p>
+                <p><strong>وصف التقنية:</strong> <span id="vTechDescription">—</span></p>
+                <p><strong>المعرّف:</strong> <span id="vId">—</span></p>
+                <p><strong>الرقم التسلسلي:</strong> <span id="vSerial">—</span></p>
+                <p><strong>الموقع:</strong> <span id="vLocation">—</span></p>
+                <p><strong>الشركة:</strong> <span id="vManufacturer">—</span></p>
+                <p><strong>الطراز:</strong> <span id="vModel">—</span></p>
+                <p><strong>الحالة:</strong> <span id="vStatus">—</span></p>
+                <p><strong>آخر صيانة:</strong> <span id="vMaintenance">—</span></p>
+                <p><strong>آخر تعديل:</strong> <span id="vUpdated">—</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--------------------------------------------------------------------------------------------->
+@section Styles {
+    <link href="~/css/Group1Style.css" rel="stylesheet" />
+}
+@section Scripts {
+    <script>
+        // دالة لعرض تفاصيل الجهاز داخل نافذة المودال
+        // Function to display device details in modal
+        function showDeviceModal(device) {
+
+            // ترجمة الحالة من إنجليزية إلى عربية
+            // Translate device status from English to Arabic
+            function safeText(value) {
+                return (typeof value === 'string' && value.trim() !== '') ? value : "غير معروف";
+            }
+            function translateStatus(status) {
+                if (typeof status !== 'string') return "غير معروفة";
+                switch (status.trim().toLowerCase()) {
+                    case "active": return "عاملة";
+                    case "maintenance": return "صيانة";
+                    case "inactive": return "غير متصلة";
+                    default: return "غير معروفة";
+                }
+            }
+
+            // تعبئة عناصر المودال بالقيم
+            const paddedId = (device.DeviceId ?? 0).toString().padStart(3, '0');
+            document.getElementById("vName").textContent = safeText(device.Name);
+            document.getElementById("vId").textContent = `EQP${paddedId}`;
+            document.getElementById("vType").textContent = safeText(device.Type);
+            document.getElementById("vSerial").textContent = safeText(device.Serial);
+            document.getElementById("vLocation").textContent = safeText(device.Location);
+            document.getElementById("vManufacturer").textContent = safeText(device.Manufacturer);
+            document.getElementById("vModel").textContent = safeText(device.Model);
+            document.getElementById("vStatus").textContent = translateStatus(device.Status);
+
+
+            // تنسيق التاريخ بطريقة مفهومة
+            // Format the datetime string into readable format
+            function formatDateString(input) {
+                if (!input) return "غير معروف";
+                let date;
+                if (typeof input === "string" && input.includes("/Date(")) {
+                    const timestamp = parseInt(input.replace(/[^0-9]/g, ''));
+                    date = new Date(timestamp);
+                } else {
+                    date = new Date(input);
+                }
+                if (isNaN(date.getTime())) return "غير معروف";
+                return date.toLocaleString('ar-EG', {
+                    year: 'numeric', month: '2-digit', day: '2-digit',
+                    hour: '2-digit', minute: '2-digit'
+                });
+            }
+
+            document.getElementById("vMaintenance").textContent = formatDateString(device.LastMaintenance);
+            document.getElementById("vUpdated").textContent = formatDateString(device.StatusUpdated);
+            document.getElementById("vTechDescription").textContent = safeText(device.TechDescription);
+
+
+            // عرض المودال
+            const modal = new bootstrap.Modal(document.getElementById('deviceDetailsModal'));
+            modal.show();
+        }
+
+
+        // إزالة الخلفية السوداء من المودال تلقائياً
+        // Automatically remove extra black backdrop if it appears
+        const observer = new MutationObserver(function (mutations) {
+            mutations.forEach(() => {
+                document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+                    backdrop.parentNode.removeChild(backdrop);
+                });
+            });
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+
+
+        // عند تحميل الصفحة
+        // On page load: setup event listeners and refresh stats
+        window.addEventListener("load", function () {
+            updateStatistics();
+
+            document.getElementById("deviceSearch").addEventListener("input", applyFilters);
+            document.getElementById("statusFilter").addEventListener("change", applyFilters);
+            document.getElementById("typeFilter").addEventListener("change", applyFilters);
+        });
+
+
+        // تطبيق الفلاتر على البطاقات
+        // Apply filters based on name, status, and type
+        function applyFilters() {
+            const searchValue = document.getElementById("deviceSearch").value.toLowerCase().trim();
+            const selectedStatus = document.getElementById("statusFilter").value;
+            const selectedType = document.getElementById("typeFilter").value.toLowerCase();
+
+            const deviceCards = document.querySelectorAll("#devicesGrid .card");
+
+            deviceCards.forEach(card => {
+                const wrapper = card.closest(".col-md-6, .col-lg-4");
+
+                const cardName = card.querySelector("h5.fw-bold")?.textContent?.toLowerCase() || "";
+                const badgeText = card.querySelector(".badge")?.textContent.trim();
+                const cardTypeText = card.querySelector("div.mb-3 > div:nth-child(1)")?.textContent || "";
+                const cardType = cardTypeText.split(":")[1]?.trim().toLowerCase() || "";
+
+                let statusValue = "";
+                if (badgeText === "عاملة") statusValue = "active";
+                else if (badgeText === "صيانة") statusValue = "maintenance";
+                else if (badgeText === "غير متصلة") statusValue = "inactive";
+
+                const matchesName = cardName.includes(searchValue);
+                const matchesStatus = selectedStatus === "" || selectedStatus === statusValue;
+                const matchesType = selectedType === "" || cardType.includes(selectedType);
+
+                if (wrapper) {
+                    wrapper.style.display = (matchesName && matchesStatus && matchesType) ? "" : "none";
+                }
+            });
+
+            updateStatistics();
+        }
+
+
+        // تحديث الإحصائيات بناءً على البطاقات المعروضة فقط
+        // Update statistics based on currently visible cards
+        function updateStatistics() {
+            const cards = document.querySelectorAll("#devicesGrid .card");
+
+            let total = 0, active = 0, maintenance = 0, inactive = 0;
+
+            cards.forEach(card => {
+                const wrapper = card.closest(".col-md-6, .col-lg-4");
+                const isVisible = wrapper && wrapper.style.display !== "none";
+                if (!isVisible) return;
+
+                total++;
+                const badge = card.querySelector(".badge");
+                const status = badge?.textContent.trim();
+
+                if (status === "عاملة") active++;
+                else if (status === "صيانة") maintenance++;
+                else if (status === "غير متصلة") inactive++;
+            });
+
+            document.getElementById("totalDevices").textContent = total;
+            document.getElementById("activeDevices").textContent = active;
+            document.getElementById("maintenanceDevices").textContent = maintenance;
+            document.getElementById("inactiveDevices").textContent = inactive;
+        }
+    </script>
+}
+<!--------------------------------------------------------------------------------------------->

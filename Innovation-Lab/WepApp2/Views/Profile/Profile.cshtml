@@ -1,0 +1,173 @@
+﻿@model WepApp2.Models.User
+
+@{
+    string layoutPath = null;
+
+    if (Model.UserRole == "مدير")
+    {
+        layoutPath = "~/Views/Shared/_LayoutAdmin.cshtml";
+    }
+    else if (Model.UserRole == "مشرف")
+    {
+        layoutPath = "~/Views/Shared/_LayoutSupervisor.cshtml";
+    }
+
+    Layout = layoutPath;
+    ViewBag.Title = "البيانات الشخصية";
+}
+
+<!-- ربط CSS -->
+<link rel="stylesheet" href="~/css/Gruop3Style.css" />
+
+<main class="profile-main container-fluid profile-page">
+    <div class="profile-header text-center mb-5">
+        <h1 class="mb-3">البيانات الشخصية</h1>
+    </div>
+
+    <div class="profile-section">
+        <h3 class="mb-3">المعلومات الأساسية</h3>
+        <form id="profileForm">
+            <div class="profile-form-row">
+                <div class="profile-form-group">
+                    <label for="profileName">الاسم الكامل:</label>
+                    <input type="text" id="profileName" value="@($"{Model.FirstName} {Model.LastName}")" class="form-control" readonly />
+                </div>
+                <div class="profile-form-group">
+                    <label for="profileEmail">البريد الإلكتروني:</label>
+                    <input type="email" id="profileEmail" value="@Model.Email" class="form-control" readonly />
+                </div>
+            </div>
+
+            <div class="profile-form-row">
+                <div class="profile-form-group">
+                    <label for="profileStudentId">الرقم الجامعي:</label>
+                    <input type="text" id="profileStudentId" value="@Model.UserName" class="form-control" readonly />
+                </div>
+                <div class="profile-form-group">
+                    <label for="profilePhone">رقم الهاتف:</label>
+                    <input type="tel" id="profilePhone" value="@Model.PhoneNumber" class="form-control" readonly />
+                </div>
+            </div>
+
+            <div class="profile-form-row">
+                <div class="profile-form-group">
+                    <label for="profileCollege">الكلية:</label>
+                    <input type="text" id="profileCollege" value="@Model.Faculty" readonly class="form-control" />
+                </div>
+                <div class="profile-form-group">
+                    <label for="profileDepartment">القسم:</label>
+                    <input type="text" id="profileDepartment" value="@Model.Department" class="form-control" readonly />
+                </div>
+            </div>
+
+            <div class="d-flex gap-3 mt-3">
+                <button type="button" class="profile-btn profile-btn-primary" onclick="enableProfileEdit()">تعديل البيانات</button>
+                <button type="submit" class="profile-btn profile-btn-success" id="saveProfileBtn" style="display: none;">حفظ التغييرات</button>
+                <button type="button" class="profile-btn profile-btn-outline" id="cancelProfileBtn" onclick="cancelProfileEdit()" style="display: none;">إلغاء</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="notification" class="profile-notification">
+        <span id="notificationText"></span>
+    </div>
+</main>
+
+<!-- ✅ JavaScript -->
+<script>
+    let originalPhone = document.getElementById('profilePhone')?.value;
+    let originalName = document.getElementById('profileName')?.value;
+    let originalCollege = document.getElementById('profileCollege')?.value;
+    let originalDepartment = document.getElementById('profileDepartment')?.value;
+
+    function enableProfileEdit() {
+        const editableFields = ['profilePhone', 'profileName', 'profileCollege', 'profileDepartment'];
+        editableFields.forEach(id => {
+            const field = document.getElementById(id);
+            field.readOnly = false;
+            field.classList.add('editable');
+        });
+
+        document.querySelector('[onclick="enableProfileEdit()"]').style.display = 'none';
+        document.getElementById('saveProfileBtn').style.display = 'inline-flex';
+        document.getElementById('cancelProfileBtn').style.display = 'inline-flex';
+    }
+
+    function cancelProfileEdit() {
+        document.getElementById('profilePhone').value = originalPhone;
+        document.getElementById('profileName').value = originalName;
+        document.getElementById('profileCollege').value = originalCollege;
+        document.getElementById('profileDepartment').value = originalDepartment;
+
+        const editableFields = ['profilePhone', 'profileName', 'profileCollege', 'profileDepartment'];
+        editableFields.forEach(id => {
+            const field = document.getElementById(id);
+            field.readOnly = true;
+            field.classList.remove('editable');
+        });
+
+        document.querySelector('[onclick="enableProfileEdit()"]').style.display = 'inline-flex';
+        document.getElementById('saveProfileBtn').style.display = 'none';
+        document.getElementById('cancelProfileBtn').style.display = 'none';
+    }
+
+    // إرسال التعديلات إلى السيرفر
+    document.getElementById('profileForm')?.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const newPhone = document.getElementById('profilePhone').value.trim();
+        const newName = document.getElementById('profileName').value.trim();
+        const newCollege = document.getElementById('profileCollege').value.trim();
+        const newDepartment = document.getElementById('profileDepartment').value.trim();
+
+        const nameParts = newName.split(' ');
+        const firstName = nameParts[0];
+        const lastName = nameParts.slice(1).join(' ');
+
+        fetch('/Profile/UpdateProfile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                phoneNumber: newPhone,
+                firstName: firstName,
+                lastName: lastName,
+                faculty: newCollege,
+                department: newDepartment
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                originalPhone = newPhone;
+                originalName = newName;
+                originalCollege = newCollege;
+                originalDepartment = newDepartment;
+
+                showNotification('تم حفظ التغييرات بنجاح', 'success');
+                cancelProfileEdit();
+            } else {
+                response.text().then(err => {
+                    console.error("خطأ:", err);
+                    showNotification('فشل في حفظ التغييرات', 'error');
+                });
+            }
+        })
+        .catch(error => {
+            console.error("فشل الاتصال بالخادم:", error);
+            showNotification('خطأ في الاتصال بالخادم', 'error');
+        });
+    });
+
+    function showNotification(message, type = 'success') {
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notificationText');
+        notificationText.textContent = message;
+        notification.className = `profile-notification ${type}`;
+        notification.style.display = 'block';
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 4000);
+
+    }
+</script>

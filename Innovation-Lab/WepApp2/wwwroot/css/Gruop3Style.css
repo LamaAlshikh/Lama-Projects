@@ -1,0 +1,3440 @@
+﻿/* supervisor.css */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    direction: ltr; /* شريط التمرير على اليمين */
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+body {
+    direction: rtl; /* المحتوى عربي */
+    margin: 0;
+    padding: 0;
+    background-color: #f5f7fa;
+    overflow-x: hidden;
+}
+
+/* إصلاح التخطيط */
+.container-fluid {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto /*إجبار شريط التمرير أن يظهر في اليمين للصفحات RTL*/ 
+
+    body
+         {
+
+    direction: rtl;
+    overflow-y: scroll;
+    scrollbar-gutter: stable both-edges;  لجعل مكان الشريط محفوظ دائمًا 
+}
+
+body::-webkit-scrollbar {
+    width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #13b35e;
+    border-radius: 4px;
+}
+
+}
+    
+ /*/* أنماط الفلاتر */
+.supervisor-filters-container {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.supervisor-filter-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.supervisor-filter-dropdown {
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    background-color: white;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+    .supervisor-filter-dropdown:focus {
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+/* فلتر التاريخ */
+.supervisor-date-filter {
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    background-color: white;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+    .supervisor-date-filter:focus {
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+/* تحسين تجاوب الفلاتر على الشاشات الصغيرة */
+@@media (max-width: 768px) {
+    .supervisor-filters-container .row {
+        gap: 15px;
+    }
+
+    .supervisor-filters-container .col-md-4 {
+        margin-bottom: 15px;
+    }
+}
+
+/* زر عرض التفاصيل */
+.supervisor-view-details-btn {
+    font-size: 14px;
+    padding: 6px 12px;
+    border: 1px solid #198754;
+    color: #198754;
+    background-color: transparent;
+    transition: all 0.15s ease-in-out;
+}
+
+    .supervisor-view-details-btn:hover {
+        background-color: #198754;
+        color: white;
+        border-color: #198754;
+    }
+
+    .supervisor-view-details-btn i {
+        font-size: 12px;
+    }
+
+/* نافذة تفاصيل الطلب */
+.supervisor-details-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 1001;
+    display: none;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.supervisor-details-content {
+    margin-bottom: 20px;
+}
+
+.supervisor-detail-label {
+    font-weight: 600;
+    color: #495057;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.supervisor-detail-value {
+    color: #212529;
+    background-color: #f8f9fa;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.supervisor-detail-description {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    min-height: 60px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+    .supervisor-detail-description:empty::before {
+        content: "لا توجد تفاصيل إضافية";
+    }
+
+.supervisor-detail-description-small {
+    background-color: #f8f9fa;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    min-height: 35px;
+    color: #6c757d;
+    font-style: italic;
+    font-size: 14px;
+}
+
+    .supervisor-detail-description-small:empty::before {
+        content: "لا توجد تفاصيل إضافية";
+    }
+
+/* تحسين عرض الأزرار في الأجهزة المحمولة */
+@@media (max-width: 576px) {
+    .actions .btn {
+        margin-bottom: 5px;
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+
+    .actions .d-flex {
+        flex-wrap: wrap;
+        gap: 3px !important;
+    }
+
+    .supervisor-details-modal {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .supervisor-detail-value {
+        font-size: 14px;
+    }
+}
+
+.supervisor-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.supervisor-reject-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    z-index: 1001;
+    width: 90%;
+    max-width: 500px;
+    font-family: 'Tajawal', sans-serif;
+}
+
+    .supervisor-reject-modal h3 {
+        color: #e53e3e;
+        font-weight: bold;
+        border-bottom: 2px solid #e53e3e;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    .supervisor-reject-modal label {
+        font-weight: bold;
+        color: #333;
+    }
+
+    .supervisor-reject-modal textarea {
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        font-family: 'Tajawal', sans-serif;
+    }
+
+        .supervisor-reject-modal textarea:focus {
+            border-color: #e53e3e;
+            box-shadow: 0 0 0 0.2rem rgba(220, 38, 38, 0.25);
+        }
+
+/* Button Styles */
+.supervisor-approve-btn {
+    background-color: #38a169 !important;
+    border-color: #38a169 !important;
+    color: white !important;
+}
+
+    .supervisor-approve-btn:hover {
+        background-color: #2f855a !important;
+        border-color: #2f855a !important;
+    }
+
+    .supervisor-approve-btn:focus,
+    .supervisor-approve-btn:active {
+        background-color: #276749 !important;
+        border-color: #276749 !important;
+        box-shadow: 0 0 0 0.2rem rgba(56, 161, 105, 0.25) !important;
+    }
+
+.supervisor-reject-btn {
+    background-color: #e53e3e !important;
+    border-color: #e53e3e !important;
+    color: white !important;
+}
+
+    .supervisor-reject-btn:hover {
+        background-color: #c53030 !important;
+        border-color: #c53030 !important;
+    }
+
+    .supervisor-reject-btn:focus,
+    .supervisor-reject-btn:active {
+        background-color: #9c2626 !important;
+        border-color: #9c2626 !important;
+        box-shadow: 0 0 0 0.2rem rgba(229, 62, 62, 0.25) !important;
+    }
+
+/* profile.css */
+
+/* Reset & Base */
+.profile-page * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.profile-page body {
+    background-color: #f5f7fa;
+    color: #333;
+    direction: rtl;
+    font-family: 'Tajawal', sans-serif;
+}
+
+/* Layout */
+.profile-main {
+    padding: 30px;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+    .profile-header h1 {
+        color: #2C3E50;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .profile-header p {
+        color: #666;
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+/* Sections */
+.profile-section {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+    .profile-section h3 {
+        color: #13b35e;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+/* Forms */
+.profile-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.profile-form-group {
+    margin-bottom: 1.5rem;
+}
+
+    .profile-form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #2C3E50;
+        font-weight: 500;
+    }
+
+    .profile-form-group input {
+        width: 100%;
+        padding: 0.8rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
+
+        .profile-form-group input:focus {
+            outline: none;
+            border-color: #13b35e;
+        }
+
+        .profile-form-group input[readonly] {
+            background-color: #f8f9fa;
+            color: #6c757d;
+        }
+
+        .profile-form-group input.editable {
+            background-color: white;
+            color: #2C3E50;
+        }
+
+/* Buttons */
+.profile-btn {
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.profile-btn-primary {
+    background: #13b35e;
+    color: white;
+}
+
+    .profile-btn-primary:hover {
+        background: #0ea54a;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(19, 179, 94, 0.3);
+    }
+
+.profile-btn-outline {
+    background: transparent;
+    color: #13b35e;
+    border: 2px solid #13b35e;
+}
+
+    .profile-btn-outline:hover {
+        background: #13b35e;
+        color: white;
+    }
+
+.profile-btn-success {
+    background: #10B981;
+    color: white;
+}
+
+    .profile-btn-success:hover {
+        background: #059669;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    }
+
+/* Notification */
+.profile-notification {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    z-index: 3000;
+    display: none;
+}
+
+    .profile-notification.success {
+        border-right: 4px solid #10B981;
+    }
+
+    .profile-notification.warning {
+        border-right: 4px solid #F59E0B;
+    }
+
+/* Empty State */
+.profile-empty-state {
+    text-align: center;
+    color: #666;
+    padding: 3rem;
+}
+
+    .profile-empty-state h4 {
+        margin-bottom: 1rem;
+        color: #2d3748;
+    }
+
+    .profile-empty-state p {
+        margin-bottom: 2rem;
+        color: #718096;
+    }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-main {
+        padding: 1rem;
+    }
+
+    .profile-header h1 {
+        font-size: 2rem;
+    }
+}
+
+
+
+/* CSS Variables for consistent theming */
+:root {
+    --wil-primary-color: #38a169;
+    --wil-primary-dark: #2d8a57;
+    --wil-primary-darker: #1e5f3a;
+    --wil-secondary-color: #6c757d;
+    --wil-success-color: #10b981;
+    --wil-success-dark: #059669;
+    --wil-danger-color: #dc3545;
+    --wil-danger-dark: #c82333;
+    --wil-light-bg: #f8f9fa;
+    --wil-border-color: #e9ecef;
+    --wil-text-muted: #adb5bd;
+    --wil-text-dark: #2c3e50;
+    --wil-white: #ffffff;
+    --wil-shadow-light: rgba(0,0,0,0.1);
+    --wil-shadow-medium: rgba(0,0,0,0.3);
+    --wil-shadow-heavy: rgba(0,0,0,0.4);
+    --wil-font-family: 'Tajawal', sans-serif;
+    --wil-border-radius: 12px;
+    --wil-border-radius-lg: 25px;
+    --wil-transition: all 0.3s ease;
+}
+
+/* ====================================== */
+/* Base Styles */
+/* ====================================== */
+
+.wil-auth-page * {
+    direction: rtl;
+    text-align: right;
+}
+
+.wil-auth-page {
+    background: linear-gradient(135deg, var(--wil-primary-color) 0%, var(--wil-primary-dark) 50%, var(--wil-primary-darker) 100%);
+    font-family: var(--wil-font-family);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* ====================================== */
+/* Header and Logo Styles */
+/* ====================================== */
+
+.wil-auth-header {
+    text-align: center;
+    color: var(--wil-white);
+    margin-bottom: 30px;
+    text-shadow: 0 2px 4px var(--wil-shadow-medium);
+    animation: wil-fadeIn 0.8s ease-out;
+}
+
+.wil-logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.wil-logo {
+    max-width: 200px;
+    max-height: 120px;
+    width: auto;
+    height: auto;
+    filter: drop-shadow(0 4px 8px var(--wil-shadow-medium));
+    transition: var(--wil-transition);
+}
+
+    .wil-logo:hover {
+        transform: scale(1.05);
+        filter: drop-shadow(0 6px 12px var(--wil-shadow-heavy));
+    }
+
+.wil-auth-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.wil-auth-header h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.wil-auth-header h6 {
+    font-size: 1rem;
+    font-weight: 300;
+    opacity: 0.9;
+}
+
+/* ====================================== */
+/* Authentication Box */
+/* ====================================== */
+
+.wil-auth-box {
+    background: rgba(255, 255, 255, 0.98);
+    padding: 50px 40px;
+    border-radius: var(--wil-border-radius-lg);
+    box-shadow: 0 15px 35px var(--wil-shadow-medium);
+    max-width: 520px;
+    margin: 0 auto;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: wil-slideUp 0.6s ease-out;
+}
+
+.wil-auth-box--register {
+    max-width: 700px;
+}
+
+/* ====================================== */
+/* Navigation Tabs */
+/* ====================================== */
+
+.wil-nav-tabs {
+    border: none;
+    background: var(--wil-light-bg);
+    border-radius: 15px;
+    padding: 8px;
+    margin-bottom: 30px;
+    box-shadow: inset 0 2px 5px var(--wil-shadow-light);
+}
+
+.wil-nav-link {
+    border: none !important;
+    background: transparent !important;
+    color: var(--wil-secondary-color) !important;
+    font-weight: 500;
+    padding: 12px 25px;
+    border-radius: var(--wil-border-radius);
+    transition: var(--wil-transition);
+    text-decoration: none;
+    margin: 0 3px;
+}
+
+.wil-nav-link--active {
+    background: var(--wil-primary-color) !important;
+    color: var(--wil-white) !important;
+    box-shadow: 0 3px 8px rgba(56, 161, 105, 0.3);
+    transform: translateY(-1px);
+}
+
+.wil-nav-link:hover:not(.wil-nav-link--active) {
+    background: rgba(56, 161, 105, 0.1) !important;
+    color: var(--wil-primary-color) !important;
+}
+
+/* ====================================== */
+/* Form Elements */
+/* ====================================== */
+
+.wil-form-label {
+    font-weight: 500;
+    color: var(--wil-text-dark);
+    margin-bottom: 8px;
+    display: block;
+    text-align: right;
+}
+
+.wil-form-control {
+    border: 2px solid var(--wil-border-color) !important;
+    border-radius: var(--wil-border-radius) !important;
+    padding: 12px 16px !important;
+    font-size: 16px !important;
+    transition: var(--wil-transition) !important;
+    background: var(--wil-light-bg) !important;
+    text-align: right !important;
+    direction: rtl !important;
+}
+
+    .wil-form-control:focus {
+        border-color: var(--wil-primary-color) !important;
+        box-shadow: 0 0 0 0.2rem rgba(56, 161, 105, 0.25) !important;
+        background: var(--wil-white) !important;
+    }
+
+    .wil-form-control::placeholder {
+        color: var(--wil-text-muted) !important;
+        text-align: right !important;
+    }
+
+.wil-form-select {
+    border: 2px solid var(--wil-border-color) !important;
+    border-radius: var(--wil-border-radius) !important;
+    padding: 12px 16px !important;
+    font-size: 16px !important;
+    transition: var(--wil-transition) !important;
+    background: var(--wil-light-bg) !important;
+    text-align: right !important;
+    direction: rtl !important;
+}
+
+    .wil-form-select:focus {
+        border-color: var(--wil-primary-color) !important;
+        box-shadow: 0 0 0 0.2rem rgba(56, 161, 105, 0.25) !important;
+        background: var(--wil-white) !important;
+    }
+
+.wil-form-check {
+    text-align: right;
+    margin-bottom: 25px;
+}
+
+.wil-form-check-input {
+    margin-left: 0 !important;
+    margin-right: 0.5rem !important;
+    float: right !important;
+}
+
+.wil-form-check-label {
+    color: var(--wil-secondary-color);
+    font-weight: 400;
+}
+
+.wil-form-text {
+    color: var(--wil-secondary-color);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    text-align: right;
+}
+
+/* ====================================== */
+/* Button Styles */
+/* ====================================== */
+
+.wil-btn-primary {
+    background: linear-gradient(45deg, var(--wil-primary-color), var(--wil-primary-dark)) !important;
+    border: none !important;
+    color: var(--wil-white) !important;
+    padding: 14px 30px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    border-radius: var(--wil-border-radius) !important;
+    width: 100% !important;
+    transition: var(--wil-transition) !important;
+    box-shadow: 0 4px 15px rgba(56, 161, 105, 0.3) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+    .wil-btn-primary::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .wil-btn-primary:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 20px rgba(56, 161, 105, 0.4) !important;
+        background: linear-gradient(45deg, var(--wil-primary-dark), var(--wil-primary-darker)) !important;
+    }
+
+        .wil-btn-primary:hover::before {
+            left: 100%;
+        }
+
+    .wil-btn-primary:active {
+        transform: translateY(0) !important;
+    }
+
+    .wil-btn-primary:disabled {
+        background: #cccccc !important;
+        cursor: not-allowed !important;
+        opacity: 0.6 !important;
+        box-shadow: none !important;
+    }
+
+        .wil-btn-primary:disabled:hover {
+            transform: none !important;
+            box-shadow: none !important;
+            background: #cccccc !important;
+        }
+
+        .wil-btn-primary:disabled::before {
+            display: none;
+        }
+
+.wil-btn-primary--loading {
+    position: relative;
+    color: transparent !important;
+}
+
+    .wil-btn-primary--loading::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        top: 50%;
+        left: 50%;
+        margin: -10px 0 0 -10px;
+        border: 3px solid var(--wil-white);
+        border-radius: 50%;
+        border-top-color: transparent;
+        animation: wil-spinner 0.6s linear infinite;
+    }
+
+.wil-btn-outline {
+    border: 2px solid var(--wil-secondary-color) !important;
+    color: var(--wil-secondary-color) !important;
+    background: transparent !important;
+    padding: 12px 25px !important;
+    font-weight: 500 !important;
+    border-radius: var(--wil-border-radius) !important;
+    transition: var(--wil-transition) !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+}
+
+    .wil-btn-outline:hover {
+        background: var(--wil-secondary-color) !important;
+        color: var(--wil-white) !important;
+        transform: translateY(-1px) !important;
+        box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3) !important;
+    }
+
+/* ====================================== */
+/* Alert Styles */
+/* ====================================== */
+
+.wil-alert {
+    border-radius: var(--wil-border-radius) !important;
+    border: none !important;
+    text-align: right !important;
+    font-weight: 500 !important;
+    margin-bottom: 25px !important;
+}
+
+.wil-alert--success {
+    background: linear-gradient(45deg, var(--wil-success-color), var(--wil-success-dark)) !important;
+    color: var(--wil-white) !important;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3) !important;
+}
+
+.wil-alert--danger {
+    background: linear-gradient(45deg, var(--wil-danger-color), var(--wil-danger-dark)) !important;
+    color: var(--wil-white) !important;
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3) !important;
+}
+
+.wil-alert--warning {
+    background: linear-gradient(45deg, #ffc107, #e0a800) !important;
+    color: var(--wil-white) !important;
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3) !important;
+}
+
+/* ====================================== */
+/* Link Styles */
+/* ====================================== */
+
+.wil-link {
+    color: var(--wil-primary-color) !important;
+    text-decoration: none !important;
+    transition: var(--wil-transition) !important;
+}
+
+    .wil-link:hover {
+        color: var(--wil-primary-dark) !important;
+        text-decoration: underline !important;
+    }
+
+.wil-link--forgot-password {
+    color: var(--wil-primary-color) !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    transition: var(--wil-transition) !important;
+    text-align: center !important;
+    display: block !important;
+    margin-top: 20px !important;
+}
+
+.wil-link--back {
+    color: var(--wil-primary-color) !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    transition: var(--wil-transition) !important;
+    text-align: center !important;
+    display: block !important;
+    font-size: 16px !important;
+}
+
+/* ====================================== */
+/* Reset Password Specific Styles */
+/* ====================================== */
+
+.wil-reset-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.wil-reset-icon {
+    width: 90px;
+    height: 90px;
+    background: linear-gradient(45deg, var(--wil-primary-color), var(--wil-primary-dark));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2.5rem;
+    color: var(--wil-white);
+    box-shadow: 0 10px 40px rgba(56, 161, 105, 0.4);
+    animation: wil-pulse 2s ease-in-out infinite;
+}
+
+.wil-reset-header h3 {
+    color: var(--wil-primary-color);
+    margin-bottom: 0.75rem;
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.wil-reset-header p {
+    color: #666;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+/* ====================================== */
+/* Utility Classes */
+/* ====================================== */
+
+.wil-mb-3 {
+    margin-bottom: 20px !important;
+}
+
+.wil-text-center {
+    text-align: center !important;
+}
+
+.wil-text-right {
+    text-align: right !important;
+}
+
+.wil-d-flex {
+    display: flex !important;
+}
+
+.wil-flex-fill {
+    flex: 1 1 auto !important;
+}
+
+.wil-w-100 {
+    width: 100% !important;
+}
+
+/* ====================================== */
+/* Icon Styles */
+/* ====================================== */
+
+.wil-icon-spacing {
+    margin-left: 8px;
+}
+
+.wil-icon-spacing-sm {
+    margin-left: 4px;
+}
+
+/* ====================================== */
+/* Animations */
+/* ====================================== */
+
+@keyframes wil-slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes wil-fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes wil-pulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 10px 40px rgba(56, 161, 105, 0.4);
+    }
+
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 15px 50px rgba(56, 161, 105, 0.5);
+    }
+}
+
+@keyframes wil-spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ====================================== */
+/* Responsive Design */
+/* ====================================== */
+
+@media (max-width: 576px) {
+    .wil-auth-box {
+        margin: 20px;
+        padding: 30px 25px;
+    }
+
+    .wil-auth-box--register {
+        margin: 20px;
+        padding: 30px 25px;
+    }
+
+    .wil-logo {
+        max-width: 150px;
+        max-height: 90px;
+    }
+
+    .wil-nav-link {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+
+    .wil-reset-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 2rem;
+    }
+
+    .wil-reset-header h3 {
+        font-size: 1.5rem;
+    }
+
+    .wil-reset-header p {
+        font-size: 1rem;
+    }
+
+    .wil-auth-header h1 {
+        font-size: 2rem;
+    }
+
+    .wil-auth-header h2 {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .wil-auth-box {
+        max-width: 90%;
+    }
+
+    .wil-auth-box--register {
+        max-width: 90%;
+    }
+}
+
+
+/* ===================================== */
+/* 8. Bootstrap Overrides & Fixes       */
+/* ===================================== */
+
+/* Ensure proper padding for containers */
+@import url('reports-styles.css');
+
+.p-4 {
+    padding: 1.5rem !important;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+/* Ensure charts are visible */
+canvas {
+    display: block !important;
+    box-sizing: border-box;
+}
+
+/* ===================================== */
+/* Reports System Unified Styles         */
+/* Version: 1.0                         */
+/* Last Updated: 2024                   */
+/* ===================================== */
+
+/* ===================================== */
+/* Table of Contents:                   */
+/* 1. AllReports Styles                 */
+/* 2. CreateCustomReport Styles         */
+/* 3. PrintReport Styles                */
+/* 4. Responsive Styles                 */
+/* 5. Print Media Styles                */
+/* 6. Common Utility Classes            */
+/* 7. Animations & Transitions          */
+/* ===================================== */
+
+/* ===================================== */
+/* CSS Variables (Custom Properties)     */
+/* ===================================== */
+:root {
+    /* Color Palette */
+    --reports-primary-color: #13b35e;
+    --reports-primary-dark: #085a09;
+    --reports-secondary-color: #3182ce;
+    --reports-warning-color: #ed8936;
+    --reports-danger-color: #e53e3e;
+    --reports-success-color: #28a745;
+    --reports-info-color: #4299e1;
+    /* Text Colors */
+    --reports-text-primary: #333;
+    --reports-text-secondary: #666;
+    --reports-text-muted: #7f8c8d;
+    /* Background Colors */
+    --reports-bg-light: #f5f7fa;
+    --reports-bg-white: #ffffff;
+    --reports-bg-gray: #f8f9fa;
+    /* Spacing */
+    --reports-spacing-sm: 10px;
+    --reports-spacing-md: 20px;
+    --reports-spacing-lg: 30px;
+    /* Border Radius */
+    --reports-radius-sm: 6px;
+    --reports-radius-md: 8px;
+    --reports-radius-lg: 15px;
+    /* Shadow */
+    --reports-shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+    --reports-shadow-md: 0 4px 6px rgba(0,0,0,0.05);
+    --reports-shadow-lg: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* ===================================== */
+/* 1. AllReports Chart Styles           */
+/* ===================================== */
+
+/* Container wrapper */
+.container-fluid {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.allreports-body {
+    font-family: 'Tajawal', sans-serif;
+    background-color: var(--reports-bg-light);
+    color: var(--reports-text-primary);
+    direction: rtl;
+    /* احذف min-height: 100vh; */
+    overflow-x: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+}
+}
+/* Main content wrapper */
+body {
+    background-color: var(--reports-bg-light) !important;
+}
+
+/* Page Header */
+.allreports-page-header {
+    padding: var(--reports-spacing-md);
+    animation: fadeInDown 0.5s ease-out;
+}
+
+    .allreports-page-header h1 {
+        font-size: 2.5rem;
+        margin-bottom: var(--reports-spacing-sm);
+        color: var(--reports-text-primary);
+    }
+
+    .allreports-page-header p {
+        color: var(--reports-text-secondary);
+        font-size: 1.1rem;
+    }
+
+/* Statistics Section */
+.allreports-stats {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin: var(--reports-spacing-md) 0;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.allreports-stat-box {
+    flex: 1;
+    min-width: 200px;
+    max-width: 250px;
+    background: var(--reports-bg-white);
+    border-radius: var(--reports-radius-lg);
+    padding: var(--reports-spacing-md);
+    box-shadow: var(--reports-shadow-md);
+    border-right: 4px solid transparent;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeInUp 0.6s ease-out;
+}
+
+    .allreports-stat-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    }
+
+    .allreports-stat-box.total {
+        border-right-color: var(--reports-secondary-color);
+    }
+
+    .allreports-stat-box.maintenance {
+        border-right-color: var(--reports-warning-color);
+    }
+
+    .allreports-stat-box h3 {
+        font-size: 2rem;
+        margin-bottom: 5px;
+        color: var(--reports-text-primary);
+    }
+
+    .allreports-stat-box p {
+        color: var(--reports-text-secondary);
+        margin: 0;
+    }
+
+/* Custom Button */
+.allreports-custom-btn {
+    background: linear-gradient(135deg, var(--reports-primary-color) 0%, var(--reports-primary-dark) 100%);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--reports-radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+    .allreports-custom-btn::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: rgba(255,255,255,0.2);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+    }
+
+    .allreports-custom-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(19, 179, 94, 0.3);
+        color: white;
+    }
+
+        .allreports-custom-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+/* Charts Container */
+.allreports-charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--reports-spacing-lg);
+    margin-top: var(--reports-spacing-lg);
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/* Medium screens */
+@media (max-width: 992px) {
+    .allreports-chart-card {
+        flex: 1 1 calc(50% - 15px);
+    }
+}
+
+/* Chart Card */
+.allreports-chart-card {
+    flex: 1;
+    min-width: 200px;
+    max-width: 300px;
+    background: var(--reports-bg-white);
+    border-radius: var(--reports-radius-lg);
+    padding: var(--reports-spacing-md);
+    box-shadow: var(--reports-shadow-md);
+    transition: transform 0.3s ease;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+    .allreports-chart-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+
+/* Chart Title */
+.allreports-chart-title {
+    margin-bottom: var(--reports-spacing-sm);
+    font-weight: bold;
+    font-size: 1rem;
+    color: #444;
+}
+
+/* Canvas wrapper for charts */
+.allreports-chart-canvas-wrapper {
+    position: relative;
+    height: 200px;
+    width: 100%;
+}
+
+/* Canvas styles for specific charts */
+.allreports-device-status-chart,
+.allreports-request-type-chart,
+.allreports-supervisors-chart,
+.allreports-device-types-chart {
+    height: 200px;
+    width: 100%;
+}
+
+/* ===================================== */
+/* 2. CreateCustomReport Styles         */
+/* ===================================== */
+
+.customreport-main-container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: var(--reports-spacing-lg);
+    background: var(--reports-bg-white);
+    border-radius: var(--reports-radius-lg);
+    box-shadow: var(--reports-shadow-lg);
+    animation: fadeIn 0.5s ease-out;
+    position: relative;
+}
+
+    /* Add subtle background pattern */
+    .customreport-main-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 120px;
+        background: linear-gradient(135deg, rgba(19, 179, 94, 0.03) 0%, rgba(8, 90, 9, 0.03) 100%);
+        border-radius: var(--reports-radius-lg) var(--reports-radius-lg) 0 0;
+        z-index: 0;
+    }
+
+    .customreport-main-container > * {
+        position: relative;
+        z-index: 1;
+    }
+
+.customreport-section-title {
+    font-weight: bold;
+    font-size: 28px;
+    margin-bottom: var(--reports-spacing-lg);
+    text-align: center;
+    color: var(--reports-text-primary);
+    position: relative;
+    padding-bottom: 15px;
+}
+
+    .customreport-section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(to right, var(--reports-primary-color), var(--reports-primary-dark));
+        border-radius: 2px;
+    }
+
+.customreport-form-check {
+    margin-bottom: var(--reports-spacing-sm);
+    transition: background-color 0.2s ease;
+    padding: 5px;
+    border-radius: var(--reports-radius-sm);
+}
+
+    .customreport-form-check:hover {
+        background-color: rgba(19, 179, 94, 0.05);
+    }
+
+/* Label hover effect */
+.customreport-form-label {
+    font-weight: bold;
+    color: var(--reports-text-primary);
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Select all checkbox */
+.customreport-select-all {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: rgba(40, 167, 69, 0.1);
+    border-radius: var(--reports-radius-sm);
+    font-weight: 500;
+}
+
+/* Fields container update */
+.customreport-fields-container {
+    border: 1px solid #e9ecef;
+    border-radius: var(--reports-radius-md);
+    padding: 20px;
+    background-color: var(--reports-bg-gray);
+    max-height: 250px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.customreport-fields-container {
+    border: 1px solid #e9ecef;
+    border-radius: var(--reports-radius-md);
+    padding: 20px;
+    background-color: var(--reports-bg-gray);
+    max-height: 250px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+
+/* Divider line */
+.customreport-divider {
+    margin: 30px 0 20px;
+    border: 0;
+    border-top: 1px solid #e9ecef;
+    opacity: 0.5;
+}
+
+.customreport-action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 35px;
+    padding: 20px 0;
+}
+
+/* Form row adjustments */
+.customreport-main-container .row {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.customreport-main-container .col-md-6 {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Fields wrapper */
+.customreport-fields-wrapper {
+    margin-bottom: 30px;
+}
+
+.customreport-main-container .form-control,
+.customreport-main-container .form-select {
+    border: 1px solid #dee2e6;
+    border-radius: var(--reports-radius-sm);
+    padding: 10px 15px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+    .customreport-main-container .form-control:focus,
+    .customreport-main-container .form-select:focus {
+        border-color: var(--reports-primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(19, 179, 94, 0.25);
+    }
+
+/* Style custom report buttons */
+.customreport-action-buttons .btn {
+    min-width: 160px;
+    padding: 14px 35px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    text-transform: none;
+    letter-spacing: 0.5px;
+}
+
+.customreport-action-buttons .btn-success {
+    background-color: var(--reports-success-color);
+    border: none;
+    color: white;
+}
+
+    .customreport-action-buttons .btn-success:hover {
+        background-color: #218838;
+        transform: translateY(-1px);
+        box-shadow: 0 3px 8px rgba(40, 167, 69, 0.3);
+    }
+
+.customreport-action-buttons .btn-outline-secondary {
+    background-color: white;
+    border: 1px solid #6c757d;
+    color: #6c757d;
+}
+
+    .customreport-action-buttons .btn-outline-secondary:hover {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: white;
+        transform: translateY(-1px);
+    }
+
+/* ===================================== */
+/* 3. PrintReport Styles                */
+/* ===================================== */
+
+.printreport-body {
+    font-family: 'Tajawal', sans-serif;
+    margin: 40px;
+    color: var(--reports-text-primary);
+    direction: rtl;
+}
+
+.printreport-main-title {
+    text-align: center;
+    margin-bottom: var(--reports-spacing-sm);
+    font-size: 28px;
+    color: #2c3e50;
+}
+
+.printreport-sub-title {
+    text-align: right;
+    margin-bottom: var(--reports-spacing-sm);
+    font-size: 20px;
+    color: #34495e;
+}
+
+.printreport-meta-info {
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: var(--reports-spacing-md);
+    color: var(--reports-text-muted);
+}
+
+.printreport-table {
+    width: 100%;
+    border-collapse: collapse;
+    direction: rtl;
+    margin-top: var(--reports-spacing-md);
+}
+
+    .printreport-table th,
+    .printreport-table td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+    }
+
+    .printreport-table th {
+        background-color: #eaf5ea;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    .printreport-table tbody tr {
+        transition: background-color 0.2s ease;
+    }
+
+        .printreport-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .printreport-table tbody tr:hover {
+            background-color: #f0f0f0;
+        }
+
+/* Status Badge Styles */
+.printreport-status-badge {
+    padding: 4px 10px;
+    border-radius: var(--reports-radius-sm);
+    color: white;
+    font-size: 13px;
+    display: inline-block;
+    font-weight: 500;
+}
+
+.printreport-status-active {
+    background-color: var(--reports-success-color);
+}
+
+.printreport-status-maintenance {
+    background-color: var(--reports-warning-color);
+    color: #000;
+}
+
+.printreport-status-inactive {
+    background-color: var(--reports-danger-color);
+}
+
+.printreport-footer {
+    margin-top: var(--reports-spacing-lg);
+    font-size: 12px;
+    text-align: center;
+    color: gray;
+}
+
+.printreport-print-button {
+    display: block;
+    margin: var(--reports-spacing-lg) auto var(--reports-spacing-sm);
+    padding: 10px 20px;
+    background-color: var(--reports-success-color);
+    color: white;
+    border: none;
+    border-radius: var(--reports-radius-sm);
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+    .printreport-print-button:hover {
+        background-color: #146c43;
+        transform: scale(1.05);
+    }
+
+/* ===================================== */
+/* 4. Responsive Styles                 */
+/* ===================================== */
+
+@media (max-width: 768px) {
+    /* AllReports Responsive */
+    .allreports-page-header h1 {
+        font-size: 2rem;
+    }
+
+    .allreports-stats {
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .allreports-stat-box {
+        min-width: 150px;
+        padding: 15px;
+    }
+
+        .allreports-stat-box h3 {
+            font-size: 1.5rem;
+        }
+
+    .allreports-charts-container {
+        gap: 15px;
+        justify-content: center;
+    }
+
+    .allreports-chart-card {
+        flex: 1 1 100%;
+        max-width: 100%;
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .allreports-chart-title {
+        font-size: 0.9rem;
+    }
+
+    .allreports-chart-canvas-wrapper {
+        height: 180px;
+    }
+
+    .allreports-chart-card canvas {
+        max-height: 180px !important;
+    }
+
+    /* CreateCustomReport Responsive */
+    .customreport-main-container {
+        padding: 20px;
+        margin: 10px;
+    }
+
+    .customreport-section-title {
+        font-size: 20px;
+    }
+
+    /* PrintReport Responsive */
+    .printreport-body {
+        margin: 20px;
+    }
+
+    .printreport-main-title {
+        font-size: 24px;
+    }
+
+    .printreport-table {
+        font-size: 14px;
+    }
+}
+
+/* ===================================== */
+/* 5. Print Media Styles                */
+/* ===================================== */
+
+@media print {
+    /* Hide non-printable elements */
+    .printreport-print-button,
+    .customreport-action-buttons .btn-outline-secondary,
+    .allreports-custom-btn {
+        display: none !important;
+    }
+
+    /* Remove shadows and animations */
+    .allreports-chart-wrapper,
+    .allreports-stat-box,
+    .allreports-chart-card,
+    .customreport-main-container {
+        box-shadow: none !important;
+        animation: none !important;
+    }
+
+    /* Optimize spacing */
+    .printreport-body {
+        margin: 20px;
+    }
+
+    /* Ensure tables don't break */
+    .printreport-table {
+        page-break-inside: avoid;
+    }
+
+    /* Print-friendly colors */
+    .allreports-stat-box {
+        border-right-width: 2px;
+    }
+}
+
+/* ===================================== */
+/* 6. Common Utility Classes            */
+/* ===================================== */
+
+.reports-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    color: var(--reports-text-secondary);
+    font-size: 18px;
+}
+
+    .reports-loading::after {
+        content: '...';
+        animation: dots 1.5s steps(5, end) infinite;
+    }
+
+.reports-error {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    color: var(--reports-danger-color);
+    font-size: 16px;
+    background-color: #f8d7da;
+    border-radius: var(--reports-radius-md);
+    margin: var(--reports-spacing-md);
+}
+
+.reports-no-data {
+    text-align: center;
+    padding: 40px;
+    color: var(--reports-text-muted);
+    font-size: 16px;
+}
+
+/* ===================================== */
+/* 7. Animations & Transitions          */
+/* ===================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes dots {
+    0%, 20% {
+        color: rgba(0,0,0,0);
+        text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0);
+    }
+
+    40% {
+        color: var(--reports-text-secondary);
+        text-shadow: .25em 0 0 rgba(0,0,0,0), .5em 0 0 rgba(0,0,0,0);
+    }
+
+    60% {
+        text-shadow: .25em 0 0 var(--reports-text-secondary), .5em 0 0 rgba(0,0,0,0);
+    }
+
+    80%, 100% {
+        text-shadow: .25em 0 0 var(--reports-text-secondary), .5em 0 0 var(--reports-text-secondary);
+    }
+}
+
+/* ===================================== */
+/* 8. Bootstrap Overrides & Fixes       */
+/* ===================================== */
+
+/* Ensure proper padding for containers */
+.p-4 {
+    padding: 1.5rem !important;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+/* Fix for RTL layouts */
+[dir="rtl"] .allreports-stats,
+[dir="rtl"] .allreports-charts-container {
+    direction: rtl;
+}
+
+/* Ensure charts are visible */
+canvas {
+    display: block !important;
+    box-sizing: border-box;
+}
+
+/* ===================================== */
+/* End of Reports Unified Styles        */
+/* ===================================== */
+
+
+/* Reset & Base */
+.faq-body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #006C35 0%, #228B22 100%);
+    min-height: 100vh;
+    direction: rtl;
+}
+
+.faq-breadcrumb {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+}
+
+.faq-breadcrumb-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.faq-breadcrumb-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    font-size: 0.9rem;
+}
+
+    .faq-breadcrumb-nav a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+        .faq-breadcrumb-nav a:hover {
+            color: white;
+        }
+
+.faq-breadcrumb-separator {
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0 0.3rem;
+}
+
+.faq-breadcrumb-current {
+    color: white;
+    font-weight: 500;
+}
+
+.faq-main {
+    padding: 2rem;
+    background: white;
+    min-height: calc(100vh - 80px);
+}
+
+.faq-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.faq-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+    .faq-header h1 {
+        color: #2C3E50;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .faq-header p {
+        color: #666;
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+.faq-section {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+}
+
+    .faq-section h3 {
+        color: #006C35;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+.faq-search-input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+    .faq-search-input:focus {
+        outline: none;
+        border-color: #006C35;
+    }
+
+.faq-category {
+    margin-bottom: 2rem;
+}
+
+.faq-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.faq-item {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.faq-question {
+    padding: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    transition: background 0.3s ease;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+    .faq-question:hover {
+        background: #f8f9fa;
+    }
+
+    .faq-question h5 {
+        margin: 0;
+        color: #2C3E50;
+        font-size: 1rem;
+    }
+
+    .faq-question i {
+        color: #006C35;
+        transition: transform 0.3s ease;
+    }
+
+    .faq-question.active i {
+        transform: rotate(180deg);
+    }
+
+.faq-answer {
+    padding: 0 1rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+}
+
+    .faq-answer.show {
+        padding: 1rem;
+        max-height: 500px;
+    }
+
+    .faq-answer p,
+    .faq-answer ul,
+    .faq-answer ol {
+        color: #666;
+        line-height: 1.6;
+    }
+
+    .faq-answer li {
+        margin-bottom: 0.25rem;
+    }
+
+.faq-btn {
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.faq-btn-primary {
+    background: #006C35;
+    color: white;
+}
+
+    .faq-btn-primary:hover {
+        background: #228B22;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 108, 53, 0.3);
+    }
+
+
+
+
+.customreport-fields-container {
+    margin-top: 1rem;
+}
+
+.customreport-form-check {
+    margin-bottom: 0.5rem;
+}
+/* دعم عناصر تقارير الخدمات */
+.customreport-form-label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+    color: #fff;
+}
+
+.customreport-fields-container {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.customreport-form-check {
+    margin-bottom: 10px;
+}
+
+.customreport-main-container {
+    padding: 40px;
+    background: linear-gradient(to bottom, #009444, #007e3a);
+    color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+
+.form-select,
+.form-control {
+    background-color: #fff;
+    color: #000;
+}
+
+.customreport-action-buttons {
+    margin-top: 20px;
+}
+/* وسطي العنوان */
+.customreport-section-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+/* وسطي الأزرار */
+.customreport-action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+/* لضمان أن يكون كامل النموذج في منتصف الشاشة */
+.customreport-main-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 3rem;
+}
+/* ===================================== */
+/* إصلاح نهائي لتوسيط الأزرار           */
+/* أضف هذا في نهاية ملف CSS            */
+/* ===================================== */
+
+/* إعادة تعيين الأنماط للزر الأساسي */
+form .wil-btn-primary,
+.wil-btn-primary {
+    text-align: center !important;
+    display: inline-block !important;
+    width: 100% !important;
+}
+
+/* استهداف زر إنشاء الحساب مباشرة */
+button#wil-submit-btn {
+    text-align: center !important;
+    display: inline-block !important;
+    width: 100% !important;
+    line-height: 1.5 !important;
+}
+
+/* إزالة أي أنماط flex قد تسبب مشاكل */
+.wil-btn-primary:not(.wil-nav-link) {
+    display: inline-block !important;
+    text-align: center !important;
+}
+
+/* التأكد من توسيط النص داخل جميع الأزرار */
+.btn.wil-btn-primary {
+    text-align: center !important;
+}
+
+/* توسيط الحاوية الأب */
+.text-center {
+    text-align: center !important;
+}
+
+    /* إضافة أنماط inline-block للتوافق */
+    .text-center .btn {
+        display: inline-block !important;
+        text-align: center !important;
+    }
+/* ===================================== */
+/* توسيط زر تسجيل الدخول                */
+/* ===================================== */
+
+/* توسيط جميع أزرار submit من نوع wil-btn-primary */
+.wil-btn-primary[type="submit"] {
+    text-align: center !important;
+    display: block !important;
+    width: 100% !important;
+    line-height: normal !important;
+    padding: 14px 30px !important;
+}
+
+/* توسيط زر تسجيل الدخول في صفحة Login */
+form .btn.wil-btn-primary {
+    text-align: center !important;
+    display: block !important;
+    width: 100% !important;
+}
+
+/* التأكد من توسيط النص مع الأيقونة */
+.wil-btn-primary i.fa-sign-in-alt {
+    margin-left: 8px !important;
+    vertical-align: middle !important;
+}
+
+/* إزالة أي تأثيرات flex */
+button.wil-btn-primary:not(.wil-nav-link) {
+    display: block !important;
+    text-align: center !important;
+}
+/* ===================================== */
+/* رسائل الخطأ والنجاح في ForgotPassword */
+/* ===================================== */
+
+/* تحسين مظهر رسائل الخطأ في صفحة استعادة كلمة المرور */
+.wil-auth-box .wil-alert {
+    margin-bottom: 25px !important;
+    padding: 18px 24px !important;
+    font-weight: 600 !important;
+    border-right-width: 5px !important;
+    animation: wil-slideDown 0.4s ease-out !important;
+    font-size: 16px !important;
+    line-height: 1.8 !important;
+    letter-spacing: 0.3px !important;
+}
+
+/* رسالة الخطأ */
+.wil-auth-box .wil-alert--danger {
+    background-color: #fef2f2 !important;
+    color: #991b1b !important;
+    border-right-color: #dc3545 !important;
+    border: 1px solid #fecaca !important;
+}
+
+    /* تحسين وضوح الأيقونة */
+    .wil-auth-box .wil-alert--danger .fas {
+        color: #dc3545 !important;
+        font-size: 18px !important;
+        vertical-align: middle !important;
+        margin-left: 8px !important;
+    }
+/* رسالة النجاح في صفحة تسجيل الدخول */
+#wil-reset-success-alert {
+    background-color: #d4edda !important;
+    color: #155724 !important;
+    border-right: 4px solid #28a745 !important;
+    animation: wil-slideDown 0.4s ease-out !important;
+}
+
+/* تحريك ظهور الرسائل */
+@keyframes wil-slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* تحريك اختفاء الرسائل */
+.wil-alert[style*="opacity: 0"] {
+    transition: all 0.3s ease-out !important;
+}
+
+/* التأكد من توسيط زر إرسال رابط الاستعادة */
+.wil-auth-box form .wil-btn-primary {
+    text-align: center !important;
+    display: block !important;
+    width: 100% !important;
+}
+
+.report-btn-primary:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+/* الحقول المطلوبة header */
+.fields-section .form-label {
+    margin-bottom: 0;
+}
+
+.date-field-group .form-label {
+    font-weight: normal;
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 5px;
+}
+/* ===================================== */
+/* 9. CreateCustomReport Page Styles     */
+/* ===================================== */
+
+/* إعادة تعيين الأنماط الأساسية */
+.create-report-page {
+    background: #f5f7fa;
+    min-height: 100vh;
+    padding: 40px 20px;
+    font-family: 'Tajawal', sans-serif;
+}
+
+/* الحاوي الرئيسي */
+.create-report-container {
+    max-width: 700px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+}
+
+/* العنوان الرئيسي */
+.create-report-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 40px;
+}
+
+/* مجموعة الحقول */
+.report-form-group {
+    margin-bottom: 25px;
+}
+
+/* تسميات الحقول */
+.report-form-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #495057;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+/* حقول الإدخال */
+.report-form-control {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+    .report-form-control:focus {
+        outline: none;
+        border-color: #28a745;
+        box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.1);
+    }
+
+/* حقول التاريخ */
+.date-fields-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.date-field-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    .date-field-wrapper label {
+        font-weight: normal;
+        font-size: 14px;
+        color: #6c757d;
+        margin-bottom: 0;
+        white-space: nowrap;
+    }
+
+.date-separator {
+    color: #6c757d;
+    font-weight: 500;
+}
+
+/* قسم الحقول المطلوبة */
+.fields-selection-section {
+    background: #f0f8f0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.fields-selection-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.fields-selection-title {
+    font-weight: bold;
+    color: #495057;
+    margin: 0;
+}
+
+.btn-select-all {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+    .btn-select-all:hover {
+        background: #218838;
+    }
+
+/* شبكة الحقول */
+.fields-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 10px;
+    background: white;
+    border-radius: 6px;
+}
+
+/* عنصر الحقل */
+.field-checkbox-item {
+    background: white;
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+    transition: all 0.2s ease;
+}
+
+    .field-checkbox-item:hover {
+        border-color: #28a745;
+        background: #f8fdf8;
+    }
+
+.field-checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin: 0;
+}
+
+    .field-checkbox-label input {
+        width: 18px;
+        height: 18px;
+        margin-left: 10px;
+        cursor: pointer;
+        accent-color: #28a745;
+    }
+
+    .field-checkbox-label span {
+        color: #495057;
+        font-size: 14px;
+    }
+
+/* أزرار الإجراءات */
+.report-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 40px;
+}
+
+.btn-create-report {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 35px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+    .btn-create-report:hover {
+        background: #218838;
+        transform: translateY(-1px);
+        box-shadow: 0 3px 15px rgba(40, 167, 69, 0.3);
+    }
+
+    .btn-create-report:disabled {
+        background: #6c757d;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+.btn-back {
+    background: #f8f9fa;
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+    padding: 12px 35px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+    .btn-back:hover {
+        background: #e9ecef;
+        border-color: #adb5bd;
+        color: #495057;
+    }
+
+/* تحسينات للأجهزة المحمولة */
+@media (max-width: 768px) {
+    .create-report-container {
+        padding: 20px;
+    }
+
+    .date-fields-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .date-field-wrapper {
+        width: 100%;
+    }
+
+    .date-separator {
+        display: none;
+    }
+
+    .report-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .btn-create-report,
+    .btn-back {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+body {
+    font-family: 'Tajawal', sans-serif;
+    color: #333;
+    direction: rtl;
+}
+
+.report-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.report-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.report-subtitle {
+    font-size: 20px;
+    color: #34495e;
+    margin-bottom: 10px;
+}
+
+.report-meta {
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 20px;
+    color: #7f8c8d;
+}
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    direction: rtl;
+    margin-top: 20px;
+}
+
+    .report-table th,
+    .report-table td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: center;
+    }
+
+    .report-table th {
+        background-color: #eaf5ea;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    .report-table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .report-table tbody tr:hover {
+        background-color: #f0f0f0;
+    }
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    color: white;
+    font-size: 13px;
+    display: inline-block;
+    font-weight: 500;
+}
+
+.status-new {
+    background-color: #3498db;
+}
+
+.status-assigned {
+    background-color: #f39c12;
+}
+
+.status-approved {
+    background-color: #27ae60;
+}
+
+.status-rejected {
+    background-color: #e74c3c;
+}
+
+.status-completed {
+    background-color: #95a5a6;
+}
+
+.report-footer {
+    margin-top: 30px;
+    font-size: 12px;
+    text-align: center;
+    color: gray;
+}
+
+.print-button {
+    display: block;
+    margin: 30px auto 10px;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+    .print-button:hover {
+        background-color: #146c43;
+        transform: scale(1.05);
+    }
+
+@media print {
+    .print-button {
+        display: none;
+    }
+
+    body {
+        margin: 20px;
+    }
+}
+
+/* ====================================== */
+/* FAQStyle */
+/* ====================================== */
+
+.faq-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #006C35 0%, #228B22 100%);
+    min-height: 100vh;
+    direction: rtl;
+    padding-top: 120px;
+}
+
+    /* > Rahaf -: شريط التصفح */
+    .faq-page .faq-breadcrumb {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 1rem 0;
+        margin-bottom: 2rem;
+    }
+
+    .faq-page .faq-breadcrumb-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .faq-page .faq-breadcrumb-nav {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: white;
+        font-size: 0.9rem;
+    }
+
+        .faq-page .faq-breadcrumb-nav a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+            .faq-page .faq-breadcrumb-nav a:hover {
+                color: white;
+            }
+
+    .faq-page .faq-breadcrumb-separator {
+        color: rgba(255, 255, 255, 0.6);
+        margin: 0 0.3rem;
+    }
+
+    .faq-page .faq-breadcrumb-current {
+        color: white;
+        font-weight: 500;
+    }
+
+    /* > Rahaf -: المحتوى الرئيسي */
+    .faq-page .faq-main {
+        padding: 2rem;
+        background: white;
+        min-height: calc(100vh - 80px);
+    }
+
+    .faq-page .faq-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    /* > Rahaf -: العنوان */
+    .faq-page .faq-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+        .faq-page .faq-header h1 {
+            color: #2C3E50;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .faq-page .faq-header p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+    /* > Rahaf -: الأقسام */
+    .faq-page .faq-section {
+        background: #f8f9fa;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-bottom: 3rem;
+    }
+
+        .faq-page .faq-section h3,
+        .faq-page .tracking-section h3 {
+            color: #006C35 !important;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+
+    /* > Rahaf -: البحث */
+    .faq-page .faq-search-input {
+        width: 100%;
+        padding: 0.8rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
+
+        .faq-page .faq-search-input:focus {
+            outline: none;
+            border-color: #006C35;
+        }
+
+    /* > Rahaf -: القائمة */
+    .faq-page .faq-category {
+        margin-bottom: 2rem;
+    }
+
+    .faq-page .faq-list {
+        display: grid;
+        gap: 1rem;
+        margin-top: 15px;
+    }
+
+    .faq-page .faq-item {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        border: 1px solid #ddd;
+    }
+
+    /* > Rahaf -: الأسئلة */
+    .faq-page .faq-question {
+        padding: 1rem;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: white;
+        transition: background 0.3s ease;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+        .faq-page .faq-question:hover {
+            background: #f8f9fa;
+        }
+
+        .faq-page .faq-question h5 {
+            margin: 0;
+            color: #2C3E50;
+            font-size: 1rem;
+        }
+
+        .faq-page .faq-question i {
+            color: #006C35;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-page .faq-question.active i {
+            transform: rotate(180deg);
+        }
+
+    /* > Rahaf -: الإجابات */
+    .faq-page .faq-answer {
+        padding: 0 1rem;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+    }
+
+        .faq-page .faq-answer.show {
+            padding: 1rem;
+            max-height: 500px;
+        }
+
+        .faq-page .faq-answer p {
+            margin-bottom: 0.5rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .faq-page .faq-answer ul,
+        .faq-page .faq-answer ol {
+            margin: 0.5rem 0;
+            padding-right: 1.5rem;
+            color: #666;
+        }
+
+        .faq-page .faq-answer li {
+            margin-bottom: 0.25rem;
+        }
+
+    /* > Rahaf -: الأزرار */
+    .faq-page .faq-btn {
+        padding: 0.7rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .faq-page .faq-btn-primary {
+        background: #006C35;
+        color: white;
+    }
+
+        .faq-page .faq-btn-primary:hover {
+            background: #228B22;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 108, 53, 0.3);
+        }
+/* تحسين عرض الجدول للشاشات الصغيرة */
+@media (max-width: 1200px) {
+    .report-table {
+        font-size: 12px;
+    }
+
+        .report-table th,
+        .report-table td {
+            padding: 5px;
+            white-space: nowrap;
+        }
+}
+
+@@media print {
+    @page {
+        size: A4 landscape; /* توجيه الصفحة أفقياً */
+        margin: 10mm;
+    }
+
+    .print-button {
+        display: none;
+    }
+
+    body {
+        margin: 10px;
+        font-size: 12px;
+    }
+
+    .report-header {
+        margin-bottom: 15px;
+    }
+
+    .report-title {
+        font-size: 20px;
+    }
+
+    .report-subtitle {
+        font-size: 16px;
+    }
+    /* تصغير حجم الجدول للطباعة */
+    .report-table {
+        font-size: 11px;
+        width: 100%;
+        table-layout: auto;
+    }
+
+        .report-table th,
+        .report-table td {
+            padding: 4px;
+            font-size: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    /* تحسين عرض badges الحالة */
+    .status-badge,
+    .user-type-badge {
+        padding: 2px 6px;
+        font-size: 10px;
+    }
+
+    .email-link {
+        color: black !important;
+        text-decoration: none !important;
+        font-size: 10px;
+    }
+
+    .phone-number {
+        font-size: 10px;
+    }
+    /* إخفاء الأعمدة الأقل أهمية عند الحاجة */
+    @media (max-width: 1100px) {
+        .hide-on-print-small {
+            display: none;
+        }
+    }
+}
+/* ===================================== */
+/* PrintReport Styles - نمط طباعة التقارير */
+/* Version: 2.0 - Updated with specific class names */
+/* ===================================== */
+
+/* Body والحاوي الرئيسي */
+.print-report-body {
+    font-family: 'Tajawal', sans-serif;
+    margin: 40px;
+    color: #333;
+    direction: rtl;
+    background-color: #fff;
+}
+
+/* Header Section */
+.print-report-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+/* العنوان الرئيسي */
+.print-report-main-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+/* العنوان الفرعي */
+.print-report-sub-title {
+    font-size: 20px;
+    color: #34495e;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+/* نوع الخدمة */
+.print-report-service-type {
+    font-size: 16px;
+    color: #6c757d;
+    margin-bottom: 10px;
+    font-style: italic;
+}
+
+/* معلومات التقرير */
+.print-report-meta-info {
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 20px;
+    color: #7f8c8d;
+}
+
+/* الجدول الرئيسي */
+.print-report-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    direction: rtl;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+    .print-report-data-table th,
+    .print-report-data-table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .print-report-data-table th {
+        background-color: #f0f8f0;
+        font-weight: bold;
+        color: #2c3e50;
+        font-size: 14px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .print-report-data-table tbody tr {
+        transition: background-color 0.2s ease;
+    }
+
+        .print-report-data-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .print-report-data-table tbody tr:hover {
+            background-color: #e8f5e9;
+        }
+
+/* Status Badges */
+.print-report-status-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    color: white;
+    font-size: 12px;
+    display: inline-block;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* حالات الطلبات */
+.print-report-status-new {
+    background-color: #3498db;
+}
+
+.print-report-status-assigned {
+    background-color: #f39c12;
+}
+
+.print-report-status-approved {
+    background-color: #27ae60;
+}
+
+.print-report-status-rejected {
+    background-color: #e74c3c;
+}
+
+.print-report-status-completed {
+    background-color: #95a5a6;
+}
+
+/* حالات الأجهزة */
+.print-report-status-active {
+    background-color: #28a745;
+}
+
+.print-report-status-maintenance {
+    background-color: #ffc107;
+    color: #000;
+}
+
+.print-report-status-inactive {
+    background-color: #dc3545;
+}
+
+/* User Type Badges (للأجزاء المعلقة) */
+.print-report-user-type-badge {
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    display: inline-block;
+    font-weight: 500;
+}
+
+.print-report-type-admin {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.print-report-type-faculty {
+    background-color: #3498db;
+    color: white;
+}
+
+.print-report-type-student {
+    background-color: #95a5a6;
+    color: white;
+}
+
+/* روابط البريد الإلكتروني */
+.print-report-email-link {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+    .print-report-email-link:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+
+/* أرقام الهواتف */
+.print-report-phone-number {
+    font-family: monospace;
+    font-size: 14px;
+    color: #495057;
+    direction: ltr;
+    display: inline-block;
+}
+
+/* رسالة عدم وجود بيانات */
+.print-report-no-data {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 18px;
+    color: #7f8c8d;
+    padding: 40px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+/* Footer */
+.print-report-footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+    font-size: 12px;
+    text-align: center;
+    color: #6c757d;
+}
+
+    .print-report-footer p {
+        margin: 5px 0;
+    }
+
+/* زر الطباعة */
+.print-report-action-button {
+    display: block;
+    margin: 30px auto 20px;
+    padding: 12px 30px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(40, 167, 69, 0.3);
+}
+
+    .print-report-action-button:hover {
+        background-color: #218838;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);
+    }
+
+    .print-report-action-button:active {
+        transform: translateY(0);
+    }
+
+/* تحسين عرض الجدول للشاشات الصغيرة */
+@media (max-width: 1200px) {
+    .print-report-data-table {
+        font-size: 12px;
+    }
+
+        .print-report-data-table th,
+        .print-report-data-table td {
+            padding: 6px;
+            white-space: nowrap;
+        }
+
+    .print-report-status-badge {
+        font-size: 11px;
+        padding: 3px 8px;
+    }
+}
+
+@media (max-width: 768px) {
+    .print-report-body {
+        margin: 20px;
+    }
+
+    .print-report-main-title {
+        font-size: 24px;
+    }
+
+    .print-report-sub-title {
+        font-size: 18px;
+    }
+
+    .print-report-data-table {
+        font-size: 11px;
+    }
+
+        .print-report-data-table th,
+        .print-report-data-table td {
+            padding: 4px;
+        }
+}
+
+/* Print Media Styles */
+@media print {
+    @page {
+        size: A4 landscape;
+        margin: 10mm;
+    }
+
+    /* إخفاء زر الطباعة */
+    .print-report-action-button {
+        display: none !important;
+    }
+
+    /* تحسين الـ body للطباعة */
+    .print-report-body {
+        margin: 10px;
+        font-size: 12px;
+    }
+
+    /* تصغير الهيدر */
+    .print-report-header {
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+    }
+
+    .print-report-main-title {
+        font-size: 20px;
+        margin-bottom: 5px;
+    }
+
+    .print-report-sub-title {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+
+    .print-report-service-type {
+        font-size: 14px;
+    }
+
+    .print-report-meta-info {
+        font-size: 12px;
+        margin-bottom: 15px;
+    }
+
+    /* تحسين الجدول للطباعة */
+    .print-report-data-table {
+        font-size: 10px;
+        width: 100%;
+        table-layout: auto;
+        box-shadow: none;
+    }
+
+        .print-report-data-table th,
+        .print-report-data-table td {
+            padding: 4px;
+            font-size: 9px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border: 1px solid #ccc;
+        }
+
+        .print-report-data-table th {
+            background-color: #e9ecef !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+    /* تحسين badges الحالة للطباعة */
+    .print-report-status-badge,
+    .print-report-user-type-badge {
+        padding: 2px 6px;
+        font-size: 9px;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    /* تحسين الروابط للطباعة */
+    .print-report-email-link {
+        color: black !important;
+        text-decoration: none !important;
+        font-size: 9px;
+    }
+
+    .print-report-phone-number {
+        font-size: 9px;
+    }
+
+    /* Footer للطباعة */
+    .print-report-footer {
+        margin-top: 20px;
+        padding-top: 10px;
+        font-size: 10px;
+    }
+
+    /* إزالة الألوان الخلفية الزائدة */
+    .print-report-data-table tbody tr:nth-child(even) {
+        background-color: #f5f5f5 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .print-report-data-table tbody tr:hover {
+        background-color: transparent !important;
+    }
+
+    /* تحسين فواصل الصفحات */
+    .print-report-data-table {
+        page-break-inside: avoid;
+    }
+
+        .print-report-data-table tr {
+            page-break-inside: avoid;
+            page-break-after: auto;
+        }
+}
+
+/* Animation للظهور */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.print-report-data-table {
+    animation: fadeIn 0.5s ease-out;
+}
+
+    /* Scrollbar customization للجدول */
+    .print-report-data-table::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .print-report-data-table::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .print-report-data-table::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+    }
+
+        .print-report-data-table::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+.wil-password-input {
+    position: relative;
+}
+
+    .wil-password-input input {
+        padding-left: 40px; /* مساحة لأيقونة العين */
+        padding-right: 15px;
+    }
+
+.wil-password-toggle {
+    position: absolute;
+    left: 10px; /* في أقصى اليسار */
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 5px;
+    z-index: 10;
+}
+
+    .wil-password-toggle:hover {
+        color: #495057;
+    }
+
+    .wil-password-toggle:focus {
+        outline: none;
+    }
+
+/* للحقول RTL */
+.wil-auth-box .wil-password-input input {
+    direction: rtl;
+    text-align: right;
+}

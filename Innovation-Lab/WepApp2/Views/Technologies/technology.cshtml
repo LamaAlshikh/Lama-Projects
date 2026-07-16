@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "إدارة الفئات التقنية";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@*
+---------------------------------------------------------------
+الصفحة: إدارة الفئات التقنية (Technology Categories Management)
+الوصف: صفحة لإضافة، تعديل، وحذف الفئات التقنية المستخدمة في الأجهزة
+Page: Technology Categories Management
+Description: Page to create, edit, and delete technology categories used in devices
+---------------------------------------------------------------
+*@
+@model WepApp2.Models.TechnologyPageViewModel
+
+
+
+@section Styles {
+    <link href="~/css/Group1Style.css" rel="stylesheet" />
+}
+
+<!-- حاوية الصفحة الرئيسية -->
+<!-- Main page container -->
+<div class="container">
+    <h2 class="mb-4 d-flex justify-content-between align-items-center">
+        <span>إدارة الفئات التقنية</span>
+
+    </h2>
+
+
+    <!-- النموذج: إضافة أو تعديل فئة تقنية -->
+    <!-- Form: Add or Edit a technology category -->
+    <div class="card mb-4">
+        <div class="card-header bg-light fw-bold">
+            @(Model.IsEdit ? " تعديل الفئة" : " إضافة فئة جديدة")
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm(Model.IsEdit ? "Update" : "Create", "Technologies", FormMethod.Post))
+            {
+
+                <!-- المعرف -->
+                <!-- Category ID (hidden) -->
+                @Html.HiddenFor(m => m.Technology.TechnologyID)
+
+
+                <!-- حقل اسم الفئة -->
+                <!-- Category name field -->
+                <div class="mb-3">
+                    @Html.LabelFor(m => m.Technology.TechnologyName, "اسم التقنية")
+                    @Html.TextBoxFor(m => m.Technology.TechnologyName, new { @class = "form-control", required = "required" })
+                </div>
+
+
+                <!-- حقل وصف الفئة -->
+                <!-- Category description field -->
+                <div class="mb-3">
+                    @Html.LabelFor(m => m.Technology.TechnologyDescription, "الوصف")
+                    @Html.TextAreaFor(m => m.Technology.TechnologyDescription, new { @class = "form-control" })
+                </div>
+
+
+                <!-- أزرار التحكم -->
+                <!-- Action buttons: Save or Cancel -->
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        @(Model.IsEdit ? "حفظ التعديلات" : "إضافة الفئة")
+                    </button>
+
+
+                    <a href="@Url.Action("Devices", "Devices")" class="btn btn-secondary">↩ رجوع</a>
+                    
+                </div>
+
+            }
+        </div>
+    </div>
+
+
+    <!-- جدول عرض الفئات التقنية -->
+    <!-- Table displaying all technology categories -->
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>المعرف</th>
+                <th>الاسم</th>
+                <th>الوصف</th>
+                <th>الخيارات</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var tech in Model.Technologies)
+            {
+                <tr>
+                    <td>@tech.TechnologyID</td>
+                    <td>@tech.TechnologyName</td>
+                    <td>@tech.TechnologyDescription</td>
+                    <td>
+                        <a href="@Url.Action("Edit", "Technologies", new { id = tech.TechnologyID })" class="btn btn-sm custom-edit-btn">تعديل</a>
+                        <a href="@Url.Action("Delete", "Technologies", new { id = tech.TechnologyID })"
+                           onclick="return confirm('هل تريد حذف هذه الفئة؟');"
+                           class="btn btn-sm btn-danger btn-del">حذف</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

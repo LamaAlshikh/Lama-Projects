@@ -1,0 +1,210 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@*
+---------------------------------------------------------------
+الصفحة: إضافة مستخدم جديد (Add New User)
+الوصف: نموذج لإدخال بيانات مستخدم جديد إلى النظام
+Page: Add New User
+Description: Form to input new user information into the system
+---------------------------------------------------------------
+*@
+
+@model WepApp2.Models.User
+
+@{
+    ViewBag.Title = "إضافة مستخدم جديد";
+
+    // قائمة الأدوار المتاحة للمستخدم
+    // List of available user roles
+    var roles = new List<string> { "مشرف", "طالب", "عضو هيئة تدريس", "مدير" };
+
+    // قائمة الجهات الأكاديمية
+    // List of faculties
+    var faculties = new List<string> {
+    "العمادات",
+    "الكلية التطبيقية",
+    "الدراسات العليا",
+    "كلية الآداب والعلوم الإنسانية",
+    "كلية الاقتصاد والإدارة",
+    "كلية الاتصال والإعلام",
+    "كلية التربية",
+    "كلية التمريض",
+    "كلية الحاسبات وتقنية المعلومات",
+    "كلية الحقوق",
+    "كلية الطب",
+    "كلية الطب الأسنان",
+    "كلية الصيدلة",
+    "كلية العلوم",
+    "كلية العلوم البيئية",
+    "كلية العلوم الطبية التطبيقية",
+    "كلية السياحة",
+    "كلية العمارة والتخطيط",
+    "كلية الهندسة",
+    "كلية الدراسات البحرية",
+    "كلية علوم الإنسان والتصاميم",
+    "كلية علوم الأرض",
+    "كلية علوم البحار",
+    "كلية علوم التأهيل الطبي",
+    "أخرى"
+};
+
+}
+
+<!-- عنوان الصفحة -->
+<!-- Page title -->
+<h2 class="table-title mb-4">إضافة مستخدم جديد</h2>
+
+<!-- نموذج إضافة مستخدم -->
+<!-- Form to add a new user -->
+<form asp-action="AddUser" method="post">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <!-- الاسم الأول واسم العائلة -->
+    <!-- First and last name -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label>الاسم الأول *</label>
+            <input type="text" class="form-control" name="FirstName" value="@Model.FirstName" required />
+        </div>
+        <div class="col-md-6">
+            <label>الاسم الأخير *</label>
+            <input type="text" class="form-control" name="LastName" value="@Model.LastName" required />
+        </div>
+    </div>
+
+    <!-- الرقم الجامعي والبريد الإلكتروني -->
+    <!-- University ID and Email -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label>الرقم الجامعي *</label>
+            <input type="text" class="form-control" name="UserName" value="@Model.UserName" required />
+        </div>
+        <div class="col-md-6">
+            <label>البريد الإلكتروني *</label>
+            <input type="email" class="form-control" name="Email" value="@Model.Email" required />
+        </div>
+    </div>
+
+    <!-- رقم الجوال والنوع -->
+    <!-- Phone number and role -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label>رقم الجوال</label>
+            <input type="tel" class="form-control" name="PhoneNumber" value="@Model.PhoneNumber" />
+        </div>
+        <div class="col-md-6">
+            <label>النوع</label>
+            <select class="form-select" name="UserRole">
+                @foreach (var role in roles)
+                {
+                    <option value="@role">@role</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <!-- الجهة والقسم -->
+    <!-- Faculty and department -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label>الجهة</label>
+            <select class="form-select" name="Faculty" id="collegeSelectAdd">
+                <option value="" disabled selected hidden>اختر الجهة</option>
+                @foreach (var faculty in faculties)
+                {
+                    <option value="@faculty">@faculty</option>
+                }
+            </select>
+
+            <!-- خانة الجهة إذا كانت "أخرى" -->
+            <!-- Input field if faculty is "Other" -->
+            <input type="text" class="form-control mt-2" name="OtherFaculty" id="otherFacultyInput" placeholder="اكتب اسم الجهة" style="display:none;" />
+        </div>
+
+
+
+
+        <div class="col-md-6">
+            <label>القسم</label>
+            <input type="text" class="form-control" name="Department" placeholder="اكتب اسم القسم" />
+        </div>
+
+
+
+    </div>
+
+    <!-- الحالة وكلمة المرور -->
+    <!-- Status and password -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label>الحالة</label>
+            <select class="form-select" name="IsActive">
+                <option value="true">نشط</option>
+                <option value="false">غير نشط</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label>كلمة المرور *</label>
+            <div class="input-group">
+                <input type="password" class="form-control" name="UserPassWord" id="passwordInput" required />
+                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                    <i class="bi bi-eye" id="passwordIcon"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- أزرار التحكم -->
+    <!-- Form action buttons -->
+    <div class="d-flex justify-content-between mt-4">
+        <a href="@Url.Action("Users", "Users")" class="btn btn-secondary">↩ رجوع</a>
+        <button type="submit" class="btn btn-success">+ إضافة المستخدم</button>
+    </div>
+</form>
+
+<!-- تضمين ملف CSS -->
+<!-- Include custom CSS -->
+@section Styles {
+    <link href="~/css/Group1Style.css" rel="stylesheet" />
+}
+
+<!-- سكريبتات جافاسكربت -->
+<!-- JavaScript Scripts -->
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const collegeSelect = document.getElementById("collegeSelectAdd");
+            const otherFacultyInput = document.getElementById("otherFacultyInput");
+
+            collegeSelect.addEventListener("change", function () {
+                if (collegeSelect.value === "أخرى") {
+                    otherFacultyInput.style.display = "block";
+                } else {
+                    otherFacultyInput.style.display = "none";
+                    otherFacultyInput.value = "";
+                }
+            });
+        });
+
+        // إظهار/إخفاء كلمة المرور
+        // Toggle password visibility
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggleBtn = document.getElementById("togglePassword");
+            const passwordInput = document.getElementById("passwordInput");
+            const icon = document.getElementById("passwordIcon");
+
+            toggleBtn.addEventListener("click", function () {
+                const isPassword = passwordInput.type === "password";
+                passwordInput.type = isPassword ? "text" : "password";
+                icon.className = isPassword ? "bi bi-eye-slash" : "bi bi-eye";
+            });
+        });
+    </script>
+
+    <!-- سكريبت مخصص لإدارة المستخدمين -->
+    <!-- Custom script for user management -->
+    <script src="~/js/userscript.js"></script>
+}
+

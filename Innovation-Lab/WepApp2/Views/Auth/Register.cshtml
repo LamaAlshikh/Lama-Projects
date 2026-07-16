@@ -1,0 +1,298 @@
+﻿
+
+
+@model WepApp2.Models.User
+
+@{
+    Layout = null;
+    ViewData["Title"] = "إنشاء حساب - معمل الابتكارات";
+}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="~/css/Gruop3Style.css" rel="stylesheet" />
+</head>
+<body class="wil-auth-page">
+    <div class="container">
+        <div class="wil-auth-header">
+            <div class="wil-logo-container">
+                <img src="~/Images/logo.png" alt="شعار معمل الابتكارات" class="wil-logo" />
+            </div>
+        </div>
+
+        <div class="wil-auth-box wil-auth-box--register">
+            <div class="wil-nav-tabs wil-d-flex">
+                <a href="/Auth/Login" class="wil-nav-link wil-flex-fill wil-text-center">
+                    <i class="fas fa-sign-in-alt wil-icon-spacing-sm"></i>
+                    تسجيل الدخول
+                </a>
+                <a href="/Auth/Register" class="wil-nav-link wil-nav-link--active wil-flex-fill wil-text-center">
+                    <i class="fas fa-user-plus wil-icon-spacing-sm"></i>
+                    إنشاء حساب
+                </a>
+            </div>
+
+            @if (ViewBag.PasswordMismatch == true)
+            {
+                <div class="wil-alert wil-alert--danger">
+                    <i class="fas fa-exclamation-triangle wil-icon-spacing-sm"></i>
+                    كلمتا المرور غير متطابقتين. يرجى التأكد من كتابة نفس كلمة المرور في الحقلين.
+                </div>
+            }
+
+            @if (ViewBag.PasswordEmpty == true)
+            {
+                <div class="wil-alert wil-alert--danger">
+                    <i class="fas fa-exclamation-triangle wil-icon-spacing-sm"></i>
+                    يرجى إدخال كلمة مرور صحيحة.
+                </div>
+            }
+
+            @if (ViewBag.UserExists == true)
+            {
+                <div class="wil-alert wil-alert--danger">
+                    <i class="fas fa-exclamation-triangle wil-icon-spacing-sm"></i>
+                    يوجد مستخدم مسجل بنفس اسم المستخدم أو البريد الإلكتروني.
+                </div>
+            }
+
+            @if (ViewBag.PasswordTooShort == true)
+            {
+                <div class="wil-alert wil-alert--danger">
+                    <i class="fas fa-exclamation-triangle wil-icon-spacing-sm"></i>
+                    كلمة المرور يجب أن تكون 8 خانات على الأقل.
+                </div>
+            }
+
+
+            <div id="wil-terms-error" class="wil-alert wil-alert--warning" style="display: none;">
+                <i class="fas fa-exclamation-triangle wil-icon-spacing-sm"></i>
+                يجب الموافقة على الشروط والأحكام قبل إنشاء الحساب
+            </div>
+
+            <form method="post" asp-action="Register">
+                <div class="row wil-text-right">
+                    <div class="col-md-6 wil-mb-3">
+                        <label asp-for="FirstName" class="wil-form-label">
+                            <i class="fas fa-user wil-icon-spacing-sm"></i>
+                            الاسم الأول:
+                        </label>
+                        <input asp-for="FirstName" class="form-control wil-form-control" />
+                    </div>
+                    <div class="col-md-6 wil-mb-3">
+                        <label asp-for="LastName" class="wil-form-label">
+                            <i class="fas fa-user wil-icon-spacing-sm"></i>
+                            الاسم الأخير:
+                        </label>
+                        <input asp-for="LastName" class="form-control wil-form-control" />
+                    </div>
+                    <div class="col-md-12 wil-mb-3">
+                        <label asp-for="Email" class="wil-form-label">
+                            <i class="fas fa-envelope wil-icon-spacing-sm"></i>
+                            البريد الإلكتروني الجامعي:
+                        </label>
+                        <input asp-for="Email" class="form-control wil-form-control" placeholder="example@@stu.kau.edu.sa" />
+                    </div>
+                    <div class="col-md-12 wil-mb-3">
+                        <label asp-for="PhoneNumber" class="wil-form-label">
+                            <i class="fas fa-phone wil-icon-spacing-sm"></i>
+                            رقم الهاتف:
+                        </label>
+                        <input asp-for="PhoneNumber" class="form-control wil-form-control" placeholder="+966 5xxxxxxxx" />
+                    </div>
+                    <div class="col-md-12 wil-mb-3">
+                        <label asp-for="UserName" class="wil-form-label">
+                            <i class="fas fa-id-card wil-icon-spacing-sm"></i>
+                            اسم المستخدم:
+                        </label>
+                        <input asp-for="UserName" class="form-control wil-form-control" placeholder="الرقم الجامعي/الوظيفي" />
+                    </div>
+                    <div class="col-md-6 wil-mb-3">
+                        <label asp-for="Faculty" class="wil-form-label">
+                            <i class="fas fa-university wil-icon-spacing-sm"></i>
+                            الجهة:
+                        </label>
+                        <select asp-for="Faculty" class="form-control wil-form-control wil-form-select" id="wil-faculty-select" onchange="wilToggleOtherField()">
+                            <option value="">اختر الجهة</option>
+                            <option value="كلية الطب">كلية الطب</option>
+                            <option value="كلية طب الأسنان">كلية طب الأسنان</option>
+                            <option value="كلية الصيدلة">كلية الصيدلة</option>
+                            <option value="كلية العلوم الطبية التطبيقية">كلية العلوم الطبية التطبيقية</option>
+                            <option value="كلية التمريض">كلية التمريض</option>
+                            <option value="كلية علوم التأهيل الطبي">كلية علوم التأهيل الطبي</option>
+                            <option value="كلية الصحة العامة والمعلوماتية الصحية">كلية الصحة العامة والمعلوماتية الصحية</option>
+                            <option value="كلية الهندسة">كلية الهندسة</option>
+                            <option value="كلية العلوم">كلية العلوم</option>
+                            <option value="كلية الحاسبات وتقنية المعلومات">كلية الحاسبات وتقنية المعلومات</option>
+                            <option value="كلية تصاميم البيئة">كلية تصاميم البيئة</option>
+                            <option value="كلية علوم البحار">كلية علوم البحار</option>
+                            <option value="كلية الأرصاد والبيئة وزراعة المناطق الجافة">كلية الأرصاد والبيئة وزراعة المناطق الجافة</option>
+                            <option value="كلية علوم الأرض">كلية علوم الأرض</option>
+                            <option value="كلية الاقتصاد والإدارة">كلية الاقتصاد والإدارة</option>
+                            <option value="كلية إدارة الأعمال">كلية إدارة الأعمال</option>
+                            <option value="كلية الآداب والعلوم الإنسانية">كلية الآداب والعلوم الإنسانية</option>
+                            <option value="كلية التربية">كلية التربية</option>
+                            <option value="كلية الدراسات العليا التربوية">كلية الدراسات العليا التربوية</option>
+                            <option value="كلية علوم الإنسان والتصاميم">كلية علوم الإنسان والتصاميم</option>
+                            <option value="كلية الاتصال والإعلام">كلية الاتصال والإعلام</option>
+                            <option value="كلية السياحة">كلية السياحة</option>
+                            <option value="كلية القانون">كلية القانون</option>
+                            <option value="الكلية التطبيقية">الكلية التطبيقية</option>
+                            <option value="كلية المجتمع">كلية المجتمع</option>
+                            <option value="عمادة التعليم عن بعد والتعليم الإلكتروني">عمادة التعليم عن بعد والتعليم الإلكتروني</option>
+                            <option value="أخرى">أخرى</option>
+                        </select>
+                        <div id="wil-other-faculty-div" style="display: none;" class="mt-2">
+                            <input type="text" id="wil-other-faculty-input" class="form-control wil-form-control" placeholder="اكتب اسم الجهة" />
+                        </div>
+                    </div>
+                    <div class="col-md-6 wil-mb-3">
+                        <label asp-for="Department" class="wil-form-label">
+                            <i class="fas fa-building wil-icon-spacing-sm"></i>
+                            القسم:
+                        </label>
+                        <input asp-for="Department" class="form-control wil-form-control" placeholder="اكتب اسم القسم" />
+                    </div>
+                    <div class="col-md-12 wil-mb-3">
+                        <label asp-for="UserRole" class="wil-form-label">
+                            <i class="fas fa-users wil-icon-spacing-sm"></i>
+                            نوع المستخدم:
+                        </label>
+                        <select asp-for="UserRole" class="form-control wil-form-control wil-form-select">
+                            <option value="">اختر نوع المستخدم</option>
+                            <option value="طالب">طالب</option>
+                            <option value="عضو هيئة تدريس">عضو هيئة تدريس</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 wil-mb-3">
+                        <label asp-for="UserPassWord" class="wil-form-label">
+                            <i class="fas fa-lock wil-icon-spacing-sm"></i>
+                            كلمة المرور:
+                        </label>
+                        <input asp-for="UserPassWord" type="password" class="form-control wil-form-control" />
+                    </div>
+                    <div class="col-md-6 wil-mb-3">
+                        <label class="wil-form-label">
+                            <i class="fas fa-lock wil-icon-spacing-sm"></i>
+                            تأكيد كلمة المرور:
+                        </label>
+                        <input name="ConfirmPassword" type="password" class="form-control wil-form-control" />
+                    </div>
+                </div>
+                <div class="wil-form-check wil-mb-3" style="text-align: right; direction: rtl;">
+                    <input class="form-check-input wil-form-check-input" type="checkbox" id="wil-terms" style="float: right; margin-right: 0; margin-left: 0.5rem;" required />
+                    <label class="form-check-label wil-form-check-label" for="wil-terms" style="text-align: right;">
+                        <i class="fas fa-check-circle wil-icon-spacing-sm"></i>
+                        أوافق على <a href="#" class="wil-link">الشروط والأحكام</a> وسياسة الخصوصية
+                    </label>
+                </div>
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn wil-btn-primary px-5 py-2" id="wil-submit-btn" style="text-align: center !important; display: inline-block !important;" disabled>
+                        <i class="fas fa-user-plus wil-icon-spacing-sm"></i> إنشاء حساب
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function wilToggleOtherField() {
+            const facultySelect = document.getElementById('wil-faculty-select');
+            const otherDiv = document.getElementById('wil-other-faculty-div');
+            const otherInput = document.getElementById('wil-other-faculty-input');
+            const hiddenFacultyField = document.querySelector('input[name="Faculty"]');
+
+            if (facultySelect.value === 'أخرى') {
+                otherDiv.style.display = 'block';
+                otherInput.required = true;
+
+                // إضافة event listener لتحديث القيمة المخفية
+                otherInput.addEventListener('input', function () {
+                    // إنشاء حقل مخفي إذا لم يكن موجوداً
+                    if (!hiddenFacultyField) {
+                        const hiddenInput = document.createElement('input');
+                        hiddenInput.type = 'hidden';
+                        hiddenInput.name = 'Faculty';
+                        facultySelect.parentNode.appendChild(hiddenInput);
+                    }
+                    document.querySelector('input[name="Faculty"]').value = this.value;
+                });
+            } else {
+                otherDiv.style.display = 'none';
+                otherInput.required = false;
+                otherInput.value = '';
+
+                // إزالة الحقل المخفي إذا كان موجوداً
+                if (hiddenFacultyField) {
+                    hiddenFacultyField.remove();
+                }
+            }
+        }
+
+        // التأكد من إخفاء الحقل عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function () {
+            const otherDiv = document.getElementById('wil-other-faculty-div');
+            otherDiv.style.display = 'none';
+
+            // إضافة التحكم في زر الإرسال بناءً على الموافقة على الشروط
+            const termsCheckbox = document.getElementById('wil-terms');
+            const submitBtn = document.getElementById('wil-submit-btn');
+
+            termsCheckbox.addEventListener('change', function () {
+                submitBtn.disabled = !this.checked;
+                // إخفاء رسالة الخطأ عند تحديد الموافقة
+                if (this.checked) {
+                    document.getElementById('wil-terms-error').style.display = 'none';
+                }
+            });
+
+            // إضافة حدث للنقر على الزر المعطل
+            submitBtn.addEventListener('click', function (e) {
+                if (!termsCheckbox.checked) {
+                    e.preventDefault();
+                    document.getElementById('wil-terms-error').style.display = 'block';
+                    // التمرير لأعلى لرؤية رسالة الخطأ
+                    document.getElementById('wil-terms-error').scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+
+                const form = document.querySelector('form');
+        form.addEventListener('submit', function (e) {
+            const passwordInput = document.querySelector('input[name="UserPassWord"]');
+            const password = passwordInput.value.trim();
+
+            // إذا كانت كلمة المرور أقل من 8 حروف
+            if (password.length < 8) {
+                e.preventDefault(); // منع إرسال النموذج
+
+                // إظهار رسالة الخطأ الجديدة
+                let errorDiv = document.querySelector('.wil-alert--short-password');
+                if (!errorDiv) {
+                    errorDiv = document.createElement('div');
+                    errorDiv.className = 'wil-alert wil-alert--danger wil-alert--short-password';
+                    errorDiv.innerHTML = '<i class="fas fa-exclamation-triangle wil-icon-spacing-sm"></i> كلمة المرور يجب أن تكون 8 خانات على الأقل.';
+                    form.parentNode.insertBefore(errorDiv, form);
+                }
+
+                // تمرير الشاشة لأعلى لعرض الخطأ
+                errorDiv.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                // إذا تم تصحيح الخطأ، نحذف التنبيه السابق (لو كان موجود)
+                const existingError = document.querySelector('.wil-alert--short-password');
+                if (existingError) {
+                    existingError.remove();
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
